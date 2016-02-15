@@ -1,5 +1,15 @@
 #include "quadTree.h"
 
+quadTree::quadTree(int level, rect bounds) {
+	this->level = level;
+	this->bounds = bounds;
+	this->UL = NULL;
+	this->UR = NULL;
+	this->LR = NULL;
+	this->LL = NULL;
+	this->objects.isValueSet = false;
+}
+
 void quadTree::deleteObjects(){
 	list *tmp = &(this->objects);
 	tmp->isValueSet = false;
@@ -67,12 +77,11 @@ rect quadTree::removeAndReturnObjectAtIndex(int index){
 int quadTree::getObjectSize(){
 	list *tmp = &(this->objects);
 	int i = 0;
-	if (tmp != NULL){
-		while (tmp->isValueSet){
-			i++;
-			if (tmp->next == NULL) break;
-			else tmp = tmp->next;
-		}
+
+	while (tmp->isValueSet){
+		i++;
+		if (tmp->next == NULL) break;
+		else tmp = tmp->next;
 	}
 	return i;
 }
@@ -85,17 +94,6 @@ bool quadTree::contains(rect r){
 		r.bottom_right.x < this->bounds.bottom_right.x) return true;
 	else return false;
 }
-
-quadTree::quadTree(int level, rect bounds){
-	this->level = level;
-	this->bounds = bounds;
-	this->UL = NULL;
-	this->UR = NULL;
-	this->LR = NULL;
-	this->LL = NULL;
-	this->objects.isValueSet = false;
-}
-
 
 void quadTree::clear(){//czyszczenie struktury
 	if (this != NULL){

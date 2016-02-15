@@ -318,8 +318,7 @@ UINT32_t mts_seed(
  * to the performance of the Mersenne Twist PRNG, so it has been
  * highly optimized.
  */
-void mts_refresh(
-    register mt_state*	state)		/* State for the PRNG */
+void mts_refresh(register mt_state*	state)		/* State for the PRNG */
     {
     register int	i;		/* Index into the state */
     register UINT32_t*

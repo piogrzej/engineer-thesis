@@ -9,7 +9,8 @@ int main(){
 
 	quadTree *mainTree;
 	rect spaceSize;
-	FILE * pFile;
+	FILE *fileIter;
+
 	double duration;
 	REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE+1];
 	UINT32_t Nsample=NSAMPLE;
@@ -40,20 +41,18 @@ int main(){
 
 	std::clock_t startT;//start timera
 
-	pFile = fopen(adresWejscia, "r");
-	if (pFile == NULL) return -1;
-	spaceSize = layerSpaceSize(pFile);
+	fileIter = fopen(adresWejscia, "r");
+	if (fileIter == NULL) return -1;
+	spaceSize = layerSpaceSize(fileIter);
 	printf("TOP: %d LEFT: %d BOTTOM: %d RIGHT %d\n", spaceSize.top_left.y, spaceSize.top_left.x, spaceSize.bottom_right.y, spaceSize.bottom_right.x);
-	fclose(pFile);
-
-
-	pFile = fopen(adresWejscia, "r");
-	if (pFile == NULL) return -1;
+	
+	fseek(fileIter, 0, SEEK_SET); // przestawia wskaünik na poczπtek
+		
 	startT = std::clock();
 	mainTree = new quadTree(0, spaceSize);//start Tree
-	createTree(mainTree, pFile);
+	createTree(mainTree, fileIter);
 	duration = (std::clock() - startT) / (double)CLOCKS_PER_SEC;
-	fclose(pFile);
+	fclose(fileIter);
 
 	printf("time: %lf\n", duration);
 

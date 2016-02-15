@@ -31,7 +31,6 @@ private:
 	void split();
 public:
 	bool contains(rect r);
-	quadTree();
 	quadTree(int pLevel, rect bounds);//konstruktor
 	void clear();
 	bool insert(rect r);
