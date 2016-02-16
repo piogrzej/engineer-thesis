@@ -325,29 +325,60 @@ bool quadTree::checkCollisons(point p){
 }
 
 rect quadTree::drawBiggestRectAtPoint(point p){
+	//pierwwszy obieg
 	unsigned int left=p.x-1, right=p.y+1, top=p.y-1, bottom = p.y+1;
 	point tmp;
 	bool continueFlag = true;
-	//pierwszy obieg na sztywno, ustalamy czy w ogole jest jakies mijsce
-	tmp.x = left;
-	for (int i = 0; i < 3; ++i){
-		tmp.y = top;
-		if (checkCollisons(tmp)){
-			continueFlag = false;
-			break;
-		}
+	/*bool continueFlagHorizontal = true;
+	bool contiuneFlagVertical = true;*/
+	bool leftStopFlag = false;
+	bool rightStopFlag = false;
+	bool topStopFlag = false;
+	bool bottomStopFlag = false;
+	
+	while ( !bottomStopFlag || !topStopFlag || !rightStopFlag || !bottomStopFlag){
+		if (!topStopFlag) for (int i = 0; i<right-left; ++i){
+			/*
 
-		tmp.y = bottom;
-		if (checkCollisons(tmp)){
-			continueFlag = false;
-			break;
+			 ->
+			+-----
+			|
+
+			*/
+			tmp.x = left + i;
+			tmp.y = top;
+			topStopFlag = checkCollisons(tmp);
 		}
-		tmp.x++;
+		if (!bottomStopFlag) for (int i = 0; i < right - left; ++i){
+			/*
+			
+			|
+			+-----
+			->
+
+			*/
+			tmp.x = left + i;
+			tmp.y = top;
+			bottomStopFlag = checkCollisons(tmp);
+		}
+		if (!rightStopFlag) for (int i = 0; i < bottom - top; i++){
+			tmp.x = right;
+			tmp.y = top + i;
+			rightStopFlag = checkCollisons(tmp);
+		}
+		if (!leftStopFlag) for (int i = 0; i < bottom - top; i++){
+			tmp.x = left;
+			tmp.y = top + i;
+			leftStopFlag = checkCollisons(tmp);
+		}
+		//ustalanie nowych wsp
+		if (!leftStopFlag) left = p.x - 1;
+		if (!rightStopFlag) right = p.x + 1;
+		if (!topStopFlag) top = p.y - 1;
+		if (!bottom) bottom = p.y + 1;
+
 	}
-	if (!continueFlag){
-		//TODO
-	}
-	//TODO
+
 }
 
 //do usuniecia pozniej
