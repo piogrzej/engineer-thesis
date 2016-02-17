@@ -336,7 +336,7 @@ rect quadTree::drawBiggestRectAtPoint(point p){
 	bool topStopFlag = false;
 	bool bottomStopFlag = false;
 	
-	while ( !bottomStopFlag || !topStopFlag || !rightStopFlag || !bottomStopFlag){
+	while ( !bottomStopFlag && !topStopFlag && !rightStopFlag && !bottomStopFlag){
 		if (!topStopFlag) for (int i = 0; i<right-left; ++i){
 			/*
 
@@ -372,10 +372,14 @@ rect quadTree::drawBiggestRectAtPoint(point p){
 			leftStopFlag = checkCollisons(tmp);
 		}
 		//ustalanie nowych wsp
-		if (!leftStopFlag) left = p.x - 1;
-		if (!rightStopFlag) right = p.x + 1;
-		if (!topStopFlag) top = p.y - 1;
-		if (!bottom) bottom = p.y + 1;
+		if (p.x-1 > this->bounds.top_left.x) left = p.x - 1;
+		else leftStopFlag = true;
+		if (p.x + 1 < this->bounds.bottom_right.x) right = p.x + 1;
+		else rightStopFlag = true;
+		if (p.y + 1 > this->bounds.top_left.y) top = p.y - 1;
+		else topStopFlag = true;
+		if (p.y + 1 < this->bounds.bottom_right.y) bottom = p.y + 1;
+		else bottomStopFlag = true;
 
 	}
 
