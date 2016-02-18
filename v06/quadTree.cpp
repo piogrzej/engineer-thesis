@@ -383,6 +383,14 @@ rect quadTree::drawBiggestRectAtPoint(point p){
 
 	}
 
+	rect ret;
+	ret.top_left.y = top;
+	ret.top_left.x = left;
+	ret.bottom_right.y = bottom;
+	ret.bottom_right.x = right;
+
+	return ret;
+
 }
 
 //do usuniecia pozniej
