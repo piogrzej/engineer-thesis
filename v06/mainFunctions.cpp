@@ -22,9 +22,9 @@ void pointsFormLine(point * topLeft, point * bottomRight, char * line){
 }
 
 //okreslanie rozmiaru przestrzeni
-rect layerSpaceSize(FILE * pFile){
+Rect layerSpaceSize(FILE * pFile){
 	point tmpTopLeft, tmpBottomRight;
-	rect spaceSize;
+	Rect spaceSize;
 	char linebuffor[LINE_BUFFOR_SIZE];//buffor na linie
 
 	while (1){//wyszukiwanie warstwy
@@ -42,24 +42,24 @@ rect layerSpaceSize(FILE * pFile){
 		if (linebuffor[0] == 'r'){
 			pointsFormLine(&tmpTopLeft, &tmpBottomRight, linebuffor);
 			if (!start){
-				if (tmpTopLeft.x < spaceSize.top_left.x){
-					spaceSize.top_left.x = tmpTopLeft.x;
+				if (tmpTopLeft.x < spaceSize.topLeft.x){
+					spaceSize.topLeft.x = tmpTopLeft.x;
 				}
-				if (tmpTopLeft.y < spaceSize.top_left.y){
-					spaceSize.top_left.y = tmpTopLeft.y;
+				if (tmpTopLeft.y < spaceSize.topLeft.y){
+					spaceSize.topLeft.y = tmpTopLeft.y;
 				}
-				if (tmpBottomRight.x > spaceSize.bottom_right.x){
-					spaceSize.bottom_right.x = tmpBottomRight.x;
+				if (tmpBottomRight.x > spaceSize.bottomRight.x){
+					spaceSize.bottomRight.x = tmpBottomRight.x;
 				}
-				if (tmpBottomRight.y > spaceSize.bottom_right.y){
-					spaceSize.bottom_right.y = tmpBottomRight.y;
+				if (tmpBottomRight.y > spaceSize.bottomRight.y){
+					spaceSize.bottomRight.y = tmpBottomRight.y;
 				}
 			}
 			else{
-				spaceSize.top_left.x = tmpTopLeft.x;
-				spaceSize.top_left.y = tmpTopLeft.y;
-				spaceSize.bottom_right.x = tmpBottomRight.x;
-				spaceSize.bottom_right.y = tmpBottomRight.y;
+				spaceSize.topLeft.x = tmpTopLeft.x;
+				spaceSize.topLeft.y = tmpTopLeft.y;
+				spaceSize.bottomRight.x = tmpBottomRight.x;
+				spaceSize.bottomRight.y = tmpBottomRight.y;
 				start = false;
 			}
 
@@ -70,10 +70,10 @@ rect layerSpaceSize(FILE * pFile){
 	}
 
 	//powiekszanie space size zeby miec pewnosc ze elementy nie beda "wystwa³y", nie wplywa to na wydajnosc, a moze pomoc
-	spaceSize.top_left.y -= 10;
-	spaceSize.top_left.x -= 10;
-	spaceSize.bottom_right.y += 10;
-	spaceSize.bottom_right.x += 10;
+	spaceSize.topLeft.y -= 10;
+	spaceSize.topLeft.x -= 10;
+	spaceSize.bottomRight.y += 10;
+	spaceSize.bottomRight.x += 10;
 
 	return spaceSize;
 }
@@ -96,13 +96,13 @@ void createTree(quadTree * mainTree, FILE * pFile){
 	int debug1 = 0;
 
 	//fill tree
-	rect tmprect;
+	Rect tmprect;
 	while (linebuffor[0] != '<'){
 		fgets(linebuffor, LINE_BUFFOR_SIZE, pFile);
 		if (linebuffor[0] == 'r'){
 			pointsFormLine(&tmpTopLeft, &tmpBottomRight, linebuffor);
-			tmprect.top_left = tmpTopLeft;
-			tmprect.bottom_right = tmpBottomRight;
+			tmprect.topLeft = tmpTopLeft;
+			tmprect.bottomRight = tmpBottomRight;
 			mainTree->insert(tmprect);
 			debug1++;
 		}

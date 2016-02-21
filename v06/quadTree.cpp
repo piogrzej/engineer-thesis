@@ -1,6 +1,6 @@
 #include "quadTree.h"
 
-quadTree::quadTree(int level, rect bounds) {
+quadTree::quadTree(int level, Rect bounds) {
 	this->level = level;
 	this->bounds = bounds;
 	this->UL = NULL;
@@ -24,7 +24,7 @@ void quadTree::deleteObjects(){
 	}
 }
 
-void quadTree::addToObjects(rect r){
+void quadTree::addToObjects(Rect r){
 	list *l = &(this->objects);
 	while (l->next != NULL){
 		l = l->next;
@@ -41,7 +41,7 @@ void quadTree::addToObjects(rect r){
 	}
 }
 
-rect quadTree::getObjectAtIndex(int index){
+Rect quadTree::getObjectAtIndex(int index){
 	list *tmp = &(this->objects);
 	int i = 0;
 	while (i<index/*&& tmp->next!=null*/){//takie lekkie zabezpieczenie->wykomentowane, jak sie tu spynie to cos nie tak
@@ -52,8 +52,8 @@ rect quadTree::getObjectAtIndex(int index){
 }
 
 //nie jest zalecane uzywanie tej funkcji z argumentem 0 jezeli lista ma wiecej niz 1 element
-rect quadTree::removeAndReturnObjectAtIndex(int index){
-	rect r;
+Rect quadTree::removeAndReturnObjectAtIndex(int index){
+	Rect r;
 	list *tmp = &(this->objects);
 	int i = 0;
 	while (i<index/*&& tmp->next!=null*/){//takie lekkie zabezpieczenie->wykomentowane, jak sie tu spynie to cos nie tak
@@ -86,12 +86,12 @@ int quadTree::getObjectSize(){
 	return i;
 }
 
-//checks if rect is inside quadTree bounds
-bool quadTree::contains(rect r){
-	if (r.top_left.y > this->bounds.top_left.y &&
-		r.top_left.x > this->bounds.top_left.x &&
-		r.bottom_right.y < this->bounds.bottom_right.y &&
-		r.bottom_right.x < this->bounds.bottom_right.x) return true;
+//checks if Rect is inside quadTree bounds
+bool quadTree::contains(Rect r){
+	if (r.topLeft.y > this->bounds.topLeft.y &&
+		r.topLeft.x > this->bounds.topLeft.x &&
+		r.bottomRight.y < this->bounds.bottomRight.y &&
+		r.bottomRight.x < this->bounds.bottomRight.x) return true;
 	else return false;
 }
 
@@ -110,27 +110,27 @@ void quadTree::clear(){//czyszczenie struktury
 }
 
 void quadTree::split(){
-	int subWidth = this->bounds.top_left.x + (int)(getWidth(this->bounds) / 2);
-	int subHeigth = this->bounds.top_left.y + (int)(getHeigth(this->bounds) / 2);
-	rect ULbound, URbound, LRbound, LLbound;
+	int subWidth = this->bounds.topLeft.x + (int)(bounds.getWidth() / 2);
+	int subHeigth = this->bounds.topLeft.y + (int)(bounds.getHeigth() / 2);
+	Rect ULbound, URbound, LRbound, LLbound;
 	//UL
-	ULbound.top_left = this->bounds.top_left;
-	ULbound.bottom_right.x = subWidth;
-	ULbound.bottom_right.y = subHeigth;
+	ULbound.topLeft = this->bounds.topLeft;
+	ULbound.bottomRight.x = subWidth;
+	ULbound.bottomRight.y = subHeigth;
 	//UR
-	URbound.bottom_right.x = this->bounds.bottom_right.x;
-	URbound.bottom_right.y = subHeigth;
-	URbound.top_left.x = subWidth;
-	URbound.top_left.y = this->bounds.top_left.y;
+	URbound.bottomRight.x = this->bounds.bottomRight.x;
+	URbound.bottomRight.y = subHeigth;
+	URbound.topLeft.x = subWidth;
+	URbound.topLeft.y = this->bounds.topLeft.y;
 	//LR
-	LRbound.top_left.x = subWidth;
-	LRbound.top_left.y = subHeigth;
-	LRbound.bottom_right = this->bounds.bottom_right;
+	LRbound.topLeft.x = subWidth;
+	LRbound.topLeft.y = subHeigth;
+	LRbound.bottomRight = this->bounds.bottomRight;
 	//LL
-	LLbound.top_left.x = this->bounds.top_left.x;
-	LLbound.top_left.y = subHeigth;
-	LLbound.bottom_right.x = subWidth;
-	LLbound.bottom_right.y = this->bounds.bottom_right.y;
+	LLbound.topLeft.x = this->bounds.topLeft.x;
+	LLbound.topLeft.y = subHeigth;
+	LLbound.bottomRight.x = subWidth;
+	LLbound.bottomRight.y = this->bounds.bottomRight.y;
 	//"SPLIT"
 	this->UL = new quadTree(this->level + 1, ULbound);
 	this->UR = new quadTree(this->level + 1, URbound);
@@ -139,9 +139,9 @@ void quadTree::split(){
 }
 
 //"wkladanie" elementu na drzewo
-bool quadTree::insert(rect r){
+bool quadTree::insert(Rect r){
 	int counter = 0;
-	rect tmp;
+	Rect tmp;
 	if (!this->contains(r)) return false;
 	if (this->getObjectSize() < MAX_OBJECTS && this->UL == NULL){//JEZELI W LISCIE OBIEKTOW JEST JESZCZE MIEJSCE I NIE BYLO PODZIALU
 		this->addToObjects(r);
@@ -191,8 +191,8 @@ bool quadTree::insert(rect r){
 	return false;//nigdy nie powinno do tego dojsc//jedyne wytlumacznie max level lub obszar o bardzo malym rozmiarze//nie jestem pewien, do sprawdzenia!
 }
 
-/*quadTree quadTree::findRect(rect r){//NIEPRZETESTOWANE!
-	if(listContains(&(this->objects), r)) return *this;//sprawdzamy czy rect r zawiera sie w liscie obiektow
+/*quadTree quadTree::findRect(Rect r){//NIEPRZETESTOWANE!
+	if(listContains(&(this->objects), r)) return *this;//sprawdzamy czy Rect r zawiera sie w liscie obiektow
 	if (this->UL != NULL){
 		if (this->UL->contains(r))
 			return this->UL->findRect(r);
@@ -209,31 +209,31 @@ bool quadTree::insert(rect r){
 	}
 }*/
 
-void quadTree::retrieve(list *returnedRects, rect r){
+void quadTree::retrieve(list *returnedRects, Rect r){
 	if (this->UL != NULL){
 		//TE ELSE IF SA NIEKONIECZNE
 		if (this->UL->contains(r)){
 			this->UL->retrieve(returnedRects, r);
 		}
-		/*else if (rectsCollision(this->UL->bounds, r)){
+		/*else if (RectsCollision(this->UL->bounds, r)){
 			//TODO sprwadz wszytskie pozostale
 		}*/
 		if (this->UR->contains(r)){
 			this->UR->retrieve(returnedRects, r);
 		}
-		/*else if (rectsCollision(this->UR->bounds, r)){
+		/*else if (RectsCollision(this->UR->bounds, r)){
 			//TODO sprwadz wszytskie pozostale
 		}*/
 		if (this->LR->contains(r)){
 			this->LR->retrieve(returnedRects, r);
 		}
-		/*else if (rectsCollision(this->LR->bounds, r)){
+		/*else if (RectsCollision(this->LR->bounds, r)){
 			//TODO sprwadz wszytskie pozostale
 		}*/
 		if (this->LL->contains(r)){
 			this->LL->retrieve(returnedRects, r);
 		}
-		/*else if (rectsCollision(this->LL->bounds, r)){
+		/*else if (RectsCollision(this->LL->bounds, r)){
 			//TODO sprwadz wszytskie pozostale
 		}*/
 	}
@@ -243,21 +243,21 @@ void quadTree::retrieve(list *returnedRects, rect r){
 }
 
 
-void quadTree::getCollisionObjs(list *returnedRects, rect r){
+void quadTree::getCollisionObjs(list *returnedRects, Rect r){
 	if (this->objects.isValueSet){
-		if (rectsCollision(this->objects.value, r)){
+		if (r.rectsCollision(this->objects.value)){
 			addToList(returnedRects, this->objects.value);
 		}
 		if (this->objects.next != NULL){
 			if (this->objects.next->isValueSet){
 				list * tmp = this->objects.next;
-				if (rectsCollision(tmp->value, r)){
+				if (r.rectsCollision(tmp->value)){
 					addToList(returnedRects, tmp->value);
 				}
 				while (tmp->next != NULL){
 					if (tmp->next->isValueSet){
 						tmp = tmp->next;
-						if (rectsCollision(tmp->value, r)){
+						if (r.rectsCollision(tmp->value)){
 							addToList(returnedRects, tmp->value);
 						}
 					}
@@ -269,19 +269,19 @@ void quadTree::getCollisionObjs(list *returnedRects, rect r){
 
 bool quadTree::checkCollisionObjs(point p){
 	if (this->objects.isValueSet){
-		if (rectContains(this->objects.value, p)){
+		if (this->objects.value.rectContains(p)){
 			return true;//KOLIZJA!
 		}
 		if (this->objects.next != NULL){
 			if (this->objects.next->isValueSet){
 				list * tmp = this->objects.next;
-				if (rectContains(tmp->value, p)){
+				if (tmp->value.rectContains(p)){
 					return true;//KOLIZJA!
 				}
 				while (tmp->next != NULL){
 					if (tmp->next->isValueSet){
 						tmp = tmp->next;
-						if (rectContains(tmp->value, p)){
+						if (tmp->value.rectContains(p)){
 							return true;//KOLIZJA!
 						}
 					}
@@ -294,28 +294,28 @@ bool quadTree::checkCollisionObjs(point p){
 bool quadTree::checkCollisons(point p){
 	if (this->UL != NULL){
 		//TE ELSE IF SA NIEKONIECZNE
-		if (rectContains(this->UL->bounds,p)){
+		if (this->UL->bounds.rectContains(p)){
 			this->UL->checkCollisons(p);
 		}
-		/*else if (rectsCollision(this->UL->bounds, r)){
+		/*else if (RectsCollision(this->UL->bounds, r)){
 		//TODO sprwadz wszytskie pozostale
 		}*/
-		if (rectContains(this->UR->bounds, p)){
+		if (this->UR->bounds.rectContains(p)){
 			this->UR->checkCollisons(p);
 		}
-		/*else if (rectsCollision(this->UR->bounds, r)){
+		/*else if (RectsCollision(this->UR->bounds, r)){
 		//TODO sprwadz wszytskie pozostale
 		}*/
-		if (rectContains(this->LR->bounds, p)){
+		if (this->LR->bounds.rectContains(p)){
 			this->LR->checkCollisons(p);
 		}
-		/*else if (rectsCollision(this->LR->bounds, r)){
+		/*else if (RectsCollision(this->LR->bounds, r)){
 		//TODO sprwadz wszytskie pozostale
 		}*/
-		if (rectContains(this->LL->bounds, p)){
+		if (this->LL->bounds.rectContains(p)){
 			this->LL->checkCollisons(p);
 		}
-		/*else if (rectsCollision(this->LL->bounds, r)){
+		/*else if (RectsCollision(this->LL->bounds, r)){
 		//TODO sprwadz wszytskie pozostale
 		}*/
 	}
@@ -324,30 +324,73 @@ bool quadTree::checkCollisons(point p){
 	else if (this->UL == NULL) return false;//DOSZEDLEM DO KONCA BRAK KOLIZJI
 }
 
-rect quadTree::drawBiggestRectAtPoint(point p){
+Rect quadTree::drawBiggestSquareAtPoint(point p){
+	//pierwwszy obieg
 	unsigned int left=p.x-1, right=p.y+1, top=p.y-1, bottom = p.y+1;
 	point tmp;
 	bool continueFlag = true;
-	//pierwszy obieg na sztywno, ustalamy czy w ogole jest jakies mijsce
-	tmp.x = left;
-	for (int i = 0; i < 3; ++i){
-		tmp.y = top;
-		if (checkCollisons(tmp)){
-			continueFlag = false;
-			break;
-		}
+	/*bool continueFlagHorizontal = true;
+	bool contiuneFlagVertical = true;*/
+	bool leftStopFlag = false;
+	bool rightStopFlag = false;
+	bool topStopFlag = false;
+	bool bottomStopFlag = false;
+	
+while ( !bottomStopFlag && !topStopFlag && !rightStopFlag && !bottomStopFlag){
+		if (!topStopFlag) for (int i = 0; i<right-left; ++i){
+			/*
 
-		tmp.y = bottom;
-		if (checkCollisons(tmp)){
-			continueFlag = false;
-			break;
+			 ->
+			+-----
+			|
+
+			*/
+			tmp.x = left + i;
+			tmp.y = top;
+			topStopFlag = checkCollisons(tmp);
 		}
-		tmp.x++;
+		if (!bottomStopFlag) for (int i = 0; i < right - left; ++i){
+			/*
+			
+			|
+			+-----
+			->
+
+			*/
+			tmp.x = left + i;
+			tmp.y = top;
+			bottomStopFlag = checkCollisons(tmp);
+		}
+		if (!rightStopFlag) for (int i = 0; i < bottom - top; i++){
+			tmp.x = right;
+			tmp.y = top + i;
+			rightStopFlag = checkCollisons(tmp);
+		}
+		if (!leftStopFlag) for (int i = 0; i < bottom - top; i++){
+			tmp.x = left;
+			tmp.y = top + i;
+			leftStopFlag = checkCollisons(tmp);
+		}
+		//ustalanie nowych wsp
+		if (p.x-1 > this->bounds.topLeft.x) left = p.x - 1;
+		else leftStopFlag = true;
+		if (p.x + 1 < this->bounds.bottomRight.x) right = p.x + 1;
+		else rightStopFlag = true;
+		if (p.y + 1 > this->bounds.topLeft.y) top = p.y - 1;
+		else topStopFlag = true;
+		if (p.y + 1 < this->bounds.bottomRight.y) bottom = p.y + 1;
+		else bottomStopFlag = true;
+
 	}
-	if (!continueFlag){
-		//TODO
-	}
-	//TODO
+
+	Rect ret;
+	ret.topLeft.y = top;
+	ret.topLeft.x = left;
+	ret.bottomRight.y = bottom;
+	ret.bottomRight.x = right;
+
+	return ret;
+
 }
 
 //do usuniecia pozniej

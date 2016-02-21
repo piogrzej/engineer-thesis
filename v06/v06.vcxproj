@@ -84,7 +84,7 @@
     <ClCompile Include="porttype.cpp" />
     <ClCompile Include="quadTree.cpp" />
     <ClCompile Include="randgen.cpp" />
-    <ClCompile Include="rectFunctions.cpp" />
+    <ClCompile Include="Rect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="green.h" />
@@ -95,8 +95,8 @@
     <ClInclude Include="porttype.h" />
     <ClInclude Include="quadTree.h" />
     <ClInclude Include="randgen.h" />
-    <ClInclude Include="rectFunctions.h" />
-    <ClInclude Include="struktury.h" />
+    <ClInclude Include="Rect.h" />
+    <ClInclude Include="list.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
