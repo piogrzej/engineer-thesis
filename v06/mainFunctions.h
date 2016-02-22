@@ -14,6 +14,6 @@
 //funkcje "glowne" przetwarzanie itd
 void pointsFormLine(point * topLeft, point * bottomRight, char * line);
 void createTree(quadTree * mainTree, FILE * pFile);
-rect layerSpaceSize(FILE * pFile);
+Rect layerSpaceSize(FILE * pFile);
 
 #endif

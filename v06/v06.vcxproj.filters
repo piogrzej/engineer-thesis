@@ -39,7 +39,7 @@
     <ClCompile Include="randgen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="rectFunctions.cpp">
+    <ClCompile Include="Rect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,19 +59,19 @@
     <ClInclude Include="randgen.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="struktury.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
     <ClInclude Include="quadTree.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="listFunctions.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="rectFunctions.h">
+    <ClInclude Include="mainFunctions.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="mainFunctions.h">
+    <ClInclude Include="Rect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="list.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>

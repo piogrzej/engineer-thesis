@@ -13,7 +13,7 @@ int listSize(list *l){
 	return i;
 }
 
-void addToList(list *l, rect r){
+void addToList(list *l, Rect r){
 	if (l == NULL) l = new list();
 	list *tmp = l;
 	while (l->next != NULL){

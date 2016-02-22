@@ -2,13 +2,15 @@
 
 #include "mainFunctions.h"
 #include "green.h"
+#include <ctime>
+#include <iostream>
 
 int debug=0;
 
 int main(){
 
 	quadTree *mainTree;
-	rect spaceSize;
+	Rect spaceSize;
 	FILE *fileIter;
 
 	double duration;
@@ -36,7 +38,6 @@ int main(){
 	}*/
 
 	/*---------------------------end of debug section---------------------*/
-
 	scanf("%s", adresWejscia);//wejscie
 
 	std::clock_t startT;//start timera
@@ -44,7 +45,7 @@ int main(){
 	fileIter = fopen(adresWejscia, "r");
 	if (fileIter == NULL) return -1;
 	spaceSize = layerSpaceSize(fileIter);
-	printf("TOP: %d LEFT: %d BOTTOM: %d RIGHT %d\n", spaceSize.top_left.y, spaceSize.top_left.x, spaceSize.bottom_right.y, spaceSize.bottom_right.x);
+	printf("TOP: %d LEFT: %d BOTTOM: %d RIGHT %d\n", spaceSize.topLeft.y, spaceSize.topLeft.x, spaceSize.bottomRight.y, spaceSize.bottomRight.x);
 	
 	fseek(fileIter, 0, SEEK_SET); // przestawia wskaünik na poczπtek
 		

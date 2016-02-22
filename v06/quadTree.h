@@ -4,10 +4,9 @@
 #define NUMBER_OF_NODES 4
 #define MAX_OBJECTS 4
 #define MAX_LEVELS 10
+#define GAUSS_SURFACE_MULTIPLIER 1.1
 
-#include "struktury.h"
 #include "listFunctions.h"
-#include "rectFunctions.h"
 
 extern int debug;
 
@@ -23,29 +22,29 @@ class quadTree{
 private:
 	int level;
 	list objects;
-	rect bounds;
+	Rect bounds;
 	quadTree *UL;
 	quadTree *UR;
 	quadTree *LR;
 	quadTree *LL;
 	void split();
 public:
-	bool contains(rect r);
-	quadTree(int pLevel, rect bounds);//konstruktor
+	bool contains(Rect r);
+	quadTree(int pLevel, Rect bounds);//konstruktor
 	void clear();
-	bool insert(rect r);
+	bool insert(Rect r);
 	int getObjectSize();
-	rect getObjectAtIndex(int index);
-	rect removeAndReturnObjectAtIndex(int index);
-	void addToObjects(rect r);
+	Rect getObjectAtIndex(int index);
+	Rect removeAndReturnObjectAtIndex(int index);
+	void addToObjects(Rect r);
 	void deleteObjects();
-	quadTree findRect(rect r);//jezeli nie jestes pewien czy r napewno znajduje sie w bounds obiektu, wywlaj obiekt->contains()! JESZCZE NIE PRZETESTOWANE!
-	void retrieve(list *returnedRecs, rect r);//zwraca wszytskie rect kolidujace z r w formie listy
+	quadTree findRect(Rect r);//jezeli nie jestes pewien czy r napewno znajduje sie w bounds obiektu, wywlaj obiekt->contains()! JESZCZE NIE PRZETESTOWANE!
+	void retrieve(list *returnedRecs, Rect r);//zwraca wszytskie Rect kolidujace z r w formie listy
 	void debugFunction();//do usuneicia
-	void getCollisionObjs(list *returnedRects, rect r);//ddoaje do listy wszytskie rects z listy objects ktore koliduja z r w danym obiekcie
+	void getCollisionObjs(list *returnedRects, Rect r);//ddoaje do listy wszytskie Rects z listy objects ktore koliduja z r w danym obiekcie
 	bool checkCollisionObjs(point p);//sprawdza czy p nie koliduje z jakims obiektyem z listy objects
 	bool checkCollisons(point p);//sprawdza czy punkt p nie koliduje z jakims prostokatem
-	rect drawBiggestRectAtPoint(point p);
+	Rect drawBiggestSquareAtPoint(point p);
 };
 
 #endif
