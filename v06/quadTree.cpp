@@ -267,21 +267,24 @@ void quadTree::getCollisionObjs(list *returnedRects, Rect r){
 	}
 }
 
-bool quadTree::checkCollisionObjs(point p){
+bool quadTree::checkCollisionObjs(point p, Rect* r){
 	if (this->objects.isValueSet){
 		if (this->objects.value.rectContains(p)){
+			*r = objects.value;
 			return true;//KOLIZJA!
 		}
 		if (this->objects.next != NULL){
 			if (this->objects.next->isValueSet){
 				list * tmp = this->objects.next;
 				if (tmp->value.rectContains(p)){
+					*r = tmp->value;
 					return true;//KOLIZJA!
 				}
 				while (tmp->next != NULL){
 					if (tmp->next->isValueSet){
 						tmp = tmp->next;
 						if (tmp->value.rectContains(p)){
+							*r = tmp->value;
 							return true;//KOLIZJA!
 						}
 					}
@@ -291,41 +294,44 @@ bool quadTree::checkCollisionObjs(point p){
 	}
 }
 
-bool quadTree::checkCollisons(point p){
+bool quadTree::checkCollisons(point p, Rect* r){
 	if (this->UL != NULL){
 		//TE ELSE IF SA NIEKONIECZNE
 		if (this->UL->bounds.rectContains(p)){
-			this->UL->checkCollisons(p);
+			this->UL->checkCollisons(p,r);
 		}
 		/*else if (RectsCollision(this->UL->bounds, r)){
 		//TODO sprwadz wszytskie pozostale
 		}*/
 		if (this->UR->bounds.rectContains(p)){
-			this->UR->checkCollisons(p);
+			this->UR->checkCollisons(p,r);
 		}
 		/*else if (RectsCollision(this->UR->bounds, r)){
 		//TODO sprwadz wszytskie pozostale
 		}*/
 		if (this->LR->bounds.rectContains(p)){
-			this->LR->checkCollisons(p);
+			this->LR->checkCollisons(p,r);
 		}
 		/*else if (RectsCollision(this->LR->bounds, r)){
 		//TODO sprwadz wszytskie pozostale
 		}*/
 		if (this->LL->bounds.rectContains(p)){
-			this->LL->checkCollisons(p);
+			this->LL->checkCollisons(p,r);
 		}
 		/*else if (RectsCollision(this->LL->bounds, r)){
 		//TODO sprwadz wszytskie pozostale
 		}*/
 	}
 	//tutaj dla kazdego sprawdzenie bisectory lines
-	if (this->checkCollisionObjs(p)) return true;//KOLIZJA
+	if (this->checkCollisionObjs(p, r)){//KOLIZJA
+		return true;
+	}
 	else if (this->UL == NULL) return false;//DOSZEDLEM DO KONCA BRAK KOLIZJI
 }
 
 Rect quadTree::drawBiggestSquareAtPoint(point p){
 	//pierwwszy obieg
+	Rect *r;//tylko jako argument w funkcji, nie ptorzebne do ncizego
 	unsigned int left=p.x-1, right=p.y+1, top=p.y-1, bottom = p.y+1;
 	point tmp;
 	bool continueFlag = true;
@@ -347,7 +353,7 @@ while ( !bottomStopFlag && !topStopFlag && !rightStopFlag && !bottomStopFlag){
 			*/
 			tmp.x = left + i;
 			tmp.y = top;
-			topStopFlag = checkCollisons(tmp);
+			topStopFlag = checkCollisons(tmp,r);
 		}
 		if (!bottomStopFlag) for (int i = 0; i < right - left; ++i){
 			/*
@@ -359,17 +365,17 @@ while ( !bottomStopFlag && !topStopFlag && !rightStopFlag && !bottomStopFlag){
 			*/
 			tmp.x = left + i;
 			tmp.y = top;
-			bottomStopFlag = checkCollisons(tmp);
+			bottomStopFlag = checkCollisons(tmp,r);
 		}
 		if (!rightStopFlag) for (int i = 0; i < bottom - top; i++){
 			tmp.x = right;
 			tmp.y = top + i;
-			rightStopFlag = checkCollisons(tmp);
+			rightStopFlag = checkCollisons(tmp,r);
 		}
 		if (!leftStopFlag) for (int i = 0; i < bottom - top; i++){
 			tmp.x = left;
 			tmp.y = top + i;
-			leftStopFlag = checkCollisons(tmp);
+			leftStopFlag = checkCollisons(tmp,r);
 		}
 		//ustalanie nowych wsp
 		if (p.x-1 > this->bounds.topLeft.x) left = p.x - 1;

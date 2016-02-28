@@ -1,7 +1,6 @@
 //V05-URUCHOMIONE FUNKCJE GREENA
 
 #include "mainFunctions.h"
-#include "green.h"
 #include <ctime>
 #include <iostream>
 
@@ -14,28 +13,14 @@ int main(){
 	FILE *fileIter;
 
 	double duration;
-	REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE+1];
-	UINT32_t Nsample=NSAMPLE;
+	
 	char adresWejscia[300];//E:\\programowanie\\quadtree\\sigfill_chunk_x.mag
 
-	precompute_unit_square_green(g, dgdx, dgdy, intg, Nsample);//wyliczanie funkcji greena
-
-	rng_init(1);//inicjalizacja genaeratora
+	
 
 	/*---------------------------------debug section-----------------------*/
 
-	/*REAL64_t suma = 0;
-
-	for (int i = 0; i < Nsample + 1; ++i){
-		printf("%lf\n", intg[i]);
-		suma += intg[i];
-	}
-	printf("%lf\n", suma);
-	*/
-
-	/*for (int i = 0; i < 1000; ++i){
-		std::cout << (double)myrand() / (double)MY_RAND_MAX << std::endl;
-	}*/
+	debugFunction();
 
 	/*---------------------------end of debug section---------------------*/
 	scanf("%s", adresWejscia);//wejscie

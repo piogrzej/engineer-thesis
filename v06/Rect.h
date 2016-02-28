@@ -20,6 +20,8 @@ public:
 	bool rectsCollision(Rect r2);
 	bool rectContains(point p);
 	Rect createGaussianSurface(double factor);
+	int getPerimeter();
+	point getPointFromNindex(int index, int Nsample);
 };
 
 #endif

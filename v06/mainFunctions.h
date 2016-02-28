@@ -15,5 +15,7 @@
 void pointsFormLine(point * topLeft, point * bottomRight, char * line);
 void createTree(quadTree * mainTree, FILE * pFile);
 Rect layerSpaceSize(FILE * pFile);
+Rect randomWalk(Rect start);
+void debugFunction();
 
 #endif

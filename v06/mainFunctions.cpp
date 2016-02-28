@@ -1,4 +1,5 @@
 #include "mainFunctions.h"
+#include "green.h"
 
 void pointsFormLine(point * topLeft, point * bottomRight, char * line){
 	//zastepuje znaki ' ' bajtami 0 aby uzyc atoi
@@ -108,4 +109,41 @@ void createTree(quadTree * mainTree, FILE * pFile){
 		}
 	}
 	printf("%d\n", debug1);
+}
+
+int getIndex(REAL64_t intg[NSAMPLE + 1], double rand){
+	for (int i = 0; i <= NSAMPLE; ++i){
+		if (intg[i] <= rand && intg[i + 1] > rand) return i;
+	}
+}
+
+Rect RandomWalk(Rect R, quadTree* mainTree){
+	REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
+	UINT32_t Nsample = NSAMPLE;
+
+	precompute_unit_square_green(g, dgdx, dgdy, intg, Nsample);//wyliczanie funkcji greena
+
+	rng_init(1);//inicjalizacja genaeratora
+
+	point p;
+	double rand;
+	int index;
+
+	Rect output, square = R.createGaussianSurface(1.1);
+
+	do{
+		rand = myrand() / (double)(MY_RAND_MAX);
+		index = getIndex(intg, rand);
+		p = square.getPointFromNindex(index, NSAMPLE);
+		square=mainTree->drawBiggestSquareAtPoint(p);
+	}while (mainTree->checkCollisons(p, &output));
+
+	//narazie pusty output
+	return output;
+}
+
+void debugFunction(){
+	rng_init(1);
+	for (int i = 0; i < 10; i++)
+		std::cout << myrand() / (double)(MY_RAND_MAX) << std::endl;
 }
