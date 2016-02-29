@@ -294,7 +294,7 @@ bool quadTree::checkCollisionObjs(point p, Rect* r){
 	}
 }
 
-bool quadTree::checkCollisons(point p, Rect* r){
+bool quadTree::checkCollisons(point p, Rect& r){
 	if (this->UL != NULL){
 		//TE ELSE IF SA NIEKONIECZNE
 		if (this->UL->bounds.rectContains(p)){
@@ -323,7 +323,7 @@ bool quadTree::checkCollisons(point p, Rect* r){
 		}*/
 	}
 	//tutaj dla kazdego sprawdzenie bisectory lines
-	if (this->checkCollisionObjs(p, r)){//KOLIZJA
+	if (this->checkCollisionObjs(p, &r)){//KOLIZJA
 		return true;
 	}
 	else if (this->UL == NULL) return false;//DOSZEDLEM DO KONCA BRAK KOLIZJI
@@ -331,7 +331,7 @@ bool quadTree::checkCollisons(point p, Rect* r){
 
 Rect quadTree::drawBiggestSquareAtPoint(point p){
 	//pierwwszy obieg
-	Rect *r;//tylko jako argument w funkcji, nie ptorzebne do ncizego
+	Rect r;//tylko jako argument w funkcji, nie ptorzebne do ncizego
 	unsigned int left=p.x-1, right=p.y+1, top=p.y-1, bottom = p.y+1;
 	point tmp;
 	bool continueFlag = true;

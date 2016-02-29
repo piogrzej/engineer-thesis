@@ -16,7 +16,7 @@ int main(){
 	
 	char adresWejscia[300];//E:\\programowanie\\quadtree\\sigfill_chunk_x.mag
 
-	
+	//C:\Users\Marcin\Documents\inzynierka\sigfill_chunk_x.mag
 
 	/*---------------------------------debug section-----------------------*/
 
@@ -30,13 +30,15 @@ int main(){
 	fileIter = fopen(adresWejscia, "r");
 	if (fileIter == NULL) return -1;
 	spaceSize = layerSpaceSize(fileIter);
-	printf("TOP: %d LEFT: %d BOTTOM: %d RIGHT %d\n", spaceSize.topLeft.y, spaceSize.topLeft.x, spaceSize.bottomRight.y, spaceSize.bottomRight.x);
-	
+	cout << spaceSize;
 	fseek(fileIter, 0, SEEK_SET); // przestawia wskaŸnik na pocz¹tek
 		
 	startT = std::clock();
 	mainTree = new quadTree(0, spaceSize);//start Tree
 	createTree(mainTree, fileIter);
+	Rect founded = RandomWalk(spaceSize, mainTree);
+	cout << founded;
+
 	duration = (std::clock() - startT) / (double)CLOCKS_PER_SEC;
 	fclose(fileIter);
 

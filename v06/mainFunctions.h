@@ -6,6 +6,7 @@
 #include<iostream>
 
 #include "quadTree.h"
+#include "green.h"
 
 #define _CRT_SECURE_NO_WARNINGS
 #define LINE_BUFFOR_SIZE 40
@@ -15,7 +16,8 @@
 void pointsFormLine(point * topLeft, point * bottomRight, char * line);
 void createTree(quadTree * mainTree, FILE * pFile);
 Rect layerSpaceSize(FILE * pFile);
-Rect randomWalk(Rect start);
+Rect RandomWalk(Rect R, quadTree* mainTree);
+int getIndex(REAL64_t intg[NSAMPLE + 1], double rand);
 void debugFunction();
 
 #endif

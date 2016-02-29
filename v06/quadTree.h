@@ -43,7 +43,7 @@ public:
 	void debugFunction();//do usuneicia
 	void getCollisionObjs(list *returnedRects, Rect r);//ddoaje do listy wszytskie Rects z listy objects ktore koliduja z r w danym obiekcie
 	bool checkCollisionObjs(point p, Rect *r);//sprawdza czy p nie koliduje z jakims obiektyem z listy objects, zwraca ten obiekt jako r
-	bool checkCollisons(point p, Rect *r);//sprawdza czy punkt p nie koliduje z jakims prostokatem, zwraca ten prostokat jako r
+	bool checkCollisons(point p, Rect& r);//sprawdza czy punkt p nie koliduje z jakims prostokatem, zwraca ten prostokat jako r
 	Rect drawBiggestSquareAtPoint(point p);
 };
 

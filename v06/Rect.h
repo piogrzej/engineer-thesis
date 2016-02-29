@@ -1,6 +1,10 @@
 #ifndef RECT_H
 #define RECT_H
 
+#include <iostream>
+
+using namespace std;
+
 struct point {
 	int x;
 	int y;
@@ -22,6 +26,7 @@ public:
 	Rect createGaussianSurface(double factor);
 	int getPerimeter();
 	point getPointFromNindex(int index, int Nsample);
+	friend ostream& operator<< (ostream&, Rect const&);
 };
 
 #endif

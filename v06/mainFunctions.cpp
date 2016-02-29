@@ -1,5 +1,5 @@
 #include "mainFunctions.h"
-#include "green.h"
+
 
 void pointsFormLine(point * topLeft, point * bottomRight, char * line){
 	//zastepuje znaki ' ' bajtami 0 aby uzyc atoi
@@ -136,7 +136,7 @@ Rect RandomWalk(Rect R, quadTree* mainTree){
 		index = getIndex(intg, rand);
 		p = square.getPointFromNindex(index, NSAMPLE);
 		square=mainTree->drawBiggestSquareAtPoint(p);
-	}while (mainTree->checkCollisons(p, &output));
+	}while (mainTree->checkCollisons(p, output));
 
 	//narazie pusty output
 	return output;
