@@ -6,9 +6,9 @@
 
 int debug=0;
 
-int main(){
-
-	quadTree *mainTree;
+int main()
+{
+	QuadTree *mainTree;
 	Rect spaceSize;
 	FILE *fileIter;
 
@@ -34,7 +34,7 @@ int main(){
 	fseek(fileIter, 0, SEEK_SET); // przestawia wskaünik na poczπtek
 		
 	startT = std::clock();
-	mainTree = new quadTree(0, spaceSize);//start Tree
+	mainTree = new QuadTree(0, spaceSize);//start Tree
 	createTree(mainTree, fileIter);
 	Rect founded = RandomWalk(spaceSize, mainTree);
 	cout << founded;

@@ -14,9 +14,9 @@
 
 //funkcje "glowne" przetwarzanie itd
 void pointsFormLine(point * topLeft, point * bottomRight, char * line);
-void createTree(quadTree * mainTree, FILE * pFile);
+void createTree(QuadTree * mainTree, FILE * pFile);
 Rect layerSpaceSize(FILE * pFile);
-Rect RandomWalk(Rect R, quadTree* mainTree);
+Rect RandomWalk(Rect R, QuadTree* mainTree);
 int getIndex(REAL64_t intg[NSAMPLE + 1], double rand);
 void debugFunction();
 

@@ -38,15 +38,18 @@ Rect layerSpaceSize(FILE * pFile){
 	}
 	//ustawiam na takie wartosci zeby bylo wiadomo ktory obieg jest pierwszy
 	bool start = true;
-	while (1){
+	while (1)
+	{
 		fgets(linebuffor, LINE_BUFFOR_SIZE, pFile);
-		if (linebuffor[0] == 'r'){
+		if (linebuffor[0] == 'r')
+		{
 			pointsFormLine(&tmpTopLeft, &tmpBottomRight, linebuffor);
 			if (!start){
 				if (tmpTopLeft.x < spaceSize.topLeft.x){
 					spaceSize.topLeft.x = tmpTopLeft.x;
 				}
-				if (tmpTopLeft.y < spaceSize.topLeft.y){
+				if (tmpTopLeft.y < spaceSize.topLeft.y)
+				{
 					spaceSize.topLeft.y = tmpTopLeft.y;
 				}
 				if (tmpBottomRight.x > spaceSize.bottomRight.x){
@@ -56,7 +59,8 @@ Rect layerSpaceSize(FILE * pFile){
 					spaceSize.bottomRight.y = tmpBottomRight.y;
 				}
 			}
-			else{
+			else
+			{
 				spaceSize.topLeft.x = tmpTopLeft.x;
 				spaceSize.topLeft.y = tmpTopLeft.y;
 				spaceSize.bottomRight.x = tmpBottomRight.x;
@@ -65,7 +69,8 @@ Rect layerSpaceSize(FILE * pFile){
 			}
 
 		}
-		else if (linebuffor[0] == '<'){
+		else if (linebuffor[0] == '<')
+		{
 			break;
 		}
 	}
@@ -79,14 +84,17 @@ Rect layerSpaceSize(FILE * pFile){
 	return spaceSize;
 }
 
-void createTree(quadTree * mainTree, FILE * pFile){
+void createTree(QuadTree * mainTree, FILE * pFile){
 	point tmpTopLeft, tmpBottomRight;
 	char linebuffor[LINE_BUFFOR_SIZE];//buffor na linie
 
-	while (1){//wyszukiwanie warstwy
+	while (1)
+	{//wyszukiwanie warstwy
 		fgets(linebuffor, LINE_BUFFOR_SIZE, pFile);
-		if (linebuffor[0] == '<'){
-			if (strcmp(linebuffor, "<< metal3 >>\n") == 0){//narazie na sztywno, jedna warstwa
+		if (linebuffor[0] == '<')
+		{
+			if (strcmp(linebuffor, "<< metal3 >>\n") == 0)
+			{//narazie na sztywno, jedna warstwa
 				break;
 			}
 		}
@@ -98,9 +106,11 @@ void createTree(quadTree * mainTree, FILE * pFile){
 
 	//fill tree
 	Rect tmprect;
-	while (linebuffor[0] != '<'){
+	while (linebuffor[0] != '<')
+	{
 		fgets(linebuffor, LINE_BUFFOR_SIZE, pFile);
-		if (linebuffor[0] == 'r'){
+		if (linebuffor[0] == 'r')
+		{
 			pointsFormLine(&tmpTopLeft, &tmpBottomRight, linebuffor);
 			tmprect.topLeft = tmpTopLeft;
 			tmprect.bottomRight = tmpBottomRight;
@@ -117,7 +127,8 @@ int getIndex(REAL64_t intg[NSAMPLE + 1], double rand){
 	}
 }
 
-Rect RandomWalk(Rect R, quadTree* mainTree){
+Rect RandomWalk(Rect R, QuadTree* mainTree)
+{
 	REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
 	UINT32_t Nsample = NSAMPLE;
 
@@ -131,18 +142,21 @@ Rect RandomWalk(Rect R, quadTree* mainTree){
 
 	Rect output, square = R.createGaussianSurface(1.1);
 
-	do{
+	do
+	{
 		rand = myrand() / (double)(MY_RAND_MAX);
 		index = getIndex(intg, rand);
 		p = square.getPointFromNindex(index, NSAMPLE);
-		square=mainTree->drawBiggestSquareAtPoint(p);
-	}while (mainTree->checkCollisons(p, output));
+		square = mainTree->drawBiggestSquareAtPoint(p);
+	}
+	while (mainTree->checkCollisons(p, output));
 
 	//narazie pusty output
 	return output;
 }
 
-void debugFunction(){
+void debugFunction()
+{
 	rng_init(1);
 	for (int i = 0; i < 10; i++)
 		std::cout << myrand() / (double)(MY_RAND_MAX) << std::endl;
