@@ -140,6 +140,8 @@ Rect RandomWalk(Rect R, QuadTree* mainTree)
 	double rand;
 	int index;
 
+	int counter = 0;
+
 	Rect output, square = R.createGaussianSurface(1.1);
 
 	do
@@ -148,6 +150,7 @@ Rect RandomWalk(Rect R, QuadTree* mainTree)
 		index = getIndex(intg, rand);
 		p = square.getPointFromNindex(index, NSAMPLE);
 		square = mainTree->drawBiggestSquareAtPoint(p);
+		printf("%d\n",counter++);
 	}
 	while (mainTree->checkCollisons(p, output));
 

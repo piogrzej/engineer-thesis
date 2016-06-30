@@ -6,6 +6,20 @@ Rect::Rect()
 {
 }
 
+Rect::Rect(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY)
+{
+	this->topLeft.x = topLeftX;
+	this->topLeft.y = topLeftY;
+	this->bottomRight.x = bottomRightX;
+	this->bottomRight.y = bottomRightY;
+}
+
+Rect::Rect(point topLeft,point bottomRight)
+{
+	this->topLeft = topLeft;
+	this->bottomRight = bottomRight;
+}
+
 
 Rect::~Rect()
 {

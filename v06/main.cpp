@@ -8,22 +8,22 @@ int debug=0;
 
 int main()
 {
-	QuadTree *mainTree;
+	QuadTree *mainTree = NULL;
 	Rect spaceSize;
 	FILE *fileIter;
 
 	double duration;
 	
-	char adresWejscia[300];//E:\\programowanie\\quadtree\\sigfill_chunk_x.mag
+	char adresWejscia[300] = "D:\\programowanie\\repositories\\surface.test";
 
 	//C:\Users\Marcin\Documents\inzynierka\sigfill_chunk_x.mag
 
 	/*---------------------------------debug section-----------------------*/
 
-	debugFunction();
+	//debugFunction();
 
 	/*---------------------------end of debug section---------------------*/
-	scanf("%s", adresWejscia);//wejscie
+	//scanf("%s", adresWejscia);//wejscie
 
 	std::clock_t startT;//start timera
 
@@ -36,7 +36,9 @@ int main()
 	startT = std::clock();
 	mainTree = new QuadTree(0, spaceSize);//start Tree
 	createTree(mainTree, fileIter);
-	Rect founded = RandomWalk(spaceSize, mainTree);
+	//Rect founded = RandomWalk(spaceSize, mainTree); <-this function arguments are tree and starting rect, not whloe surface
+	Rect start(43, 29, 131, 71);//starting rect for test file "surface.test" -> 43 29 131 71
+	Rect founded = RandomWalk(start, mainTree);
 	cout << founded;
 
 	duration = (std::clock() - startT) / (double)CLOCKS_PER_SEC;

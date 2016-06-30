@@ -14,6 +14,8 @@ class Rect
 {
 public:
 	Rect();
+	Rect(point topLeft,point bottomRight);
+	Rect(int topLeftX, int topLeftY, int bootomRightX, int bottomRightY);
 	~Rect();
 	point topLeft;
 	point bottomRight;
