@@ -5,21 +5,21 @@ void pointsFormLine(point * topLeft, point * bottomRight, char * line){
 	//zastepuje znaki ' ' bajtami 0 aby uzyc atoi
 	//toeretycznie mozna to zrobic "na sztywno" i takie rozwiazanie byloby najsprawniejsze
 	//lecz niewadomo czy struktura pliku wejsciowego sie nie zmieni
-	int tab[4];//lokalizacje liczb
+	int tmp[4];//lokalizacje liczb
 	int j = 0;
 	int i = 0;
 	while (line[i] != '\n'){
-		if (line[i] == ' '){
+		if (line[i] == ' '){//this is potencially unsafe EXAMPLE: "rect 277 250 371 311 " <-this space at the end of line
 			line[i] = 0;
-			tab[j] = i + 1;
+			tmp[j] = i + 1;
 			j++;
 		}
 		i++;
 	}
-	topLeft->x = atoi((line + tab[0]));
-	topLeft->y = atoi((line + tab[1]));
-	bottomRight->x = atoi((line + tab[2]));
-	bottomRight->y = atoi((line + tab[3]));
+	topLeft->x = atoi((line + tmp[0]));
+	topLeft->y = atoi((line + tmp[1]));
+	bottomRight->x = atoi((line + tmp[2]));
+	bottomRight->y = atoi((line + tmp[3]));
 }
 
 //okreslanie rozmiaru przestrzeni

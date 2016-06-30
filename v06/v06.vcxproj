@@ -33,7 +33,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -160,6 +160,12 @@
     <ClInclude Include="randgen.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="list.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\surface.test" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\surface_test.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
