@@ -1,0 +1,2 @@
+Parser: 640002 micros 
+Create tree: 124003 micros 

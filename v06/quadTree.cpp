@@ -1,6 +1,6 @@
 #include "quadTree.h"
 
-QuadTree::QuadTree(int level, Rect bounds) {
+QuadTree::QuadTree(int level, Rect const& bounds) {
 	this->level = level;
 	this->bounds = bounds;
 	this->UL = NULL;
@@ -24,7 +24,7 @@ void QuadTree::deleteObjects(){
 	}
 }
 
-void QuadTree::addToObjects(Rect r){
+void QuadTree::addToObjects(Rect const&  r){
 	list *l = &(this->objects);
 	while (l->next != NULL){
 		l = l->next;
@@ -89,7 +89,7 @@ int QuadTree::getObjectSize()
 }
 
 //checks if Rect is inside QuadTree bounds
-bool QuadTree::contains(Rect r)
+bool QuadTree::contains(Rect const&  r)
 {
 	if (r.topLeft.y     > this->bounds.topLeft.y     &&
 		r.topLeft.x     > this->bounds.topLeft.x     &&
@@ -147,7 +147,7 @@ void QuadTree::split()
 }
 
 //"wkladanie" elementu na drzewo
-bool QuadTree::insert(Rect r)
+bool QuadTree::insert(Rect const&  r)
 {
 	int counter = 0;
 	Rect tmp;
@@ -219,7 +219,7 @@ bool QuadTree::insert(Rect r)
 	}
 }*/
 
-void QuadTree::retrieve(list *returnedRects, Rect r)
+void QuadTree::retrieve(list *returnedRects, Rect const& r)
 {
 	if (this->UL != NULL){
 		if (this->UL->contains(r)){
@@ -244,7 +244,7 @@ void QuadTree::retrieve(list *returnedRects, Rect r)
 }
 
 
-void QuadTree::getCollisionObjs(list *returnedRects, Rect r){
+void QuadTree::getCollisionObjs(list *returnedRects, Rect const&  r){
 	if (this->objects.isValueSet){
 		if (r.rectsCollision(this->objects.value)){
 			addToList(returnedRects, this->objects.value);

@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="green.cpp">
@@ -42,37 +38,55 @@
     <ClCompile Include="Rect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Parser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ErrorHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="green.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mempool.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="phys.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="porttype.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="randgen.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="quadTree.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="listFunctions.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mainFunctions.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
     <ClInclude Include="Rect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="green.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="list.h">
-      <Filter>Resource Files</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="listFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mainFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mempool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="phys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="porttype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="quadTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="randgen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Parser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

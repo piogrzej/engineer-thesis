@@ -1,7 +1,8 @@
 #include "mainFunctions.h"
 
 
-void pointsFormLine(point * topLeft, point * bottomRight, char * line){
+void pointsFormLine(point * topLeft, point * bottomRight, char * line)
+{
 	//zastepuje znaki ' ' bajtami 0 aby uzyc atoi
 	//toeretycznie mozna to zrobic "na sztywno" i takie rozwiazanie byloby najsprawniejsze
 	//lecz niewadomo czy struktura pliku wejsciowego sie nie zmieni
@@ -84,41 +85,11 @@ Rect layerSpaceSize(FILE * pFile){
 	return spaceSize;
 }
 
-void createTree(QuadTree * mainTree, FILE * pFile){
-	point tmpTopLeft, tmpBottomRight;
-	char linebuffor[LINE_BUFFOR_SIZE];//buffor na linie
-
-	while (1)
-	{//wyszukiwanie warstwy
-		fgets(linebuffor, LINE_BUFFOR_SIZE, pFile);
-		if (linebuffor[0] == '<')
-		{
-			if (strcmp(linebuffor, "<< metal3 >>\n") == 0)
-			{//narazie na sztywno, jedna warstwa
-				break;
-			}
-		}
-	}
-	linebuffor[0] = 'A';// set first line buffor char to sth not equal to '<'
-
-	//zmienna debug usunac
-	int debug1 = 0;
-
-	//fill tree
-	Rect tmprect;
-	while (linebuffor[0] != '<')
+void createTree(QuadTree * mainTree, Layer const& layer){
+	for(Rect const& rect : layer)
 	{
-		fgets(linebuffor, LINE_BUFFOR_SIZE, pFile);
-		if (linebuffor[0] == 'r')
-		{
-			pointsFormLine(&tmpTopLeft, &tmpBottomRight, linebuffor);
-			tmprect.topLeft = tmpTopLeft;
-			tmprect.bottomRight = tmpBottomRight;
-			mainTree->insert(tmprect);
-			debug1++;
-		}
+		mainTree->insert(rect);
 	}
-	printf("%d\n", debug1);
 }
 
 int getIndex(REAL64_t intg[NSAMPLE + 1], double rand){

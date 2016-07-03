@@ -1,53 +1,56 @@
 //V05-URUCHOMIONE FUNKCJE GREENA
 
 #include "mainFunctions.h"
-#include <ctime>
+#include "Parser.h"
+#include "ErrorHandler.h"
+#include "Timer.h"
+
 #include <iostream>
 
 int debug=0;
 
-int main()
+inline bool checkFile(char* name) 
+{
+	ifstream f(name);
+	return f.good();
+}
+
+int main(int argc, char *argv[])
 {
 	QuadTree *mainTree;
-	Rect spaceSize;
-	FILE *fileIter;
-
-	double duration;
+	char* path;
+	char inputPath[300];//E:\\programowanie\\quadtree\\sigfill_chunk_x.mag
+						   //C:\Users\Marcin\Documents\inzynierka\sigfill_chunk_x.gk
+	if (argc > 1)
+	{
+		path = argv[1];
+	}
+	else
+	{
+		scanf("%s", inputPath);//wejscie
+		path = inputPath;
+	}
 	
-	char adresWejscia[300];//E:\\programowanie\\quadtree\\sigfill_chunk_x.mag
-
-	//C:\Users\Marcin\Documents\inzynierka\sigfill_chunk_x.mag
-
-	/*---------------------------------debug section-----------------------*/
-
-	debugFunction();
-
-	/*---------------------------end of debug section---------------------*/
-	scanf("%s", adresWejscia);//wejscie
-
-	std::clock_t startT;//start timera
-
-	fileIter = fopen(adresWejscia, "r");
-	if (fileIter == NULL) return -1;
-	spaceSize = layerSpaceSize(fileIter);
-	cout << spaceSize;
-	fseek(fileIter, 0, SEEK_SET); // przestawia wskaŸnik na pocz¹tek
-		
-	startT = std::clock();
+	if (false == checkFile(path))
+	{
+		ErrorHandler::getInstance() << "Nie ma takiego pliku!";
+		return 0;
+	}
+	Timer time;
+	time.start();
+	Parser parser(path, "<<",5);
+	time.stop("Parser: ");
+	Rect const& spaceSize = parser.getLayerSize(0);
+	
 	mainTree = new QuadTree(0, spaceSize);//start Tree
-	createTree(mainTree, fileIter);
-	Rect founded = RandomWalk(spaceSize, mainTree);
-	cout << founded;
+	time.start();
+	createTree(mainTree, parser.getLayerAt(0));
+	time.stop("Create tree: ");
 
-	duration = (std::clock() - startT) / (double)CLOCKS_PER_SEC;
-	fclose(fileIter);
-
-	printf("time: %lf\n", duration);
+	Rect founded = RandomWalk(parser.getLayerAt(0).at(0), mainTree);
+	ErrorHandler::getInstance() << founded;
 
 	mainTree->debugFunction();
-
-	printf("debug=%d\n", debug);
-
 	mainTree->clear();
 
 	return 0;

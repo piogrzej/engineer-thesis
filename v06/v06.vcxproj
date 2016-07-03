@@ -22,12 +22,14 @@
     <ProjectGuid>{80F1DA72-DFEF-4F4A-A17C-8239ECC4A1BD}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>v06</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>RandomWalk</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -139,27 +141,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ErrorHandler.cpp" />
     <ClCompile Include="green.cpp" />
     <ClCompile Include="listFunctions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainFunctions.cpp" />
     <ClCompile Include="mempool.cpp" />
+    <ClCompile Include="Parser.cpp" />
     <ClCompile Include="porttype.cpp" />
     <ClCompile Include="quadTree.cpp" />
     <ClCompile Include="randgen.cpp" />
     <ClCompile Include="Rect.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ErrorHandler.h" />
     <ClInclude Include="green.h" />
     <ClInclude Include="listFunctions.h" />
     <ClInclude Include="mainFunctions.h" />
     <ClInclude Include="mempool.h" />
+    <ClInclude Include="Parser.h" />
     <ClInclude Include="phys.h" />
     <ClInclude Include="porttype.h" />
     <ClInclude Include="quadTree.h" />
     <ClInclude Include="randgen.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="list.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
