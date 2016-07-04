@@ -5,9 +5,12 @@
 
 using namespace std;
 
-struct point {
+struct point 
+{
 	int x;
 	int y;
+	point() {}
+	point(int pX, int pY) { x = pX; y = pY; }
 };
 
 class Rect
@@ -17,17 +20,18 @@ public:
 	Rect(point topLeft,point bottomRight);
 	Rect(int topLeftX, int topLeftY, int bootomRightX, int bottomRightY);
 	~Rect();
-	point topLeft;
-	point bottomRight;
 
-	int getWidth();
-	int getHeigth();
-	bool cmpRect(Rect r2);
-	bool rectsCollision(Rect r2);
-	bool rectContains(point p);
-	Rect createGaussianSurface(double factor);
-	int getPerimeter();
-	point getPointFromNindex(int index, int Nsample);
+	point	topLeft;
+	point	bottomRight;
+
+	int		getWidth() const;
+	int		getHeigth() const;
+	bool	cmpRect(Rect const& r2) const;
+	bool	rectsCollision(Rect const& r2) const;
+	bool	rectContains(point p) const;
+	Rect	createGaussianSurface(double factor) const;
+	int		getPerimeter() const;
+	point	getPointFromNindex(int index, int Nsample) const;
 	friend ostream& operator<< (ostream&, Rect const&);
 };
 

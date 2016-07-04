@@ -16,3 +16,5 @@ v06/x64/Release/v06.tlog/link.command.1.tlog
 v06/x64/Release/v06.tlog/cl.command.1.tlog
 v06/x64/Release/v06.tlog/CL.write.1.tlog
 v06/x64/Release/v06.tlog/CL.read.1.tlog
+sigfill_chunk_x.gk
+*.sdf

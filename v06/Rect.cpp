@@ -2,8 +2,10 @@
 
 #include <math.h>
 
-Rect::Rect()
+Rect::Rect(point tLeft, point bRight)
 {
+	topLeft = tLeft;
+	bottomRight = bRight;
 }
 
 Rect::Rect(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY)
@@ -25,15 +27,15 @@ Rect::~Rect()
 {
 }
 
-int Rect::getWidth() {
+int Rect::getWidth() const {
 	return (bottomRight.x - topLeft.x);
 }
 
-int Rect::getHeigth() {
+int Rect::getHeigth() const {
 	return (bottomRight.y - topLeft.y);
 }
 
-bool Rect::cmpRect(Rect r2) {
+bool Rect::cmpRect(Rect const& r2) const {
 	if (this->bottomRight.x == r2.bottomRight.x &&
 		this->bottomRight.y == r2.bottomRight.y &&
 		this->topLeft.x == r2.topLeft.x &&
@@ -43,7 +45,7 @@ bool Rect::cmpRect(Rect r2) {
 		return false;
 }
 
-bool Rect::rectsCollision(Rect r2) {
+bool Rect::rectsCollision(Rect const& r2) const {
 	/*ponizsze warunki powinny takze wykryc sytuacje gdy r2 calkowiecie zawiera sie w r1*/
 	/*jezeli r2 upper/lower y zawiera sie miedzy r1 lower y i upper y*/
 	if ((this->topLeft.y <= r2.topLeft.y && r2.topLeft.y <= this->bottomRight.y) ||
@@ -86,12 +88,12 @@ bool Rect::rectsCollision(Rect r2) {
 	return false;
 }
 
-bool Rect::rectContains(point p) {
+bool Rect::rectContains(point p) const {
 	if ((topLeft.x <= p.x) && (topLeft.y <= p.y) && (bottomRight.x >= p.x) && (bottomRight.y >= p.y)) return true;
 	else return false;
 }
 
-Rect Rect::createGaussianSurface(double factor) {
+Rect Rect::createGaussianSurface(double factor) const {
 	double middleX = double(topLeft.x + bottomRight.x) / 2.;
 	double middleY = double(topLeft.y + bottomRight.y) / 2.;
 	double vectorX = double(topLeft.x) - middleX;
@@ -108,11 +110,12 @@ Rect Rect::createGaussianSurface(double factor) {
 	return gaussSurface;
 }
 
-int Rect::getPerimeter(){
+int Rect::getPerimeter() const
+{
 	return (2 * (this->bottomRight.x - this->topLeft.x) + 2 * (this->bottomRight.y - this->topLeft.y));
 }
 
-point Rect::getPointFromNindex(int index, int Nsample){//MAM NADZIEJE ZE NIGDZIE SIE NIE WALNALEM BO TO SKOMPLIKOWANA GEOMETRIA
+point Rect::getPointFromNindex(int index, int Nsample) const {//MAM NADZIEJE ZE NIGDZIE SIE NIE WALNALEM BO TO SKOMPLIKOWANA GEOMETRIA
 	int perimeter = this->getPerimeter();
 	double vector = (double)perimeter / (double)Nsample;
 	int heigth = this->getHeigth();
