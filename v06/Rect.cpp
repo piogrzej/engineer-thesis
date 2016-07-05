@@ -2,10 +2,8 @@
 
 #include <math.h>
 
-Rect::Rect(point tLeft, point bRight)
+Rect::Rect()
 {
-	topLeft = tLeft;
-	bottomRight = bRight;
 }
 
 Rect::Rect(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY)

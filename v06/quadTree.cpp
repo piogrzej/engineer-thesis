@@ -74,6 +74,12 @@ Rect QuadTree::removeAndReturnObjectAtIndex(int index){
 	}
 }
 
+Rect QuadTree::removeAndReturnFirstObject(){
+	Rect r = this->objects.value;
+	list *objToDelete = &(this->objects);
+	if (this->objects.next!=NULL)
+}
+
 int QuadTree::getObjectSize()
 {
 	list *tmp = &(this->objects);
@@ -156,7 +162,7 @@ bool QuadTree::insert(Rect const&  r)
 		this->addToObjects(r);
 		return true;
 	}
-	else if (this->getObjectSize() >= MAX_OBJECTS && this->UL == NULL){//JEZELI W LISCIE OBIEKTOW NIE MA MIEJSCE I NIE BYLO PODZIALU
+	else if (this->getObjectSize() >= MAX_OBJECTS && this->UL == NULL){//JEZELI W LISCIE OBIEKTOW NIE MA MIEJSCA I NIE BYLO PODZIALU
 		//DZIELIMY I obiekty z listy wrzucamy do odpowiednich kwadratow
 		this->split();//podzial
 		counter = this->getObjectSize();
@@ -397,5 +403,7 @@ void QuadTree::debugFunction(){
 		this->LR->debugFunction();
 		this->LL->debugFunction();
 	}
-	debug += listSize(&(this->objects));
+	printAllObjects(&(this->objects));
+	//debug += listSize(&(this->objects));
+
 }

@@ -48,6 +48,7 @@ public:
 	bool		checkCollisionObjs(point p, Rect *r);//sprawdza czy p nie koliduje z jakims obiektyem z listy objects, zwraca ten obiekt jako r
 	bool		checkCollisons(point p, Rect& r);//sprawdza czy punkt p nie koliduje z jakims prostokatem, zwraca ten prostokat jako r
 	Rect		drawBiggestSquareAtPoint(point p);
+	Rect		removeAndReturnFirstObject();
 };
 
 #endif

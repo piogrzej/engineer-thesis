@@ -13,6 +13,22 @@ int listSize(list *l){
 	return i;
 }
 
+void printAllObjects(list *l){
+	list *tmp = l;
+	int i = 0;
+	if (tmp != NULL){
+		while (tmp->isValueSet){
+			printf("rect: topLeft(%d %d) bottomRight(%d %d)\n",
+					tmp->value.topLeft.x,
+					tmp->value.topLeft.y,
+					tmp->value.bottomRight.x,
+					tmp->value.bottomRight.y);
+			if (tmp->next == NULL) break;
+			else tmp = tmp->next;
+		}
+	}
+}
+
 void addToList(list *l, Rect r){
 	if (l == NULL) l = new list();
 	list *tmp = l;
