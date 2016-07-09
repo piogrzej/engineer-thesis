@@ -70,7 +70,7 @@ Rect Parser::getLayerSize(int layerIt)
 		if (rect.bottomRight.y > bottomY)
 			bottomY = rect.bottomRight.y;
 	}
-	return Rect(point(leftX, topY), point(rightX, bottomY));
+	return Rect(point(leftX - 10, topY - 10), point(rightX + 10, bottomY + 10));
 }
 
 Rect Parser::loadRectFromLine(char * line)

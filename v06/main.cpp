@@ -47,6 +47,8 @@ int main(int argc, char *argv[])
 	createTree(mainTree, parser.getLayerAt(0));
 	time.stop("Create tree: ");
 
+	mainTree->printTree("ROOT");
+
 	Rect founded = RandomWalk(parser.getLayerAt(0).at(0), mainTree);
 	ErrorHandler::getInstance() << founded;
 

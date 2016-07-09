@@ -158,6 +158,6 @@ point Rect::getPointFromNindex(int index, int Nsample) const {//MAM NADZIEJE ZE 
 }
 ostream& operator<< (ostream &wyjscie, Rect const& ex)
 {
-	wyjscie << "Retangle TOP LEFT:  x:" << ex.topLeft.x<<", y:" << ex.topLeft.y << "     BOTTOM RIGHT:  x:" << ex.bottomRight.x << ",  y:" << ex.bottomRight.y << endl;
+	wyjscie << "Rect TL: x:" << ex.topLeft.x<<", y:" << ex.topLeft.y << "  BR: x:" << ex.bottomRight.x << ", y:" << ex.bottomRight.y << endl;
 	return wyjscie;
 }
