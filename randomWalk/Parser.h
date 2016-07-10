@@ -3,7 +3,7 @@
 #include "quadTree.h"
 
 #include <string>
-#include <cstring>//needed to add this
+#include <cstring>
 #include <iostream>
 #include <vector>
 #define MAX_LINE_SIZE 50

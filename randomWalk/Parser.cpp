@@ -37,7 +37,7 @@ Parser::Parser(char * fileName, char * delimiter, int layerNum)
 		}
 	}
 	else
-		ErrorHandler::getInstance() >> "Nie moï¿½na otworzyï¿½ pliku!";
+		ErrorHandler::getInstance() >> "Nie mo¿na otworzyæ pliku!";
 }
 
 Parser::~Parser()
@@ -70,7 +70,7 @@ Rect Parser::getLayerSize(int layerIt)
 		if (rect.bottomRight.y > bottomY)
 			bottomY = rect.bottomRight.y;
 	}
-	return Rect(point(leftX-10, topY-10), point(rightX+10, bottomY+10));//added +10/-10 this was in first version 
+	return Rect(point(leftX - 10, topY - 10), point(rightX + 10, bottomY + 10));
 }
 
 Rect Parser::loadRectFromLine(char * line)

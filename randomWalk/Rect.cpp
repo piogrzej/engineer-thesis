@@ -2,24 +2,11 @@
 
 #include <math.h>
 
-Rect::Rect()
+Rect::Rect(point tLeft, point bRight)
 {
+	topLeft = tLeft;
+	bottomRight = bRight;
 }
-
-Rect::Rect(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY)
-{
-	this->topLeft.x = topLeftX;
-	this->topLeft.y = topLeftY;
-	this->bottomRight.x = bottomRightX;
-	this->bottomRight.y = bottomRightY;
-}
-
-Rect::Rect(point topLeft,point bottomRight)
-{
-	this->topLeft = topLeft;
-	this->bottomRight = bottomRight;
-}
-
 
 Rect::~Rect()
 {
@@ -124,7 +111,7 @@ point Rect::getPointFromNindex(int index, int Nsample) const {//MAM NADZIEJE ZE 
 		ret.y = this->topLeft.y;
 		return ret;
 	}
-	else if ((index - 1)*vector < width &&index*vector > width){//JEZELI PRZECHODZI PRZEZ KRAWEDZ TO DAJE WIESZCHO£EK
+	else if ((index - 1)*vector < width &&index*vector > width){//JEZELI PRZECHODZI PRZEZ KRAWEDZ TO DAJE WIESZCHOï¿½EK
 		ret.x = this->bottomRight.x;
 		ret.y = this->topLeft.y;
 		return ret;
@@ -170,6 +157,6 @@ point Rect::getPointFromNindex(int index, int Nsample) const {//MAM NADZIEJE ZE 
 }
 ostream& operator<< (ostream &wyjscie, Rect const& ex)
 {
-	wyjscie << "Retangle TOP LEFT:  x:" << ex.topLeft.x<<", y:" << ex.topLeft.y << "     BOTTOM RIGHT:  x:" << ex.bottomRight.x << ",  y:" << ex.bottomRight.y << endl;
+	wyjscie << "Rect TL: x:" << ex.topLeft.x<<", y:" << ex.topLeft.y << "  BR: x:" << ex.bottomRight.x << ", y:" << ex.bottomRight.y << endl;
 	return wyjscie;
 }

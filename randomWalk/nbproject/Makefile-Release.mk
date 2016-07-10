@@ -40,7 +40,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/Rect.o \
 	${OBJECTDIR}/Timer.o \
 	${OBJECTDIR}/green.o \
-	${OBJECTDIR}/listFunctions.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/mainFunctions.o \
 	${OBJECTDIR}/mempool.o \
@@ -97,11 +96,6 @@ ${OBJECTDIR}/green.o: green.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/green.o green.cpp
-
-${OBJECTDIR}/listFunctions.o: listFunctions.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/listFunctions.o listFunctions.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

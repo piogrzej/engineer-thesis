@@ -9,8 +9,6 @@
       <itemPath>Rect.h</itemPath>
       <itemPath>Timer.h</itemPath>
       <itemPath>green.h</itemPath>
-      <itemPath>list.h</itemPath>
-      <itemPath>listFunctions.h</itemPath>
       <itemPath>mainFunctions.h</itemPath>
       <itemPath>mempool.h</itemPath>
       <itemPath>phys.h</itemPath>
@@ -30,7 +28,6 @@
       <itemPath>Rect.cpp</itemPath>
       <itemPath>Timer.cpp</itemPath>
       <itemPath>green.cpp</itemPath>
-      <itemPath>listFunctions.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>mainFunctions.cpp</itemPath>
       <itemPath>mempool.cpp</itemPath>
@@ -63,7 +60,7 @@
           <standard>10</standard>
         </cTool>
         <ccTool>
-          <standard>8</standard>
+          <standard>11</standard>
         </ccTool>
       </compileType>
       <item path="ErrorHandler.cpp" ex="false" tool="1" flavor2="0">
@@ -85,12 +82,6 @@
       <item path="green.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="green.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="list.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="listFunctions.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="listFunctions.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -156,12 +147,6 @@
       <item path="green.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="green.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="list.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="listFunctions.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="listFunctions.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

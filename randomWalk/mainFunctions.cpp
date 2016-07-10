@@ -6,21 +6,21 @@ void pointsFormLine(point * topLeft, point * bottomRight, char * line)
 	//zastepuje znaki ' ' bajtami 0 aby uzyc atoi
 	//toeretycznie mozna to zrobic "na sztywno" i takie rozwiazanie byloby najsprawniejsze
 	//lecz niewadomo czy struktura pliku wejsciowego sie nie zmieni
-	int tmp[4];//lokalizacje liczb
+	int tab[4];//lokalizacje liczb
 	int j = 0;
 	int i = 0;
 	while (line[i] != '\n'){
-		if (line[i] == ' '){//this is potencially unsafe EXAMPLE: "rect 277 250 371 311 " <-this space at the end of line
+		if (line[i] == ' '){
 			line[i] = 0;
-			tmp[j] = i + 1;
+			tab[j] = i + 1;
 			j++;
 		}
 		i++;
 	}
-	topLeft->x = atoi((line + tmp[0]));
-	topLeft->y = atoi((line + tmp[1]));
-	bottomRight->x = atoi((line + tmp[2]));
-	bottomRight->y = atoi((line + tmp[3]));
+	topLeft->x = atoi((line + tab[0]));
+	topLeft->y = atoi((line + tab[1]));
+	bottomRight->x = atoi((line + tab[2]));
+	bottomRight->y = atoi((line + tab[3]));
 }
 
 //okreslanie rozmiaru przestrzeni
@@ -111,8 +111,6 @@ Rect RandomWalk(Rect R, QuadTree* mainTree)
 	double rand;
 	int index;
 
-	int counter = 0;
-
 	Rect output, square = R.createGaussianSurface(1.1);
 
 	do
@@ -121,7 +119,6 @@ Rect RandomWalk(Rect R, QuadTree* mainTree)
 		index = getIndex(intg, rand);
 		p = square.getPointFromNindex(index, NSAMPLE);
 		square = mainTree->drawBiggestSquareAtPoint(p);
-		printf("%d\n",counter++);
 	}
 	while (mainTree->checkCollisons(p, output));
 

@@ -16,9 +16,8 @@ struct point
 class Rect
 {
 public:
-	Rect();
-	Rect(point topLeft,point bottomRight);
-	Rect(int topLeftX, int topLeftY, int bootomRightX, int bottomRightY);
+	Rect() {};
+	Rect(point tLeft, point bRight);
 	~Rect();
 
 	point	topLeft;

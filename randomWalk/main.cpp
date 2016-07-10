@@ -15,13 +15,12 @@ inline bool checkFile(char* name)
 	return f.good();
 }
 
-//E:\\programowanie\\quadtree\\sigfill_chunk_x.mag
-//C:\Users\Marcin\Documents\inzynierka\sigfill_chunk_x.gk
 int main(int argc, char *argv[])
 {
 	QuadTree *mainTree;
 	char* path;
-	char inputPath[300];
+	char inputPath[300];//E:\\programowanie\\quadtree\\sigfill_chunk_x.mag
+						   //C:\Users\Marcin\Documents\inzynierka\sigfill_chunk_x.gk
 	if (argc > 1)
 	{
 		path = argv[1];
@@ -47,11 +46,13 @@ int main(int argc, char *argv[])
 	time.start();
 	createTree(mainTree, parser.getLayerAt(0));
 	time.stop("Create tree: ");
-	mainTree->debugFunction();
+
+	mainTree->printTree("ROOT");
 
 	Rect founded = RandomWalk(parser.getLayerAt(0).at(0), mainTree);
 	ErrorHandler::getInstance() << founded;
 
+	mainTree->debugFunction();
 	mainTree->clear();
 
 	return 0;
