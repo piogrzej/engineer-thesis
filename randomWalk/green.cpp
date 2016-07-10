@@ -10,7 +10,7 @@
  * contained herein except pursuant to a valid written license from
  * Advanced Numerics Advisors Michal Rewienski and Mayukh Bhattacharya.
  */
-/** This isInBounds code for computing 2D Green's functions on a square. */
+/** This contains code for computing 2D Green's functions on a square. */
 
 #include "porttype.h"
 #include "green.h"
