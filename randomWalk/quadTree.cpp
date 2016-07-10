@@ -2,7 +2,8 @@
 
 #include <string>
 
-QuadTree::QuadTree(int level, Rect const& bounds) {
+QuadTree::QuadTree(int level, Rect const& bounds) 
+{
 	this->level = level;
 	this->bounds = bounds;
 	this->UL = nullptr;
@@ -13,13 +14,16 @@ QuadTree::QuadTree(int level, Rect const& bounds) {
 	isSplited = false;
 }
 
-void QuadTree::deleteObjects(){
+void QuadTree::deleteObjects()
+{
 	list *tmp = &(this->objects);
 	tmp->isValueSet = false;
-	if (tmp->next != nullptr){
+	if (tmp->next != nullptr)
+	{
 		tmp = tmp->next;
 		tmp->prev->next = nullptr;
-		while (tmp->next != nullptr){
+		while (tmp->next != nullptr)
+		{
 			tmp = tmp->next;
 			delete(tmp->prev);
 		}
@@ -185,12 +189,8 @@ bool QuadTree::insert(Rect const&  r)
 		this->addToObjects(r);
 		return true;
 	}
-<<<<<<< HEAD:randomWalk/quadTree.cpp
-	else if (this->getObjectSize() >= MAX_OBJECTS && this->UL == NULL){//JEZELI W LISCIE OBIEKTOW NIE MA MIEJSCA I NIE BYLO PODZIALU
-=======
 	else if (this->getObjectsCount() >= MAX_OBJECTS && false == isSplited)
 	{
->>>>>>> 81f0ab1... Działające drzewo + refactoring:v06/quadTree.cpp
 		//DZIELIMY I obiekty z listy wrzucamy do odpowiednich kwadratow
 		this->split();//podzial
 		counter = this->getObjectsCount();
@@ -256,7 +256,7 @@ bool QuadTree::insert(Rect const&  r)
 void QuadTree::retrieve(list *returnedRects, Rect const& r)
 {
 	if (isSplited)
-{
+	{
 		if (this->UL->isInBounds(r))
 			this->UL->retrieve(returnedRects, r);
 		
@@ -274,7 +274,8 @@ void QuadTree::retrieve(list *returnedRects, Rect const& r)
 }
 
 
-void QuadTree::getCollisionObjs(list *returnedRects, Rect const&  r){
+void QuadTree::getCollisionObjs(list *returnedRects, Rect const&  r)
+{
 	if (this->objects.isValueSet)
 	{
 		if (r.rectsCollision(this->objects.value))
