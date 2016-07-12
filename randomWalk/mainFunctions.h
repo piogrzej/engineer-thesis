@@ -19,6 +19,6 @@ void createTree(QuadTree * mainTree,Layer const& layer);
 Rect layerSpaceSize(FILE * pFile);
 Rect RandomWalk(Rect R, QuadTree* mainTree);
 int getIndex(REAL64_t intg[NSAMPLE + 1], double rand);
-void debugFunction();
+void printList(std::list<Rect> input);
 
 #endif

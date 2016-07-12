@@ -48,8 +48,12 @@ int main(int argc, char *argv[])
 	time.stop("Create tree: ");
 
 	mainTree->printTree("ROOT");
-
-	mainTree->printTree("ROOT");
+        
+        //debug
+        std::list<Rect>* debugList = new std::list<Rect>();
+        Rect debugRect(point(34,20),point(1126,606));
+        mainTree->retrieve(debugList,debugRect);
+        printList(*debugList);
 
 	Rect founded = RandomWalk(parser.getLayerAt(0).at(0), mainTree);
 	ErrorHandler::getInstance() << founded;

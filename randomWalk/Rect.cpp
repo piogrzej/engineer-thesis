@@ -36,38 +36,38 @@ bool Rect::rectsCollision(Rect const& r2) const {
 	if ((this->topLeft.y <= r2.topLeft.y && r2.topLeft.y <= this->bottomRight.y) ||
 		(this->topLeft.y <= r2.bottomRight.y && r2.bottomRight.y <= this->bottomRight.y))
 	{
-		/*jezeli r2 left/right zawiera sie miedzy r1 left i right
-				+----------+
-				|          |
-		+-------+--+  r2   |
-		|       |  |       |
-		|    r1 +--+-------+
-		|          |
-		+----------+
-		*/
-		if ((this->topLeft.x <= r2.topLeft.x && r2.topLeft.x <= this->bottomRight.x) ||
-			(this->topLeft.x <= r2.bottomRight.x && r2.bottomRight.x <= this->bottomRight.x)) return true;
-		/*jezeli r2 left jest mniejsze od r1 left i r2 right jest wieksze od r2 right
-		+---------------------+
-		|                     |
-		|  +----------+  r2   |
-		+--+----------+-------+
-		   |    r1	  |
-		   |          |
-		   +----------+
-		*/
-		if (this->topLeft.x <= r2.topLeft.x && r2.bottomRight.x >= this->bottomRight.x) return true;
+            /*jezeli r2 left/right zawiera sie miedzy r1 left i right
+                    +----------+
+                    |          |
+            +-------+--+  r2   |
+            |       |  |       |
+            |    r1 +--+-------+
+            |          |
+            +----------+
+            */
+            if ((this->topLeft.x <= r2.topLeft.x && r2.topLeft.x <= this->bottomRight.x) ||
+                    (this->topLeft.x <= r2.bottomRight.x && r2.bottomRight.x <= this->bottomRight.x)) return true;
+            /*jezeli r2 left jest mniejsze od r1 left i r2 right jest wieksze od r2 right
+            +---------------------+
+            |                     |
+            |  +----------+  r2   |
+            +--+----------+-------+
+               |    r1	  |
+               |          |
+               +----------+
+            */
+            if (this->topLeft.x <= r2.topLeft.x && r2.bottomRight.x >= this->bottomRight.x) return true;
 	}
 	/*jezeli r2 left/right zawiera sie miedzy r1 left i right*/
 	else if ((this->topLeft.x <= r2.topLeft.x && r2.topLeft.x <= this->bottomRight.x) ||
 		(this->topLeft.x <= r2.bottomRight.x && r2.bottomRight.x <= this->bottomRight.x))
 	{
-		/*jezeli r2 upper/lower zaiwra sie miedzy r1 lower i upper
-		patrz rysunek wyzej*/
-		if ((this->topLeft.y <= r2.topLeft.y && r2.topLeft.y <= this->bottomRight.y) ||
-			(this->topLeft.y <= r2.bottomRight.y && r2.bottomRight.y <= this->bottomRight.y)) return true;
-		/*jezeli r2 upper jest mniejszy od r1 upper i r2 lower jest wiekszy od r1 lower*/
-		if ((this->topLeft.y >= r2.topLeft.y && r2.bottomRight.y >= this->bottomRight.y)) return true;
+            /*jezeli r2 upper/lower zaiwra sie miedzy r1 lower i upper
+            patrz rysunek wyzej*/
+            if ((this->topLeft.y <= r2.topLeft.y && r2.topLeft.y <= this->bottomRight.y) ||
+                    (this->topLeft.y <= r2.bottomRight.y && r2.bottomRight.y <= this->bottomRight.y)) return true;
+            /*jezeli r2 upper jest mniejszy od r1 upper i r2 lower jest wiekszy od r1 lower*/
+            if ((this->topLeft.y >= r2.topLeft.y && r2.bottomRight.y >= this->bottomRight.y)) return true;
 
 	}
 	return false;

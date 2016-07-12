@@ -170,42 +170,42 @@ bool QuadTree::insert(Rect const&  r)
 
 void QuadTree::retrieve(std::list<Rect> *returnedRects, Rect const& r)
 {
-	if (isSplited)
-{
-		if (this->UL->isInBounds(r))
-			this->UL->retrieve(returnedRects, r);
-		
-		if (this->UR->isInBounds(r))
-			this->UR->retrieve(returnedRects, r);		
+    if (isSplited)
+    {
+        if (this->UL->bounds.rectsCollision(r))
+                this->UL->retrieve(returnedRects, r);
 
-		if (this->LR->isInBounds(r))
-			this->LR->retrieve(returnedRects, r);
-		
-		if (this->LL->isInBounds(r))
-			this->LL->retrieve(returnedRects, r);
-	}
-	//tutaj dla kazdego sprawdzenie bisectory lines
-	this->getCollisionObjs(returnedRects, r);
+        if (this->UR->bounds.rectsCollision(r))
+                this->UR->retrieve(returnedRects, r);		
+
+        if (this->LR->bounds.rectsCollision(r))
+                this->LR->retrieve(returnedRects, r);
+
+        if (this->LL->bounds.rectsCollision(r))
+                this->LL->retrieve(returnedRects, r);
+    }
+    //tutaj dla kazdego sprawdzenie bisectory lines
+    this->getCollisionObjs(returnedRects, r);
 }
 
 
 void QuadTree::getCollisionObjs(std::list<Rect> *returnedRects, Rect const&  r){
     std::list<Rect>::iterator i;
-    for(i=this->objects.begin(); i != this->objects.end(); ++i){
+    for(i=this->objects.begin(); i != this->objects.end(); ++i)
         if(r.rectsCollision(*i)){
-            returnedRects->push_back(*i);
+            returnedRects->push_front(*i);
         }
-    }
 }
 
 bool QuadTree::checkCollisionObjs(point p, Rect* r)
 {
     std::list<Rect>::iterator i;
-    for(i=this->objects.begin(); i != this->objects.end(); ++i){
+    for(i=this->objects.begin(); i != this->objects.end(); ++i)
         if(i->rectContains(p)){
             r = new Rect(*i);
+            return true;
         }
-    }
+    return false;
 }
 
 bool QuadTree::checkCollisons(point p, Rect& r)

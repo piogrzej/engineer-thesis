@@ -76,7 +76,7 @@ Rect layerSpaceSize(FILE * pFile){
 		}
 	}
 
-	//powiekszanie space size zeby miec pewnosc ze elementy nie beda "wystwa³y", nie wplywa to na wydajnosc, a moze pomoc
+	//powiekszanie space size zeby miec pewnosc ze elementy nie beda "wystwaï¿½y", nie wplywa to na wydajnosc, a moze pomoc
 	spaceSize.topLeft.y -= 10;
 	spaceSize.topLeft.x -= 10;
 	spaceSize.bottomRight.y += 10;
@@ -126,9 +126,10 @@ Rect RandomWalk(Rect R, QuadTree* mainTree)
 	return output;
 }
 
-void debugFunction()
-{
-	rng_init(1);
-	for (int i = 0; i < 10; i++)
-		std::cout << myrand() / (double)(MY_RAND_MAX) << std::endl;
+void printList(std::list<Rect> input){
+    int i=0;
+    for(std::list<Rect>::iterator iter = input.begin(); iter != input.end(); ++iter){
+        i++;
+        std::cout<<i<<" "<< iter->topLeft.x<<" "<<iter->topLeft.y<<" "<<iter->bottomRight.x<<" "<<iter->bottomRight.y<<std::endl;
+     }
 }

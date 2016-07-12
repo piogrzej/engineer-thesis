@@ -14,9 +14,9 @@ extern int debug;
 /*definicja klasy QuadTree*/
 /*NODES
 +---+---+
-| 0	| 1 |
+| 0 | 1 |
 +---+---+
-| 3	| 2 |
+| 3 | 2 |
 +---+---+
 */
 class QuadTree{
