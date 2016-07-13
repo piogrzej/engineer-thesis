@@ -54,8 +54,9 @@ int main(int argc, char *argv[])
         Rect debugRect(point(34,20),point(1126,606));
         mainTree->retrieve(debugList,debugRect);
         printList(*debugList);
+        delete(debugList);
 
-	Rect founded = RandomWalk(parser.getLayerAt(0).at(0), mainTree);
+	Rect founded = RandomWalk(parser.getLayerAt(0).at(10), mainTree);
 	ErrorHandler::getInstance() << founded;
 
 	mainTree->debugFunction();

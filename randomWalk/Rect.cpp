@@ -78,6 +78,12 @@ bool Rect::rectContains(point p) const {
 	else return false;
 }
 
+bool Rect::rectContains(Rect r) const {
+    if(r.topLeft.x>this->topLeft.x && r.topLeft.y>this->topLeft.y && r.bottomRight.x<this->bottomRight.x && r.bottomRight.y<this->bottomRight.y)
+        return true;
+    else return false;
+}
+
 Rect Rect::createGaussianSurface(double factor) const {
 	double middleX = double(topLeft.x + bottomRight.x) / 2.;
 	double middleY = double(topLeft.y + bottomRight.y) / 2.;
