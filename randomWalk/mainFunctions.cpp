@@ -124,7 +124,7 @@ Rect RandomWalk(Rect R, QuadTree* mainTree)
 		square = mainTree->drawBiggestSquareAtPoint(p);
 	}
 	while (false==mainTree->checkCollisons(p, &output));
-
+        std::cout<<"Look at this please, it seems to work :)"<<std::endl;
 	//narazie pusty output
 	return output;
 }

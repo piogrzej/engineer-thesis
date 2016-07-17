@@ -74,7 +74,8 @@ bool Rect::rectsCollision(Rect const& r2) const {
 }
 
 bool Rect::rectContains(point p) const {
-	if ((topLeft.x <= p.x) && (topLeft.y <= p.y) && (bottomRight.x >= p.x) && (bottomRight.y >= p.y)) return true;
+	if ((topLeft.x <= p.x) && (topLeft.y <= p.y) && (bottomRight.x >= p.x) && (bottomRight.y >= p.y)) 
+            return true;
 	else return false;
 }
 

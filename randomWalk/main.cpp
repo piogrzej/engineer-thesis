@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	QuadTree *mainTree;
 	char* path;
 	char inputPath[300];//E:\\programowanie\\quadtree\\sigfill_chunk_x.mag
-						   //C:\Users\Marcin\Documents\inzynierka\sigfill_chunk_x.gk
+                            //C:\Users\Marcin\Documents\inzynierka\sigfill_chunk_x.gk
 	if (argc > 1)
 	{
 		path = argv[1];
