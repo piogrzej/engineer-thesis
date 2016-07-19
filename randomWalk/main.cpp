@@ -44,20 +44,24 @@ int main(int argc, char *argv[])
 	
 	mainTree = new QuadTree(0, spaceSize);//start Tree
 	time.start();
-	createTree(mainTree, parser.getLayerAt(0));
+	createTree(mainTree, parser.getLayerAt(00));
 	time.stop("Create tree: ");
 
 	mainTree->printTree("ROOT");
         
-        //debug
-        std::list<Rect>* debugList = new std::list<Rect>();
-        Rect debugRect(point(34,20),point(1126,606));
-        mainTree->retrieve(debugList,debugRect);
-        printList(*debugList);
-        delete(debugList);
+    //debug
+    std::list<Rect>* debugList = new std::list<Rect>();
+    Rect debugRect(point(34,20),point(1126,606));
+    mainTree->retrieve(debugList,debugRect);
+    printList(*debugList);
+    delete(debugList);
 
-	Rect founded = RandomWalk(parser.getLayerAt(0).at(10), mainTree);
-	ErrorHandler::getInstance() << founded;
+	Rect start = parser.getLayerAt(0).at(10);
+    time.start();
+	Rect founded = RandomWalk(start, mainTree);
+	time.stop("Random Walk: ");
+	ErrorHandler::getInstance() >> "Poczatkowy: " >> start;
+	ErrorHandler::getInstance() >> "Znaleziony: " >> founded;
 
 	mainTree->debugFunction();
 	mainTree->clear();

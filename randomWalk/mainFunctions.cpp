@@ -99,20 +99,18 @@ int getIndex(REAL64_t intg[NSAMPLE + 1], double rand){
 }
 
 Rect RandomWalk(Rect R, QuadTree* mainTree)
-{
-        srand( time( NULL ) );
-        
+{        
 	REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
 	UINT32_t Nsample = NSAMPLE;
 
 	precompute_unit_square_green(g, dgdx, dgdy, intg, Nsample);//wyliczanie funkcji greena
 
-	rng_init(1);//inicjalizacja genaeratora
-
+	rng_init(3);//inicjalizacja genaeratora
+	
 	point p;
 	double r;
 	int index;
-
+	bool isCollison;
 	Rect output, square = R.createGaussianSurface(1.5);
 
 	do
@@ -120,12 +118,12 @@ Rect RandomWalk(Rect R, QuadTree* mainTree)
 		r = myrand() / (double)(MY_RAND_MAX);
 		index = getIndex(intg, r);
 		p = square.getPointFromNindex(index, NSAMPLE);
-                std::cout<< p.x <<" "<<p.y<<std::endl;
+        std::cout<< p.x <<" "<<p.y<<std::endl;
 		square = mainTree->drawBiggestSquareAtPoint(p);
+		isCollison = mainTree->checkCollisons(p, output);
 	}
-	while (false==mainTree->checkCollisons(p, &output));
-        std::cout<<"Look at this please, it seems to work :)"<<std::endl;
-	//narazie pusty output
+	while (false == isCollison);
+
 	return output;
 }
 

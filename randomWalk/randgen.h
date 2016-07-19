@@ -13,6 +13,8 @@
 #define RANDGEN_H
 #include "porttype.h"
 
+#define engineopt 1
+
 /** Random number generator functions have this type */
 typedef UINT32_t randfun_t(void);
 
