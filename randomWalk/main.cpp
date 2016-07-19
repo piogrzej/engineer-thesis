@@ -59,7 +59,6 @@ int main(int argc, char *argv[])
 	Rect founded = RandomWalk(parser.getLayerAt(0).at(10), mainTree);
 	ErrorHandler::getInstance() << founded;
 
-	mainTree->debugFunction();
 	mainTree->clear();
 
 	return 0;

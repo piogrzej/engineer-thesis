@@ -43,6 +43,18 @@ bool QuadTree::isInBounds(Rect const&  r)
         return false;
 }
 
+bool QuadTree::isInBounds(point const&  p)
+{
+    if (p.x >= this->bounds.topLeft.x &&
+        p.y >= this->bounds.topLeft.y &&
+        p.x <= this->bounds.bottomRight.x &&
+        p.x <= this->bounds.bottomRight.y
+        )
+        return true;
+    else 
+        return false;
+}
+
 void QuadTree::clear()
 {
     if (this != nullptr)
@@ -150,24 +162,6 @@ bool QuadTree::insert(Rect const&  r)
     return false;//nigdy nie powinno do tego dojsc//jedyne wytlumacznie max level lub obszar o bardzo malym rozmiarze//nie jestem pewien, do sprawdzenia!
 }
 
-/*QuadTree QuadTree::findRect(Rect r){//NIEPRZETESTOWANE!
-    if(listContains(&(this->objects), r)) return *this;//sprawdzamy czy Rect r zawiera sie w liscie obiektow
-    if (this->UL != NULL){
-        if (this->UL->isInBounds(r))
-            return this->UL->findRect(r);
-        if (this->UR->isInBounds(r))
-            return this->UR->findRect(r);
-        if (this->LR->isInBounds(r))
-            return this->LR->findRect(r);
-        if (this->LL->isInBounds(r))
-            return this->LR->findRect(r);
-    }
-    else{
-        assert(0);
-        return *this;
-    }
-}*/
-
 void QuadTree::retrieve(std::list<Rect> *returnedRects, Rect const& r)
 {
     if (isSplited)
@@ -197,18 +191,18 @@ void QuadTree::getCollisionObjs(std::list<Rect> *returnedRects, Rect const&  r){
         }
 }
 
-bool QuadTree::checkCollisionObjs(point p, Rect* r)
+bool QuadTree::checkCollisionObjs(point p, Rect& r)
 {
     std::list<Rect>::iterator i;
     for(i=this->objects.begin(); i != this->objects.end(); ++i)
         if(i->rectContains(p)){
-            r = new Rect(*i);
+            r = *i;
             return true;
         }
     return false;
 }
 
-bool QuadTree::checkCollisons(point p, Rect* r)
+bool QuadTree::checkCollisons(point p, Rect& r)
 {
     if (isSplited)
     {
@@ -249,86 +243,6 @@ Rect QuadTree::drawBiggestSquareAtPoint(point p){
     return output;//potencjalnie niebezpieczne
 }
 
-//Rect QuadTree::drawBiggestSquareAtPoint(point p)
-//{
-//    //pierwwszy obieg
-//    Rect r;//tylko jako argument w funkcji, nie ptorzebne do ncizego
-//    unsigned int left=p.x-1, right=p.y+1, top=p.y-1, bottom = p.y+1;
-//    point tmp;
-//    bool continueFlag = true;
-//    bool leftStopFlag = false;
-//    bool rightStopFlag = false;
-//    bool topStopFlag = false;
-//    bool bottomStopFlag = false;
-//    
-//    while ( !bottomStopFlag && 
-//                !topStopFlag    && 
-//                !rightStopFlag  && 
-//                !bottomStopFlag)
-//    {
-//        if (!topStopFlag) 
-//                for (int i = 0; i<right-left; ++i)
-//                {
-//                        tmp.x = left + i;
-//                        tmp.y = top;
-//                        topStopFlag = checkCollisons(tmp,r);
-//                }
-//
-//        if (!bottomStopFlag) 
-//                for (int i = 0; i < right - left; ++i)
-//                {
-//                        tmp.x = left + i;
-//                        tmp.y = top;
-//                        bottomStopFlag = checkCollisons(tmp,r);
-//                }
-//
-//        if (!rightStopFlag) 
-//                for (int i = 0; i < bottom - top; i++)
-//                {
-//                        tmp.x = right;
-//                        tmp.y = top + i;
-//                        rightStopFlag = checkCollisons(tmp,r);
-//                }
-//
-//        if (!leftStopFlag) 
-//                for (int i = 0; i < bottom - top; i++)
-//                {
-//                        tmp.x = left;
-//                        tmp.y = top + i;
-//                        leftStopFlag = checkCollisons(tmp,r);
-//                }
-//
-//        //ustalanie nowych wsp
-//        if (p.x-1 > this->bounds.topLeft.x) 
-//                left = p.x - 1;
-//        else 
-//                leftStopFlag = true;
-//
-//        if (p.x + 1 < this->bounds.bottomRight.x) 
-//                right = p.x + 1;
-//        else 
-//                rightStopFlag = true;
-//
-//        if (p.y + 1 > this->bounds.topLeft.y) 
-//                top = p.y - 1;
-//        else 
-//                topStopFlag = true;
-//
-//        if (p.y + 1 < this->bounds.bottomRight.y)
-//                bottom = p.y + 1;
-//        else 
-//                bottomStopFlag = true;
-//    }
-//
-//Rect ret;
-//ret.topLeft.y = top;
-//ret.topLeft.x = left;
-//ret.bottomRight.y = bottom;
-//ret.bottomRight.x = right;
-//
-//return ret;
-//}
-
 void QuadTree::printTree(std::string const& name)
 {
     std::string lvlSpaceNode = "", lvlSpaceRect = "";
@@ -355,16 +269,4 @@ void QuadTree::printTree(std::string const& name)
             LR->printTree("LR");
             LL->printTree("LL");
     }
-}
-
-void QuadTree::debugFunction()
-{
-    if (isSplited)
-    {
-        this->UL->debugFunction();
-        this->UR->debugFunction();
-        this->LR->debugFunction();
-        this->LL->debugFunction();
-    }
-    debug += this->objects.size();
 }
