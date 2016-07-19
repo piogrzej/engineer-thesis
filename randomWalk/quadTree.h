@@ -32,9 +32,9 @@ private:
 	void		split();
 
 public:
-                QuadTree(int pLevel, Rect const& bounds);//konstruktor
+            QuadTree(int pLevel, Rect const& bounds);//konstruktor
 	bool	isInBounds(point const& p);
-        bool	isInBounds(Rect const& r);
+    bool	isInBounds(Rect const& r);
 	void	clear();
 	bool	insert(Rect const& r);
 	Rect	getObjectAtIndex(int index);

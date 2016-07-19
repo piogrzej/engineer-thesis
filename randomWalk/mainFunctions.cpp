@@ -100,7 +100,6 @@ int getIndex(REAL64_t intg[NSAMPLE + 1], double rand){
 
 Rect RandomWalk(Rect R, QuadTree* mainTree)
 {        
-
 	REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
 	UINT32_t Nsample = NSAMPLE;
 

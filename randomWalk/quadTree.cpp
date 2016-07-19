@@ -43,6 +43,18 @@ bool QuadTree::isInBounds(Rect const&  r)
         return false;
 }
 
+bool QuadTree::isInBounds(point const&  p)
+{
+	if (p.x >= this->bounds.topLeft.x &&
+		p.y >= this->bounds.topLeft.y &&
+		p.x <= this->bounds.bottomRight.x &&
+		p.x <= this->bounds.bottomRight.y
+		)
+		return true;
+	else
+		return false;
+}
+
 void QuadTree::clear()
 {
     if (this != nullptr)
@@ -149,24 +161,6 @@ bool QuadTree::insert(Rect const&  r)
     }
     return false;//nigdy nie powinno do tego dojsc//jedyne wytlumacznie max level lub obszar o bardzo malym rozmiarze//nie jestem pewien, do sprawdzenia!
 }
-
-/*QuadTree QuadTree::findRect(Rect r){//NIEPRZETESTOWANE!
-    if(listContains(&(this->objects), r)) return *this;//sprawdzamy czy Rect r zawiera sie w liscie obiektow
-    if (this->UL != NULL){
-        if (this->UL->isInBounds(r))
-            return this->UL->findRect(r);
-        if (this->UR->isInBounds(r))
-            return this->UR->findRect(r);
-        if (this->LR->isInBounds(r))
-            return this->LR->findRect(r);
-        if (this->LL->isInBounds(r))
-            return this->LR->findRect(r);
-    }
-    else{
-        assert(0);
-        return *this;
-    }
-}*/
 
 void QuadTree::retrieve(std::list<Rect> *returnedRects, Rect const& r)
 {
@@ -275,16 +269,4 @@ void QuadTree::printTree(std::string const& name)
             LR->printTree("LR");
             LL->printTree("LL");
     }
-}
-
-void QuadTree::debugFunction()
-{
-    if (isSplited)
-    {
-        this->UL->debugFunction();
-        this->UR->debugFunction();
-        this->LR->debugFunction();
-        this->LL->debugFunction();
-    }
-    debug += this->objects.size();
 }
