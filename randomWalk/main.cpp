@@ -63,7 +63,6 @@ int main(int argc, char *argv[])
 	ErrorHandler::getInstance() >> "Poczatkowy: " >> start;
 	ErrorHandler::getInstance() >> "Znaleziony: " >> founded;
 
-	mainTree->debugFunction();
 	mainTree->clear();
 
 	return 0;
