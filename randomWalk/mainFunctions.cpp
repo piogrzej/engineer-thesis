@@ -99,41 +99,40 @@ int getIndex(REAL64_t intg[NSAMPLE + 1], double rand){
 }
 
 Rect RandomWalk(Rect R, QuadTree* mainTree)
-{       
+{        
 	REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
 	UINT32_t Nsample = NSAMPLE;
 
 	precompute_unit_square_green(g, dgdx, dgdy, intg, Nsample);//wyliczanie funkcji greena
 
-	rng_init(2);//inicjalizacja genaeratora
+	rng_init(3);//inicjalizacja genaeratora
 
 	point p;
 	double r;
 	int index;
-
+	bool isCollison;
 	Rect output, square = R.createGaussianSurface(1.5);
+    bool broken = false;
 
-        bool broken = false;
-        //srand(time(NULL));
-        std::cout<<"Startinging rect: "<<R.topLeft.x <<" "<<R.topLeft.y<<" "<<R.bottomRight.x<<" "<<R.bottomRight.y << std::endl;
 	do
 	{
 		r = myrand() / (double)(MY_RAND_MAX);
-                //r = (double)rand()/double(RAND_MAX);
 		index = getIndex(intg, r);
 		p = square.getPointFromNindex(index, NSAMPLE);
-                std::cout<< p.x <<" "<<p.y<<std::endl;
-                if(false==mainTree->isInBounds(p)){
-                    broken = true;
-                    break;
-                }
+        std::cout<< p.x <<" "<<p.y<<std::endl;
+        if(false==mainTree->isInBounds(p)){
+            broken = true;
+            break;
+        }
 		square = mainTree->drawBiggestSquareAtPoint(p);
+		isCollison = mainTree->checkCollisons(p, output);
 	}
-	while (false==mainTree->checkCollisons(p, output));
-        if(false==broken)
-            std::cout<<"Ending rect: "<<output.topLeft.x <<" "<<output.topLeft.y<<" "<<output.bottomRight.x<<" "<<output.bottomRight.y << std::endl;
-        else
-            std::cout<<"Random walk is out of the bounds!"<<std::endl;
+	while (false == isCollison);
+
+    if(false==broken)
+        std::cout<<"Ending rect: "<<output.topLeft.x <<" "<<output.topLeft.y<<" "<<output.bottomRight.x<<" "<<output.bottomRight.y << std::endl;
+    else
+        std::cout<<"Random walk is out of the bounds!"<<std::endl;
 	//narazie pusty output
 	return output;
 }
