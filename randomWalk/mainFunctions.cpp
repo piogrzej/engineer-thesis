@@ -1,5 +1,5 @@
 #include "mainFunctions.h"
-
+#include "ErrorHandler.h"
 
 void pointsFormLine(point * topLeft, point * bottomRight, char * line)
 {
@@ -110,7 +110,7 @@ Rect RandomWalk(Rect R, QuadTree* mainTree)
 	point p;
 	double r;
 	int index;
-	bool isCollison;
+	bool isCollison = false;
 	Rect output, square = R.createGaussianSurface(1.5);
     bool broken = false;
 
@@ -119,13 +119,12 @@ Rect RandomWalk(Rect R, QuadTree* mainTree)
 		r = myrand() / (double)(MY_RAND_MAX);
 		index = getIndex(intg, r);
 		p = square.getPointFromNindex(index, NSAMPLE);
-        std::cout<< p.x <<" "<<p.y<<std::endl;
-        if(false==mainTree->isInBounds(p)){
-            broken = true;
-            break;
+        ErrorHandler::getInstance() << p.x << " " << p.y << "\n";;
+        if(mainTree->isInBounds(p))
+		{
+			square = mainTree->drawBiggestSquareAtPoint(p);
+			isCollison = mainTree->checkCollisons(p, output);
         }
-		square = mainTree->drawBiggestSquareAtPoint(p);
-		isCollison = mainTree->checkCollisons(p, output);
 	}
 	while (false == isCollison);
 

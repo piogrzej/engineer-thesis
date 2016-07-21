@@ -1,5 +1,5 @@
 #include "quadTree.h"
-
+#include "ErrorHandler.h"
 #include <string>
 
 QuadTree::QuadTree(int level, Rect const& bounds) {
@@ -256,10 +256,11 @@ void QuadTree::printTree(std::string const& name)
                     lvlSpaceNode += "|  ";
             lvlSpaceRect += "|  ";
     }
-    std::cout << lvlSpaceNode << name << " objects: " << this->objects.size() << std::endl;
+    ErrorHandler::getInstance() << lvlSpaceNode << name << " objects: " << this->objects.size() << "\n";
     lvlSpaceRect += "|---";
-    for(i=this->objects.begin(); i != this->objects.end(); ++i){
-        std::cout << lvlSpaceRect << *i;
+    for(i=this->objects.begin(); i != this->objects.end(); ++i)
+    {
+        ErrorHandler::getInstance() << lvlSpaceRect << *i;
     }
 
     if (isSplited)
