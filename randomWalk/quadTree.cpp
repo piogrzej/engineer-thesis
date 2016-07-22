@@ -48,7 +48,7 @@ bool QuadTree::isInBounds(point const&  p)
 	if (p.x >= this->bounds.topLeft.x &&
 		p.y >= this->bounds.topLeft.y &&
 		p.x <= this->bounds.bottomRight.x &&
-		p.x <= this->bounds.bottomRight.y
+		p.y <= this->bounds.bottomRight.y
 		)
 		return true;
 	else

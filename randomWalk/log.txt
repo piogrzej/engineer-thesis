@@ -1,3 +1,5 @@
-Parser: 41 micros 
+Parser: 49 micros 
 Create tree: 6 micros 
-Rect TL: x:267, y:491  BR: x:407, y:550
+Random Walk: 5417 micros 
+Poczatkowy: Rect TL: x:449, y:328  BR: x:558, y:396
+Znaleziony: Rect TL: x:709, y:359  BR: x:829, y:425

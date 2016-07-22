@@ -1,6 +1,14 @@
 #ifndef MAINFUNCTIONS_H
 #define MAINFUNCTIONS_H
 
+#ifdef IGNORE_OUT_OF_BOUNDS_CASE
+#define SPECIAL_ACTION continue
+#define SPECIAL_VALUE_BOOLEAN false
+#else
+#define SPECIAL_ACTION break
+#define SPECIAL_VALUE_BOOLEAN true
+#endif
+
 #include<stdlib.h>//atoi
 #include<string.h>//strcmp
 #include<iostream>

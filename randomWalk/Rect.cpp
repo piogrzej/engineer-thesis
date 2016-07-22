@@ -30,51 +30,19 @@ bool Rect::cmpRect(Rect const& r2) const {
 		return false;
 }
 
-bool Rect::rectsCollision(Rect const& r2) const {
-	/*ponizsze warunki powinny takze wykryc sytuacje gdy r2 calkowiecie zawiera sie w r1*/
-	/*jezeli r2 upper/lower y zawiera sie miedzy r1 lower y i upper y*/
-	if ((this->topLeft.y <= r2.topLeft.y && r2.topLeft.y <= this->bottomRight.y) ||
-		(this->topLeft.y <= r2.bottomRight.y && r2.bottomRight.y <= this->bottomRight.y))
-	{
-            /*jezeli r2 left/right zawiera sie miedzy r1 left i right
-                    +----------+
-                    |          |
-            +-------+--+  r2   |
-            |       |  |       |
-            |    r1 +--+-------+
-            |          |
-            +----------+
-            */
-            if ((this->topLeft.x <= r2.topLeft.x && r2.topLeft.x <= this->bottomRight.x) ||
-                    (this->topLeft.x <= r2.bottomRight.x && r2.bottomRight.x <= this->bottomRight.x)) return true;
-            /*jezeli r2 left jest mniejsze od r1 left i r2 right jest wieksze od r2 right
-            +---------------------+
-            |                     |
-            |  +----------+  r2   |
-            +--+----------+-------+
-               |    r1	  |
-               |          |
-               +----------+
-            */
-            if (this->topLeft.x <= r2.topLeft.x && r2.bottomRight.x >= this->bottomRight.x) return true;
-	}
-	/*jezeli r2 left/right zawiera sie miedzy r1 left i right*/
-	else if ((this->topLeft.x <= r2.topLeft.x && r2.topLeft.x <= this->bottomRight.x) ||
-		(this->topLeft.x <= r2.bottomRight.x && r2.bottomRight.x <= this->bottomRight.x))
-	{
-            /*jezeli r2 upper/lower zaiwra sie miedzy r1 lower i upper
-            patrz rysunek wyzej*/
-            if ((this->topLeft.y <= r2.topLeft.y && r2.topLeft.y <= this->bottomRight.y) ||
-                    (this->topLeft.y <= r2.bottomRight.y && r2.bottomRight.y <= this->bottomRight.y)) return true;
-            /*jezeli r2 upper jest mniejszy od r1 upper i r2 lower jest wiekszy od r1 lower*/
-            if ((this->topLeft.y >= r2.topLeft.y && r2.bottomRight.y >= this->bottomRight.y)) return true;
+bool Rect::rectsCollision(Rect const& r2) const 
+{
+    if (bottomRight.x >= r2.topLeft.x &&
+        r2.bottomRight.x >= topLeft.x    &&
+        bottomRight.y >= r2.topLeft.y &&
+        r2.bottomRight.y >= topLeft.y)
+        return true;
 
-	}
 	return false;
 }
 
 bool Rect::rectContains(point p) const {
-	if ((topLeft.x <= p.x) && (topLeft.y <= p.y) && (bottomRight.x >= p.x) && (bottomRight.y >= p.y)) 
+	if ((p.x>=topLeft.x) && (p.y>=topLeft.y) && (p.x<=bottomRight.x) && (p.y<=bottomRight.y)) 
             return true;
 	else return false;
 }
