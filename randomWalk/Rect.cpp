@@ -35,7 +35,7 @@ bool Rect::rectsCollision(Rect const& r2) const
     if (bottomRight.x >= r2.topLeft.x &&
         r2.bottomRight.x >= topLeft.x    &&
         bottomRight.y >= r2.topLeft.y &&
-        r2.bottomRight.y >= topLeft.y)
+        r2.bottomRight.y >= topLeft.y)    
         return true;
 
 	return false;

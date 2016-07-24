@@ -1,9 +1,1 @@
 TODO:
-	1) look over:
-		-void QuadTree::getCollisionObjs(std::list<Rect> *returnedRects, Rect const&  r)
-		-void QuadTree::retrieve(std::list<Rect> *returnedRects, Rect const& r)
-		-Rect QuadTree::drawBiggestSquareAtPoint(point p)
-		-bool Rect::rectsCollision(Rect const& r2) const 
-		-bool QuadTree::checkCollisons(point p, Rect& r)
-		-bool QuadTree::checkCollisionObjs(point p, Rect& r)
-		-bool Rect::rectContains(point p) const

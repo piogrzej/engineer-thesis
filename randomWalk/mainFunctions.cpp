@@ -112,7 +112,7 @@ Rect RandomWalk(Rect R, QuadTree* mainTree)
 	int index;
 	bool isCollison;
 	Rect output, square = R.createGaussianSurface(1.5);
-    bool broken = false;
+        bool broken = false;
 
 	do
 	{

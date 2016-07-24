@@ -204,25 +204,26 @@ bool QuadTree::checkCollisionObjs(point p, Rect& r)
 
 bool QuadTree::checkCollisons(point p, Rect& r)
 {
+    bool returned=false;
     if (isSplited)
     {
         if (this->UL->bounds.rectContains(p))
-            return this->UL->checkCollisons(p,r);
+            returned = this->UL->checkCollisons(p,r);
         
         if (this->UR->bounds.rectContains(p))
-            return this->UR->checkCollisons(p,r);
+            returned = this->UR->checkCollisons(p,r);
         
         if (this->LR->bounds.rectContains(p))
-            return this->LR->checkCollisons(p,r);
+            returned = this->LR->checkCollisons(p,r);
         
         if (this->LL->bounds.rectContains(p))
-            return this->LL->checkCollisons(p,r);
+            returned = this->LL->checkCollisons(p,r);
     }
     //tutaj dla kazdego sprawdzenie bisectory lines
     if (this->checkCollisionObjs(p, r))//KOLIZJA
         return true;
     else
-        return false;//DOSZEDLEM DO KONCA BRAK KOLIZJI
+        return returned;
 }
 
 Rect QuadTree::drawBiggestSquareAtPoint(point p){
@@ -231,8 +232,9 @@ Rect QuadTree::drawBiggestSquareAtPoint(point p){
     while(true){
         if(true==this->bounds.rectContains(output)){
             this->retrieve(&collisions,output);
-            if(0<collisions.size())
+            if(collisions.size()>0){
                 return output;
+            }
             output.topLeft.x--;
             output.topLeft.y--;
             output.bottomRight.x++;
