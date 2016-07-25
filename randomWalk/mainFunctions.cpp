@@ -1,5 +1,5 @@
 #include "mainFunctions.h"
-
+#include "ErrorHandler.h"
 
 void pointsFormLine(point * topLeft, point * bottomRight, char * line)
 {
@@ -105,35 +105,37 @@ Rect RandomWalk(Rect R, QuadTree* mainTree)
 
 	precompute_unit_square_green(g, dgdx, dgdy, intg, Nsample);//wyliczanie funkcji greena
 
-	rng_init(1);//inicjalizacja genaeratora
+	rng_init(3);//inicjalizacja genaeratora
 
 	point p;
 	double r;
 	int index;
 	bool isCollison;
 	Rect output, square = R.createGaussianSurface(1.5);
-        bool broken = false;
+    bool broken = false;
 
 	do
 	{
 		r = myrand() / (double)(MY_RAND_MAX);
 		index = getIndex(intg, r);
 		p = square.getPointFromNindex(index, NSAMPLE);
-                std::cout<< p.x <<" "<<p.y<<std::endl;
-                if(false==mainTree->isInBounds(p)){
-                    broken = SPECIAL_VALUE_BOOLEAN;
-                    SPECIAL_ACTION;
-                }
+        ErrorHandler::getInstance() << p.x << "," << p.y << "\n";
+
+        if(false == mainTree->isInBounds(p) || R.rectContains(p))
+        {
+            broken = SPECIAL_VALUE_BOOLEAN;
+            SPECIAL_ACTION;
+        }
 		square = mainTree->drawBiggestSquareAtPoint(p);
 		isCollison = mainTree->checkCollisons(p, output);
 	}
 	while (false == isCollison);
 
-    if(false==broken)
-        std::cout<<"Ending rect: "<<output.topLeft.x <<" "<<output.topLeft.y<<" "<<output.bottomRight.x<<" "<<output.bottomRight.y << std::endl;
+    if (false == broken)
+        ErrorHandler::getInstance() >> "Ending: " >> output >> "\n";
     else
-        std::cout<<"Random walk is out of the bounds!"<<std::endl;
-	//narazie pusty output
+        ErrorHandler::getInstance() >> "Random walk is out of the bounds!" >> "\n";
+
 	return output;
 }
 

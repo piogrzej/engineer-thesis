@@ -1,5 +1,5 @@
 #include "quadTree.h"
-
+#include "ErrorHandler.h"
 #include <string>
 
 QuadTree::QuadTree(int level, Rect const& bounds) {
@@ -226,13 +226,15 @@ bool QuadTree::checkCollisons(point p, Rect& r)
         return returned;
 }
 
-Rect QuadTree::drawBiggestSquareAtPoint(point p){
+Rect QuadTree::drawBiggestSquareAtPoint(point p)
+{
     Rect output(point(p.x-1,p.y-1),point(p.x+1,p.y+1));
     std::list<Rect> collisions;
     while(true){
         if(true==this->bounds.rectContains(output)){
             this->retrieve(&collisions,output);
-            if(collisions.size()>0){
+            if(collisions.size()>0)
+            {
                 return output;
             }
             output.topLeft.x--;
@@ -258,10 +260,12 @@ void QuadTree::printTree(std::string const& name)
                     lvlSpaceNode += "|  ";
             lvlSpaceRect += "|  ";
     }
-    std::cout << lvlSpaceNode << name << " objects: " << this->objects.size() << std::endl;
+    ErrorHandler::getInstance() << lvlSpaceNode << name << " objects: " << this->objects.size() << "\n";
     lvlSpaceRect += "|---";
-    for(i=this->objects.begin(); i != this->objects.end(); ++i){
-        std::cout << lvlSpaceRect << *i;
+
+    for(i=this->objects.begin(); i != this->objects.end(); ++i)
+    {
+        ErrorHandler::getInstance() << lvlSpaceRect << *i << "\n";
     }
 
     if (isSplited)

@@ -130,8 +130,18 @@ point Rect::getPointFromNindex(int index, int Nsample) const {//MAM NADZIEJE ZE 
 		return ret;
 	}
 }
+bool Rect::operator==(const Rect & r2) const
+{
+    if (r2.topLeft.x == topLeft.x &&
+        r2.topLeft.y == topLeft.y &&
+        r2.bottomRight.x == bottomRight.x &&
+        r2.bottomRight.y == bottomRight.y)
+        return true;
+    else
+        return false;
+}
 ostream& operator<< (ostream &wyjscie, Rect const& ex)
 {
-	wyjscie << "Rect TL: x:" << ex.topLeft.x<<", y:" << ex.topLeft.y << "  BR: x:" << ex.bottomRight.x << ", y:" << ex.bottomRight.y << endl;
+	wyjscie << "Rect TL: x:" << ex.topLeft.x<<", y:" << ex.topLeft.y << "  BR: x:" << ex.bottomRight.x << ", y:" << ex.bottomRight.y;
 	return wyjscie;
 }
