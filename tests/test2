@@ -1,7 +1,5 @@
-magic
-tech mayukh
-timestamp 536610539
-<< metal3 >>
+Wymiary: 1050W X   1050H
+<< test >>
 rect 30 40 50 1030
 rect 1000 40 1020 1030
 rect 80 100 93 123
@@ -18,3 +16,4 @@ rect 200 100 300 180
 rect 320 100 420 180
 rect 190 850 290 964
 rect 320 850 420 964
+<< test >>

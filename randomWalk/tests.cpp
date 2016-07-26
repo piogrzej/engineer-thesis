@@ -58,7 +58,7 @@ void randomWalkTest(char* path, int ITER_NUM)
     mainTree->printTree("ROOT");
 
 
-    Layer& layer = parser.getLayerAt(0);
+    Layer layer = parser.getLayerAt(0);
     Rect start = layer.at(0);
     int pos;
     int* foundedRectCount = new int[layer.size()];

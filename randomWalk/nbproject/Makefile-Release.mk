@@ -45,7 +45,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/mempool.o \
 	${OBJECTDIR}/porttype.o \
 	${OBJECTDIR}/quadTree.o \
-	${OBJECTDIR}/randgen.o
+	${OBJECTDIR}/randgen.o \
+	${OBJECTDIR}/tests.o
 
 
 # C Compiler Flags
@@ -126,6 +127,11 @@ ${OBJECTDIR}/randgen.o: randgen.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/randgen.o randgen.cpp
+
+${OBJECTDIR}/tests.o: tests.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/tests.o tests.cpp
 
 # Subprojects
 .build-subprojects:
