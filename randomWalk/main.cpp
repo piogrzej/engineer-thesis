@@ -48,16 +48,6 @@ int main(int argc, char *argv[])
     time.stop("Create tree: ");
 
     mainTree->printTree("ROOT");
-        
-    //debug
-    std::list<Rect>* debugList = new std::list<Rect>();
-    Rect debugRect(point(370,310),point(440,320));
-    mainTree->retrieve(debugList,debugRect);
-    printList(*debugList);
-    delete(debugList);
-    Rect output;
-    std::cout<<mainTree->checkCollisons(point(362,250), output)<<std::endl;
-    //end of debug
 
 //    Rect start = parser.getLayerAt(0).at(10);
 //    time.start();

@@ -34,8 +34,7 @@ public:
 	point	getPointFromNindex(int index, int Nsample) const;
 	friend  ostream& operator<< (ostream&, Rect const&);
     bool    operator==(const Rect& r2) const;
-
-
+    bool    operator!=(const Rect& r2) const { return !(*this == r2); }
 };
 
 #endif

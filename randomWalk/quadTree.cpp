@@ -1,5 +1,7 @@
 #include "quadTree.h"
 #include "ErrorHandler.h"
+#include "mainFunctions.h"
+
 #include <string>
 
 QuadTree::QuadTree(int level, Rect const& bounds) {
@@ -45,14 +47,14 @@ bool QuadTree::isInBounds(Rect const&  r)
 
 bool QuadTree::isInBounds(point const&  p)
 {
-	if (p.x >= this->bounds.topLeft.x &&
-		p.y >= this->bounds.topLeft.y &&
-		p.x <= this->bounds.bottomRight.x &&
-		p.y <= this->bounds.bottomRight.y
-		)
-		return true;
-	else
-		return false;
+    if (p.x >= this->bounds.topLeft.x &&
+        p.y >= this->bounds.topLeft.y &&
+        p.x <= this->bounds.bottomRight.x &&
+        p.y <= this->bounds.bottomRight.y
+        )
+        return true;
+    else
+        return false;
 }
 
 void QuadTree::clear()
@@ -162,33 +164,31 @@ bool QuadTree::insert(Rect const&  r)
     return false;//nigdy nie powinno do tego dojsc//jedyne wytlumacznie max level lub obszar o bardzo malym rozmiarze//nie jestem pewien, do sprawdzenia!
 }
 
-void QuadTree::retrieve(std::list<Rect> *returnedRects, Rect const& r)
+bool QuadTree::checkCollisions(Rect const& r, const Rect &ignore)
 {
     if (isSplited)
     {
         if (this->UL->bounds.rectsCollision(r))
-                this->UL->retrieve(returnedRects, r);
+                return this->UL->checkCollisions(r, ignore);
 
         if (this->UR->bounds.rectsCollision(r))
-                this->UR->retrieve(returnedRects, r);        
+                return this->UR->checkCollisions(r, ignore);
 
         if (this->LR->bounds.rectsCollision(r))
-                this->LR->retrieve(returnedRects, r);
+                return this->LR->checkCollisions(r, ignore);
 
         if (this->LL->bounds.rectsCollision(r))
-                this->LL->retrieve(returnedRects, r);
+                return this->LL->checkCollisions(r, ignore);
     }
-    //tutaj dla kazdego sprawdzenie bisectory lines
-    this->getCollisionObjs(returnedRects, r);
+    return  this->getCollisionObjs(r, ignore);
 }
 
-
-void QuadTree::getCollisionObjs(std::list<Rect> *returnedRects, Rect const&  r){
-    std::list<Rect>::iterator i;
-    for(i=this->objects.begin(); i != this->objects.end(); ++i)
-        if(i->rectsCollision(r)){
-            returnedRects->push_front(*i);
-        }
+bool QuadTree::getCollisionObjs(Rect const&  r, const Rect &ignore)
+{
+        for (Rect const& i : objects)
+            if (i != ignore && i.rectsCollision(r))
+                return true;
+    return false;
 }
 
 bool QuadTree::checkCollisionObjs(point p, Rect& r)
@@ -230,10 +230,11 @@ Rect QuadTree::drawBiggestSquareAtPoint(point p)
 {
     Rect output(point(p.x-1,p.y-1),point(p.x+1,p.y+1));
     std::list<Rect> collisions;
-    while(true){
-        if(true==this->bounds.rectContains(output)){
-            this->retrieve(&collisions,output);
-            if(collisions.size()>0)
+    while(true)
+    {
+        if(true == bounds.rectContains(output))
+        {          
+            if(checkCollisions(output))
             {
                 return output;
             }
@@ -247,11 +248,51 @@ Rect QuadTree::drawBiggestSquareAtPoint(point p)
     return output;//potencjalnie niebezpieczne
 }
 
+Rect QuadTree::creatGaussianSurfFrom(Rect const & r, double const factor, double& resultFactor) // bez kolizji
+{
+    if (factor < 1)
+    {
+        ErrorHandler::getInstance() >> "CreateGaussian: Nieprawidlowy wspolczynnik!\n";
+        return r;
+    }
+
+    Rect surface;
+    bool isCollision = false;
+    bool isDividing = true;
+    bool isFirstIt = true;
+    double adjustedFactor = factor;
+    double leftBound = 1., righBound = factor;
+
+    for (int i = 0; i < GAUSSIAN_ACCURACY; i++)
+    {
+        surface = r.createGaussianSurface(adjustedFactor);
+        isCollision = (!isInBounds(surface) || checkCollisions(surface,r));
+
+        if (isFirstIt && !isCollision)
+            break;
+        if ((isCollision && !isDividing) ||
+            !isCollision &&  isDividing)
+        {
+            isDividing = !isDividing;
+        }
+
+        if (isDividing)
+            adjustedFactor = righBound = (leftBound + righBound) / 2.;
+        else
+            adjustedFactor = leftBound = (leftBound + righBound) / 2.;
+
+        isFirstIt = false;
+    }
+
+    resultFactor = adjustedFactor;
+    return surface;
+}
+
 void QuadTree::printTree(std::string const& name)
 {
     std::string lvlSpaceNode = "", lvlSpaceRect = "";
     std::list<Rect>::iterator i;
-    //list* iter = &objects;
+
     for (int i = 0; i < level; i++)
     {
             if (i + 1 == level)
