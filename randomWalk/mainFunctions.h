@@ -1,6 +1,16 @@
 #ifndef MAINFUNCTIONS_H
 #define MAINFUNCTIONS_H
 
+#define IGNORE_OUT_OF_BOUNDS_CASE
+
+#ifdef IGNORE_OUT_OF_BOUNDS_CASE
+#define SPECIAL_ACTION continue
+#define SPECIAL_VALUE_BOOLEAN false
+#else
+#define SPECIAL_ACTION break
+#define SPECIAL_VALUE_BOOLEAN true
+#endif
+
 #include<stdlib.h>//atoi
 #include<string.h>//strcmp
 #include<iostream>
@@ -12,6 +22,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define LINE_BUFFOR_SIZE 40
 #define NSAMPLE 200
+#define GAUSSIAN_ACCURACY 10
 
 //funkcje "glowne" przetwarzanie itd
 void pointsFormLine(point * topLeft, point * bottomRight, char * line);

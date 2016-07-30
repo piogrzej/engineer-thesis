@@ -46,6 +46,11 @@ Parser::~Parser()
 
 Rect Parser::getLayerSize(int layerIt)
 {
+    if (layerIt >= layers.size())
+    {
+        ErrorHandler::getInstance() >> "Nie ma takiej warstwy!\n";
+        return Rect();
+    }
 	int leftX, rightX, topY, bottomY;
 	Layer layer = layers[layerIt];
 	bool start = true;
