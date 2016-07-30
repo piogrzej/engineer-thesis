@@ -100,6 +100,8 @@ int getIndex(REAL64_t intg[NSAMPLE + 1], double rand){
 
 Rect RandomWalk(Rect R, QuadTree* mainTree)
 {        
+    ErrorHandler::getInstance() >> "Starting: " >> R >> "\n";
+
     REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
     UINT32_t Nsample = NSAMPLE;
 
@@ -113,6 +115,8 @@ Rect RandomWalk(Rect R, QuadTree* mainTree)
     bool isCollison;
     double adjustedFactor;
     Rect output, square = mainTree->creatGaussianSurfFrom(R, 1.5, adjustedFactor);
+    ErrorHandler::getInstance() >> adjustedFactor >> "\n";
+
     bool broken = false;
 
     do
