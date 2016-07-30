@@ -23,18 +23,18 @@ public:
 	point	topLeft;
 	point	bottomRight;
 
-	int	    getWidth() const;
-	int	    getHeigth() const;
+	int	getWidth() const;
+	int	getHeigth() const;
 	bool	cmpRect(Rect const& r2) const;
 	bool	rectsCollision(Rect const& r2) const;
 	bool	rectContains(point p) const;
-    bool	rectContains(Rect r) const;
+        bool	rectContains(Rect r) const;
 	Rect    createGaussianSurface(double factor) const;
 	int     getPerimeter() const;
 	point	getPointFromNindex(int index, int Nsample) const;
 	friend  ostream& operator<< (ostream&, Rect const&);
-    bool    operator==(const Rect& r2) const;
-    bool    operator!=(const Rect& r2) const { return !(*this == r2); }
+        bool    operator==(const Rect& r2) const;
+        bool    operator!=(const Rect& r2) const { return !(*this == r2); }
 };
 
 #endif

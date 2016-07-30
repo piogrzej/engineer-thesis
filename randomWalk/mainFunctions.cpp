@@ -98,6 +98,11 @@ int getIndex(REAL64_t intg[NSAMPLE + 1], double rand){
     }
 }
 
+int getDistanceRomTwoPoints(point p1, point p2)
+{
+    return (int)sqrt((p1.x-p2.x)*(p1.x-p2.x)+(p1.y-p2.y)*(p1.y-p2.y));
+}
+
 Rect RandomWalk(Rect R, QuadTree* mainTree)
 {        
     ErrorHandler::getInstance() >> "Starting: " >> R >> "\n";

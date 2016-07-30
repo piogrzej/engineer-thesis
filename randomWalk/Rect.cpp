@@ -54,20 +54,20 @@ bool Rect::rectContains(Rect r) const {
 }
 
 Rect Rect::createGaussianSurface(double factor) const {
-	double middleX = double(topLeft.x + bottomRight.x) / 2.;
-	double middleY = double(topLeft.y + bottomRight.y) / 2.;
-	double vectorX = double(topLeft.x) - middleX;
-	double vectorY = double(topLeft.y) - middleY;
-	Rect gaussSurface;
-	vectorX *= factor;
-	vectorY *= factor;
-	
-	gaussSurface.topLeft.x = int(round(middleX + vectorX));
-	gaussSurface.topLeft.y = int(round(middleY + vectorY));
-	gaussSurface.bottomRight.x = int(round(middleX - vectorX));
-	gaussSurface.bottomRight.y = int(round(middleY - vectorY));
+    double middleX = double(topLeft.x + bottomRight.x) / 2.;
+    double middleY = double(topLeft.y + bottomRight.y) / 2.;
+    double vectorX = double(topLeft.x) - middleX;
+    double vectorY = double(topLeft.y) - middleY;
+    Rect gaussSurface;
+    vectorX *= factor;
+    vectorY *= factor;
 
-	return gaussSurface;
+    gaussSurface.topLeft.x = int(round(middleX + vectorX));
+    gaussSurface.topLeft.y = int(round(middleY + vectorY));
+    gaussSurface.bottomRight.x = int(round(middleX - vectorX));
+    gaussSurface.bottomRight.y = int(round(middleY - vectorY));
+
+    return gaussSurface;
 }
 
 int Rect::getPerimeter() const

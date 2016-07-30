@@ -21,32 +21,32 @@
 class QuadTree{
 
 private:
-    int		level;
+    int             level;
     std::list<Rect> objects;
-    Rect		bounds;
-    QuadTree*	UL;
-    QuadTree*	UR;
-    QuadTree*	LR;
-    QuadTree*	LL;
-    bool		isSplited;
+    Rect            bounds;
+    QuadTree*       UL;
+    QuadTree*       UR;
+    QuadTree*       LR;
+    QuadTree*       LL;
+    bool            isSplited;
 
-    void		split();
+    void    split();
 
 public:
             QuadTree(int pLevel, Rect const& bounds);
     bool    isInBounds(point const& p);
     bool    isInBounds(Rect const& r);
     void    clear();
-    bool	insert(Rect const& r);
-    Rect	getObjectAtIndex(int index);
-    void	addToObjects(Rect const& r);
-    void	deleteObjects();
-    bool	checkCollisions(Rect const& r, const Rect &ignore = Rect());
-    bool	getCollisionObjs(Rect const& r, const Rect &ignore);
-    bool	checkCollisionObjs(point p, Rect &r);
-    bool	checkCollisons(point p, Rect& r);
-    Rect	drawBiggestSquareAtPoint(point p);
-    void	printTree(std::string const & name);
+    bool    insert(Rect const& r);
+    Rect    getObjectAtIndex(int index);
+    void    addToObjects(Rect const& r);
+    void    deleteObjects();
+    bool    checkCollisions(Rect const& r, const Rect &ignore = Rect());
+    bool    getCollisionObjs(Rect const& r, const Rect &ignore);
+    bool    checkCollisionObjs(point p, Rect &r);
+    bool    checkCollisons(point p, Rect& r);
+    Rect    drawBiggestSquareAtPoint(point p);
+    void    printTree(std::string const & name);
     Rect    creatGaussianSurfFrom(Rect const & r,double const factor, double& resultFactor);
 };
 

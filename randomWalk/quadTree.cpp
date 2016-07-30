@@ -228,22 +228,32 @@ bool QuadTree::checkCollisons(point p, Rect& r)
 
 Rect QuadTree::drawBiggestSquareAtPoint(point p)
 {
+    int dist = this->bounds.getHeigth()/20;
+    bool maxReached=false;
+    int MIN_MOVE_DIST=3;
     Rect output(point(p.x-1,p.y-1),point(p.x+1,p.y+1));
-    std::list<Rect> collisions;
     while(true)
     {
-        if(true == bounds.rectContains(output))
-        {          
-            if(checkCollisions(output))
-            {
-                return output;
-            }
-            output.topLeft.x--;
-            output.topLeft.y--;
-            output.bottomRight.x++;
-            output.bottomRight.y++;
+        if(true==maxReached && dist <= MIN_MOVE_DIST){
+            return output;
         }
-        else break;
+        else if(true==checkCollisions(output))
+        {
+            maxReached = true;
+            dist/=2;
+            output.topLeft.x+=dist;
+            output.topLeft.y+=dist;
+            output.bottomRight.x-=dist;
+            output.bottomRight.y-=dist;
+        }
+        else
+        {
+            if(true==maxReached)  dist /=2;
+            output.topLeft.x-=dist;
+            output.topLeft.y-=dist;
+            output.bottomRight.x+=dist;
+            output.bottomRight.y+=dist;
+        }
     }
     return output;//potencjalnie niebezpieczne
 }
