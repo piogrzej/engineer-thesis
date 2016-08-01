@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 
     mainTree = new QuadTree(0, spaceSize);//start Tree
     time.start();
-    createTree(mainTree, parser.getLayerAt(00));
+    createTree(mainTree, parser.getLayerAt(0));
     time.stop("Create tree: ");
 
     mainTree->printTree("ROOT");
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 //    time.stop("Random Walk: ");
 //    ErrorHandler::getInstance() >> "Poczatkowy: " >> start;
 //    ErrorHandler::getInstance() >> "Znaleziony: " >> founded;
-    randomWalkTest("../tests/test1",100);
+    randomWalkTest("../tests/test2",100);
 
     mainTree->clear();
 

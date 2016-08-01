@@ -118,9 +118,8 @@ Rect RandomWalk(Rect R, QuadTree* mainTree)
     double r;
     int index;
     bool isCollison;
-    double adjustedFactor;
-    Rect output, square = mainTree->creatGaussianSurfFrom(R, 1.5, adjustedFactor);
-    ErrorHandler::getInstance() >> adjustedFactor >> "\n";
+    Rect output, square = mainTree->creatGaussianSurfFrom(R, 1.5);
+
 
     bool broken = false;
 

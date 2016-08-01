@@ -228,7 +228,7 @@ bool QuadTree::checkCollisons(point p, Rect& r)
 
 Rect QuadTree::drawBiggestSquareAtPoint(point p)
 {
-    int dist = this->bounds.getHeigth()/20;
+    int dist = this->bounds.getHeigth() * BIGGEST_SQUARE_INIT;
     bool maxReached=false;
     int MIN_MOVE_DIST=3;
     Rect output(point(p.x-1,p.y-1),point(p.x+1,p.y+1));
@@ -258,25 +258,23 @@ Rect QuadTree::drawBiggestSquareAtPoint(point p)
     return output;//potencjalnie niebezpieczne
 }
 
-Rect QuadTree::creatGaussianSurfFrom(Rect const & r, double const factor, double& resultFactor) // bez kolizji
+double QuadTree::getAdjustedGaussianFactor(Rect const& r, double const factor, FACTOR_TYPE type)
 {
-    if (factor < 1)
-    {
-        ErrorHandler::getInstance() >> "CreateGaussian: Nieprawidlowy wspolczynnik!\n";
-        return r;
-    }
-
-    Rect surface;
     bool isCollision = false;
     bool isDividing = true;
     bool isFirstIt = true;
     double adjustedFactor = factor;
     double leftBound = 1., righBound = factor;
 
+    Rect surface;
+
     for (int i = 0; i < GAUSSIAN_ACCURACY; i++)
     {
-        surface = r.createGaussianSurface(adjustedFactor);
-        isCollision = (!isInBounds(surface) || checkCollisions(surface,r));
+        surface = (type == FACTOR_X) ? 
+                r.createGaussianSurfaceX(adjustedFactor) :
+                r.createGaussianSurfaceY(adjustedFactor);
+
+        isCollision = (!isInBounds(surface) || checkCollisions(surface, r));
 
         if (isFirstIt && !isCollision)
             break;
@@ -293,9 +291,23 @@ Rect QuadTree::creatGaussianSurfFrom(Rect const & r, double const factor, double
 
         isFirstIt = false;
     }
+    return adjustedFactor;
+}
 
-    resultFactor = adjustedFactor;
-    return surface;
+
+Rect QuadTree::creatGaussianSurfFrom(Rect const & r, double const factor) // bez kolizji
+{
+    if (factor < 1)
+    {
+        ErrorHandler::getInstance() >> "CreateGaussian: Nieprawidlowy wspolczynnik!\n";
+        return r;
+    }
+
+    double factorX = getAdjustedGaussianFactor(r, factor, FACTOR_X);
+    double factorY = getAdjustedGaussianFactor(r, factor, FACTOR_Y);
+    ErrorHandler::getInstance() >> factorX >> "," >> factorY >> "\n";
+
+    return r.createGaussianSurface(factorX, factorY);
 }
 
 void QuadTree::printTree(std::string const& name)

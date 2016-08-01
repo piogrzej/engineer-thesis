@@ -71,7 +71,7 @@ void randomWalkTest(char* path, int ITER_NUM)
     for (int i = 0; i < ITER_NUM; i++)
     {
         Rect founded = RandomWalk(start, mainTree);
-        pos = getRectIt(parser.getLayerAt(0),founded);
+        pos = getRectIt(layer,founded);
         if (pos != -1)
             foundedRectCount[pos] += 1;
         else

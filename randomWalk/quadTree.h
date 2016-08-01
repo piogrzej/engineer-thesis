@@ -18,6 +18,12 @@
 +---+---+
 */
 
+enum FACTOR_TYPE
+{
+    FACTOR_X,
+    FACTOR_Y
+};
+
 class QuadTree{
 
 private:
@@ -30,7 +36,8 @@ private:
     QuadTree*       LL;
     bool            isSplited;
 
-    void    split();
+    void            split();
+    double          getAdjustedGaussianFactor(Rect const& r, double const factor, FACTOR_TYPE type);
 
 public:
             QuadTree(int pLevel, Rect const& bounds);
@@ -47,7 +54,8 @@ public:
     bool    checkCollisons(point p, Rect& r);
     Rect    drawBiggestSquareAtPoint(point p);
     void    printTree(std::string const & name);
-    Rect    creatGaussianSurfFrom(Rect const & r,double const factor, double& resultFactor);
+    Rect    creatGaussianSurfFrom(Rect const & r,double const factor);
+
 };
 
 #endif
