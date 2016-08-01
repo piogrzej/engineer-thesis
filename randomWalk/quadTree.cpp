@@ -228,16 +228,24 @@ bool QuadTree::checkCollisons(point p, Rect& r)
 
 Rect QuadTree::drawBiggestSquareAtPoint(point p)
 {
-    int dist = this->bounds.getHeigth() * BIGGEST_SQUARE_INIT;
+    int dist;
+    if (bounds.getHeigth() > bounds.getWidth)
+        dist = bounds.getHeigth();
+    else
+        dist = bounds.getWidth();
+
+    dist *= BIGGEST_SQUARE_INIT_FACTOR;
+
     bool maxReached=false;
     int MIN_MOVE_DIST=3;
     Rect output(point(p.x-1,p.y-1),point(p.x+1,p.y+1));
     while(true)
     {
-        if(true==maxReached && dist <= MIN_MOVE_DIST){
+        if(true == maxReached && dist <= MIN_MOVE_DIST)
+        {
             return output;
         }
-        else if(true==checkCollisions(output))
+        else if(true == checkCollisions(output))
         {
             maxReached = true;
             dist/=2;
@@ -248,7 +256,8 @@ Rect QuadTree::drawBiggestSquareAtPoint(point p)
         }
         else
         {
-            if(true==maxReached)  dist /=2;
+            if(true == maxReached)  
+                dist /=2;
             output.topLeft.x-=dist;
             output.topLeft.y-=dist;
             output.bottomRight.x+=dist;

@@ -23,7 +23,7 @@
 #define LINE_BUFFOR_SIZE 40
 #define NSAMPLE 200
 #define GAUSSIAN_ACCURACY 10
-#define BIGGEST_SQUARE_INIT 0.05
+#define BIGGEST_SQUARE_INIT_FACTOR 0.05
 
 //funkcje "glowne" przetwarzanie itd
 void pointsFormLine(point * topLeft, point * bottomRight, char * line);
