@@ -1,5 +1,3 @@
-//V05-URUCHOMIONE FUNKCJE GREENA
-
 #include "mainFunctions.h"
 #include "Parser.h"
 #include "ErrorHandler.h"
@@ -7,12 +5,10 @@
 #include "tests.h"
 #include <iostream>
 
-int debug=0;
-
 inline bool checkFile(char* name) 
 {
-	ifstream f(name);
-	return f.good();
+    ifstream f(name);
+    return f.good();
 }
 
 int main(int argc, char *argv[])
@@ -23,18 +19,18 @@ int main(int argc, char *argv[])
                         //C:\Users\Marcin\Documents\inzynierka\sigfill_chunk_x.gk
     if (argc > 1)
     {
-            path = argv[1];
+        path = argv[1];
     }
     else
     {
-            scanf("%s", inputPath);//wejscie
-            path = inputPath;
+        scanf("%s", inputPath);//wejscie
+        path = inputPath;
     }
 
     if (false == checkFile(path))
     {
-            ErrorHandler::getInstance() << "Nie ma takiego pliku!";
-            return 0;
+        ErrorHandler::getInstance() << "Nie ma takiego pliku!";
+        return 0;
     }
     Timer time;
     time.start();

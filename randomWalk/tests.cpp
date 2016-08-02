@@ -1,4 +1,3 @@
-
 #include "ErrorHandler.h"
 #include "tests.h"
 #include "green.h"
@@ -12,26 +11,26 @@
 
 void randomIndexTest()
 {
-	REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
-	UINT32_t Nsample = NSAMPLE;
-	int results[ITER];
+    REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
+    UINT32_t Nsample = NSAMPLE;
+    int results[ITER];
 
-	precompute_unit_square_green(g, dgdx, dgdy, intg, Nsample);//wyliczanie funkcji greena
+    precompute_unit_square_green(g, dgdx, dgdy, intg, Nsample);//wyliczanie funkcji greena
 
-	rng_init(3);//inicjalizacja genaeratora
+    rng_init(3);//inicjalizacja genaeratora
 
-	double s = 0,s2 = 0 ,d = 0, sig = 0, odchylenie = 0;
-	int index, index2;
-	for (int i = 0; i < ITER; i++)
-	{
-		double randNum = myrand() / (double)(MY_RAND_MAX);
-		index = getIndex(intg, randNum);
-		s += index;
-		cout << index << " ";
-	}
-	s = s / ITER;
-	cout << endl;
-	cout << "srednia=" << s << endl;
+    double s = 0,s2 = 0 ,d = 0, sig = 0, odchylenie = 0;
+    int index, index2;
+    for (int i = 0; i < ITER; i++)
+    {
+        double randNum = myrand() / (double)(MY_RAND_MAX);
+        index = getIndex(intg, randNum);
+        s += index;
+        cout << index << " ";
+    }
+    s = s / ITER;
+    cout << endl;
+    cout << "srednia=" << s << endl;
 }
 
 int getRectIt(Layer const& layer, Rect const& rect)

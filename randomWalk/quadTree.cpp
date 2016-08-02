@@ -202,30 +202,6 @@ bool QuadTree::checkCollisionObjs(point p, Rect& r)
     return false;
 }
 
-//bool QuadTree::checkCollisons(point p, Rect& r)
-//{
-//    bool returned=false;
-//    if (true==isSplited)
-//    {
-//        if (this->UL->bounds.rectContains(p))
-//            returned = this->UL->checkCollisons(p,r);
-//        
-//        else if (this->UR->bounds.rectContains(p))
-//            returned = this->UR->checkCollisons(p,r);
-//        
-//        else if (this->LR->bounds.rectContains(p))
-//            returned = this->LR->checkCollisons(p,r);
-//        
-//        else if (this->LL->bounds.rectContains(p))
-//            returned = this->LL->checkCollisons(p,r);
-//    }
-//    //tutaj dla kazdego sprawdzenie bisectory lines
-//    if (this->checkCollisionObjs(p, r))//KOLIZJA
-//        return true;
-//    else
-//        return returned;
-//}
-
 bool QuadTree::checkCollisons(point p, Rect& r)
 {
     QuadTree* current=this,*next;
