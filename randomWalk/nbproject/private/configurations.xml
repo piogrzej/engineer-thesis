@@ -28,8 +28,9 @@
         <runcommandpicklist>
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" ../surface.test</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" ../tests/test</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" ../surface.test</runcommand>
+        <runcommand>"${OUTPUT_PATH}" ../tests/test</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>

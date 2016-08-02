@@ -61,15 +61,15 @@ void QuadTree::clear()
 {
     if (this != nullptr)
     {
-            this->objects.clear();
-            this->UL->clear();
-            this->UL = nullptr;
-            this->UR->clear();
-            this->UR = nullptr;
-            this->LR->clear();
-            this->LR = nullptr;
-            this->LL->clear();
-            this->LL = nullptr;
+        this->objects.clear();
+        this->UL->clear();
+        this->UL = nullptr;
+        this->UR->clear();
+        this->UR = nullptr;
+        this->LR->clear();
+        this->LR = nullptr;
+        this->LL->clear();
+        this->LL = nullptr;
     }
 }
 
@@ -120,33 +120,33 @@ bool QuadTree::insert(Rect const&  r)
     }
     else if (this->objects.size() >= MAX_OBJECTS && false == isSplited)
     {
-            //DZIELIMY I obiekty z listy wrzucamy do odpowiednich kwadratow
-            this->split();//podzial
-            counter = this->objects.size();
-            for(int i=0;i<counter;++i)
-            {
-                tmp = objects.front();
-                this->objects.pop_front();
-                if (this->UL->insert(tmp)){
-                        counter--;
-                        continue;
-                }
-                if (this->UR->insert(tmp)){
-                        counter--;
-                        continue;
-                }
-                if (this->LR->insert(tmp)){
-                        counter--;
-                        continue;
-                }
-                if (this->LL->insert(tmp)){
-                        counter--;
-                        continue;
-                }
-                //jezeli powyzsze niespelnione to jest nachodzi na bisectory line i powinno zostac
-                this->addToObjects(tmp);
+        //DZIELIMY I obiekty z listy wrzucamy do odpowiednich kwadratow
+        this->split();//podzial
+        counter = this->objects.size();
+        for(int i=0;i<counter;++i)
+        {
+            tmp = objects.front();
+            this->objects.pop_front();
+            if (this->UL->insert(tmp)){
                 counter--;
+                continue;
             }
+            if (this->UR->insert(tmp)){
+                counter--;
+                continue;
+            }
+            if (this->LR->insert(tmp)){
+                counter--;
+                continue;
+            }
+            if (this->LL->insert(tmp)){
+                counter--;
+                continue;
+            }
+            //jezeli powyzsze niespelnione to jest nachodzi na bisectory line i powinno zostac
+            this->addToObjects(tmp);
+            counter--;
+        }
     }
     if (this->level < MAX_LEVELS && isSplited)
     {
@@ -202,34 +202,63 @@ bool QuadTree::checkCollisionObjs(point p, Rect& r)
     return false;
 }
 
+//bool QuadTree::checkCollisons(point p, Rect& r)
+//{
+//    bool returned=false;
+//    if (true==isSplited)
+//    {
+//        if (this->UL->bounds.rectContains(p))
+//            returned = this->UL->checkCollisons(p,r);
+//        
+//        else if (this->UR->bounds.rectContains(p))
+//            returned = this->UR->checkCollisons(p,r);
+//        
+//        else if (this->LR->bounds.rectContains(p))
+//            returned = this->LR->checkCollisons(p,r);
+//        
+//        else if (this->LL->bounds.rectContains(p))
+//            returned = this->LL->checkCollisons(p,r);
+//    }
+//    //tutaj dla kazdego sprawdzenie bisectory lines
+//    if (this->checkCollisionObjs(p, r))//KOLIZJA
+//        return true;
+//    else
+//        return returned;
+//}
+
 bool QuadTree::checkCollisons(point p, Rect& r)
 {
-    bool returned=false;
-    if (isSplited)
-    {
-        if (this->UL->bounds.rectContains(p))
-            returned = this->UL->checkCollisons(p,r);
-        
-        if (this->UR->bounds.rectContains(p))
-            returned = this->UR->checkCollisons(p,r);
-        
-        if (this->LR->bounds.rectContains(p))
-            returned = this->LR->checkCollisons(p,r);
-        
-        if (this->LL->bounds.rectContains(p))
-            returned = this->LL->checkCollisons(p,r);
+    QuadTree* current=this,*next;
+    while(true){
+        if (true==current->isSplited)
+        {
+            if (current->UL->bounds.rectContains(p))
+                next = current->UL;
+
+            else if (current->UR->bounds.rectContains(p))
+                next = current->UR;
+
+            else if (current->LR->bounds.rectContains(p))
+                next = current->LR;
+
+            else if (current->LL->bounds.rectContains(p))
+                next = current->LL;
+        }
+        //tutaj dla kazdego sprawdzenie bisectory lines
+        if (true==current->checkCollisionObjs(p, r))//KOLIZJA
+            return true;
+        else if(false==current->isSplited)
+            return false;
+        else
+            current=next;
+            
     }
-    //tutaj dla kazdego sprawdzenie bisectory lines
-    if (this->checkCollisionObjs(p, r))//KOLIZJA
-        return true;
-    else
-        return returned;
 }
 
 Rect QuadTree::drawBiggestSquareAtPoint(point p)
 {
     int dist;
-    if (bounds.getHeigth() > bounds.getWidth)
+    if (bounds.getHeigth() > bounds.getWidth())
         dist = bounds.getHeigth();
     else
         dist = bounds.getWidth();
@@ -326,11 +355,11 @@ void QuadTree::printTree(std::string const& name)
 
     for (int i = 0; i < level; i++)
     {
-            if (i + 1 == level)
-                    lvlSpaceNode += "|--";
-            else
-                    lvlSpaceNode += "|  ";
-            lvlSpaceRect += "|  ";
+        if (i + 1 == level)
+            lvlSpaceNode += "|--";
+        else
+            lvlSpaceNode += "|  ";
+        lvlSpaceRect += "|  ";
     }
     ErrorHandler::getInstance() << lvlSpaceNode << name << " objects: " << this->objects.size() << "\n";
     lvlSpaceRect += "|---";
@@ -342,9 +371,9 @@ void QuadTree::printTree(std::string const& name)
 
     if (isSplited)
     {
-            UL->printTree("UL");
-            UR->printTree("UR");
-            LR->printTree("LR");
-            LL->printTree("LL");
+        UL->printTree("UL");
+        UR->printTree("UR");
+        LR->printTree("LR");
+        LL->printTree("LL");
     }
 }

@@ -1,4 +1,4 @@
 #pragma once
 
 void randomIndexTest();
-void randomWalkTest(char* path, int ITER_NUM);
+void randomWalkTest(char* path, int ITER_NUM, int RECT_ID);

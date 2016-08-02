@@ -47,7 +47,7 @@ int getRectIt(Layer const& layer, Rect const& rect)
     return -1;
 }
 
-void randomWalkTest(char* path, int ITER_NUM)
+void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
 {
     ErrorHandler::getInstance() >> "TEST RandomWalk\n";
     Timer time;
@@ -59,7 +59,7 @@ void randomWalkTest(char* path, int ITER_NUM)
 
 
     Layer layer = parser.getLayerAt(0);
-    Rect start = layer.at(0);
+    Rect start = layer.at(RECT_ID);
     int pos;
     int* foundedRectCount = new int[layer.size()];
     std::fill(foundedRectCount, foundedRectCount + layer.size(), 0);
