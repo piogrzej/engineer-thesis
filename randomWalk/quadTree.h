@@ -17,6 +17,8 @@
 | 3 | 2 |
 +---+---+
 */
+class QuadTree;
+typedef QuadTree* QuadTreePtr;
 
 enum FACTOR_TYPE
 {
@@ -24,8 +26,8 @@ enum FACTOR_TYPE
     FACTOR_Y
 };
 
-class QuadTree{
-
+class QuadTree
+{
 private:
     int             level;
     std::list<Rect> objects;
@@ -38,8 +40,10 @@ private:
 
     void            split();
     double          getAdjustedGaussianFactor(Rect const& r, double const factor, FACTOR_TYPE type);
-
+   
 public:
+    static int      nodeCount;
+
             QuadTree(int pLevel, Rect const& bounds);
     bool    isInBounds(point const& p);
     bool    isInBounds(Rect const& r);
@@ -49,13 +53,15 @@ public:
     void    addToObjects(Rect const& r);
     void    deleteObjects();
     bool    checkCollisions(Rect const& r, const Rect &ignore = Rect());
-    bool    getCollisionObjs(Rect const& r, const Rect &ignore);
+    bool    checkCollisionsWithObjs(Rect const& r, const Rect &ignore);
     bool    checkCollisionObjs(point p, Rect &r);
     bool    checkCollisons(point p, Rect& r);
     Rect    drawBiggestSquareAtPoint(point p);
     void    printTree(std::string const & name);
     Rect    creatGaussianSurfFrom(Rect const & r,double const factor);
 
+    // HELPERS
+    void    addNodesToStack(QuadTreePtr* stackPtr, QuadTree* except, bool isUL, bool isUR, bool isLR, bool isLL);
 };
 
 #endif

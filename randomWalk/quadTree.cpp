@@ -4,7 +4,10 @@
 
 #include <string>
 
-QuadTree::QuadTree(int level, Rect const& bounds) {
+int QuadTree::nodeCount = 0;
+
+QuadTree::QuadTree(int level, Rect const& bounds) 
+{
     this->level = level;
     this->bounds = bounds;
     this->UL = nullptr;
@@ -12,9 +15,11 @@ QuadTree::QuadTree(int level, Rect const& bounds) {
     this->LR = nullptr;
     this->LL = nullptr;
     isSplited = false;
+    nodeCount++;
 }
 
-void QuadTree::deleteObjects(){
+void QuadTree::deleteObjects()
+{
     objects.clear();
 }
 
@@ -27,9 +32,12 @@ Rect QuadTree::getObjectAtIndex(int index)
 {
     int counter=0;
     std::list<Rect>::iterator i;
-    for(i=objects.begin(); i != objects.end(); ++i){
+
+    for(i=objects.begin(); i != objects.end(); ++i)
+    {
         counter++;
-        if(counter==index) return *i;
+        if(counter == index) 
+            return *i;
     }
 }
 
@@ -164,7 +172,8 @@ bool QuadTree::insert(Rect const&  r)
     return false;//nigdy nie powinno do tego dojsc//jedyne wytlumacznie max level lub obszar o bardzo malym rozmiarze//nie jestem pewien, do sprawdzenia!
 }
 
-bool QuadTree::checkCollisions(Rect const& r, const Rect &ignore)
+/*
+bool QuadTree::checkCollisions2(Rect const& r, const Rect &ignore)
 {
     if (isSplited)
     {
@@ -180,14 +189,76 @@ bool QuadTree::checkCollisions(Rect const& r, const Rect &ignore)
         if (this->LL->bounds.rectsCollision(r))
                 return this->LL->checkCollisions(r, ignore);
     }
-    return  this->getCollisionObjs(r, ignore);
+    return  this->checkCollisionsWithObjs(r, ignore);
+}
+*/
+bool QuadTree::checkCollisions(Rect const& r, const Rect &ignore)
+{
+    QuadTree* oldNode, *node = this;
+    QuadTreePtr* stack = new QuadTreePtr[nodeCount + 1];
+    QuadTreePtr* stackPtr = stack;
+    bool goUL, goUR, goLR, goLL;
+    *stackPtr++ = nullptr; // koniec pêtli gdy tu trafimy
+
+    while (node != nullptr)
+    {
+        if (node->isSplited)
+        {
+            goUL = node->UL->bounds.rectsCollision(r);
+            goUR = node->UR->bounds.rectsCollision(r);
+            goLR = node->LR->bounds.rectsCollision(r);
+            goLL = node->LL->bounds.rectsCollision(r);
+        }
+        else
+            goUL = goUR = goLR = goLL = false;
+
+        if (!goUL && !goUR && !goLL && !goLR)
+        {
+            if (node->checkCollisionsWithObjs(r, ignore))
+            {
+                delete stack;
+                return true;
+            }
+            node = *--stackPtr;
+        }
+        else
+        {
+            oldNode = node;
+
+            if (goUL)
+                node = node->UL;         
+            else if (goUR)
+                node = node->UR;
+            else if (goLR)
+                node = node->LR;
+            else if (goLL) 
+                node = node->LL;
+
+            oldNode->addNodesToStack(stackPtr, node, goUL, goUR, goLR, goLL);
+        }    
+    }
+    delete stack;
+    return false;
 }
 
-bool QuadTree::getCollisionObjs(Rect const&  r, const Rect &ignore)
+void QuadTree::addNodesToStack(QuadTreePtr* stackPtr,QuadTree* except,bool isUL, bool isUR, bool isLR, bool isLL)
 {
-        for (Rect const& i : objects)
-            if (i != ignore && i.rectsCollision(r))
-                return true;
+    if (isUL && except != UL)
+        *stackPtr++ = UL;
+    if (isUR && except != UR)
+        *stackPtr++ = UR;
+    if (isLR && except != LR)
+        *stackPtr++ = LR;
+    if (isLL && except != LL)
+        *stackPtr++ = LL;
+}
+
+bool QuadTree::checkCollisionsWithObjs(Rect const&  r, const Rect &ignore)
+{
+    for (Rect const& i : objects)
+        if (i != ignore && i.rectsCollision(r))
+            return true;
+
     return false;
 }
 
@@ -195,7 +266,8 @@ bool QuadTree::checkCollisionObjs(point p, Rect& r)
 {
     std::list<Rect>::iterator i;
     for(i=this->objects.begin(); i != this->objects.end(); ++i)
-        if(i->rectContains(p)){
+        if(i->rectContains(p))
+        {
             r = Rect(i->topLeft,i->bottomRight);
             return true;
         }
@@ -244,13 +316,10 @@ Rect QuadTree::drawBiggestSquareAtPoint(point p)
     bool maxReached=false;
     int MIN_MOVE_DIST=3;
     Rect output(point(p.x-1,p.y-1),point(p.x+1,p.y+1));
-    while(true)
+
+    while(dist > MIN_MOVE_DIST || false == maxReached)
     {
-        if(true == maxReached && dist <= MIN_MOVE_DIST)
-        {
-            return output;
-        }
-        else if(true == checkCollisions(output))
+        if(true == checkCollisions(output))
         {
             maxReached = true;
             dist/=2;
