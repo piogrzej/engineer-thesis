@@ -52,7 +52,7 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
     Timer time;
     Parser parser(path, "<<");
     Rect const& spaceSize = parser.getLayerSize(0);
-    QuadTree *mainTree = new QuadTree(0, spaceSize);//start Tree
+    Tree *mainTree = new Tree(0, spaceSize);//start Tree
     createTree(mainTree, parser.getLayerAt(0));
     mainTree->printTree("ROOT");
 

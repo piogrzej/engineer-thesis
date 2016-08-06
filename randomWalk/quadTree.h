@@ -16,9 +16,16 @@
 +---+---+
 | 3 | 2 |
 +---+---+
+
++---+---+
+|UL |UR |
++---+---+
+|LL |LR |
++---+---+
 */
-class QuadTree;
-typedef QuadTree* QuadTreePtr;
+class Tree;
+typedef Tree* TreePtr;
+typedef unsigned short int ushort;
 
 enum FACTOR_TYPE
 {
@@ -26,16 +33,13 @@ enum FACTOR_TYPE
     FACTOR_Y
 };
 
-class QuadTree
+class Tree
 {
 private:
     int             level;
     std::list<Rect> objects;
     Rect            bounds;
-    QuadTree*       UL;
-    QuadTree*       UR;
-    QuadTree*       LR;
-    QuadTree*       LL;
+    TreePtr     nodes[NUMBER_OF_NODES];
     bool            isSplited;
 
     void            split();
@@ -44,7 +48,7 @@ private:
 public:
     static int      nodeCount;
 
-            QuadTree(int pLevel, Rect const& bounds);
+            Tree(int pLevel, Rect const& bounds);
     bool    isInBounds(point const& p);
     bool    isInBounds(Rect const& r);
     void    clear();
@@ -61,7 +65,7 @@ public:
     Rect    creatGaussianSurfFrom(Rect const & r,double const factor);
 
     // HELPERS
-    void    addNodesToStack(QuadTreePtr* stackPtr, QuadTree* except, bool isUL, bool isUR, bool isLR, bool isLL);
+    void    addNodesToStack(TreePtr* stackPtr, Tree* except, bool isUL, bool isUR, bool isLR, bool isLL);
 };
 
 #endif

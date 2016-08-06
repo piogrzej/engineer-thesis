@@ -85,7 +85,7 @@ Rect layerSpaceSize(FILE * pFile){
     return spaceSize;
 }
 
-void createTree(QuadTree * mainTree, Layer const& layer){
+void createTree(Tree * mainTree, Layer const& layer){
     for(Rect const& rect : layer)
     {
         mainTree->insert(rect);
@@ -103,7 +103,7 @@ int getDistanceRomTwoPoints(point p1, point p2)
     return (int)sqrt((p1.x-p2.x)*(p1.x-p2.x)+(p1.y-p2.y)*(p1.y-p2.y));
 }
 
-Rect RandomWalk(Rect R, QuadTree* mainTree)
+Rect RandomWalk(Rect R, Tree* mainTree)
 {        
     ErrorHandler::getInstance() >> "Starting: " >> R >> "\n";
 

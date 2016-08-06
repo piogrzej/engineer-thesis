@@ -13,7 +13,7 @@ inline bool checkFile(char* name)
 
 int main(int argc, char *argv[])
 {
-    QuadTree *mainTree;
+    Tree *mainTree;
     char* path;
     char inputPath[300];//E:\\programowanie\\quadtree\\sigfill_chunk_x.mag
                         //C:\Users\Marcin\Documents\inzynierka\sigfill_chunk_x.gk
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     time.stop("Parser: ");
     Rect const& spaceSize = parser.getLayerSize(0);
 
-    mainTree = new QuadTree(0, spaceSize);//start Tree
+    mainTree = new Tree(0, spaceSize);//start Tree
     time.start();
     createTree(mainTree, parser.getLayerAt(0));
     time.stop("Create tree: ");
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 //    ErrorHandler::getInstance() >> "Poczatkowy: " >> start;
 //    ErrorHandler::getInstance() >> "Znaleziony: " >> founded;
 //    randomWalkTest("../tests/test2",100,0);
-    randomWalkTest("../tests/test",100,10);
+    randomWalkTest("../tests/test1",100,0);
 
     mainTree->clear();
 

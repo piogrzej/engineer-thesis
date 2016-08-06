@@ -4,31 +4,29 @@
 
 #include <string>
 
-int QuadTree::nodeCount = 0;
+int Tree::nodeCount = 0;
 
-QuadTree::QuadTree(int level, Rect const& bounds) 
+Tree::Tree(int level, Rect const& bounds) 
 {
     this->level = level;
     this->bounds = bounds;
-    this->UL = nullptr;
-    this->UR = nullptr;
-    this->LR = nullptr;
-    this->LL = nullptr;
+    for(ushort i=0; i<NUMBER_OF_NODES; ++i)
+        this->nodes[i]=nullptr;
     isSplited = false;
     nodeCount++;
 }
 
-void QuadTree::deleteObjects()
+void Tree::deleteObjects()
 {
     objects.clear();
 }
 
-void QuadTree::addToObjects(Rect const&  r)
+void Tree::addToObjects(Rect const&  r)
 {
     objects.push_back(r);
 }
 
-Rect QuadTree::getObjectAtIndex(int index)
+Rect Tree::getObjectAtIndex(int index)
 {
     int counter=0;
     std::list<Rect>::iterator i;
@@ -42,7 +40,7 @@ Rect QuadTree::getObjectAtIndex(int index)
 }
 
 //checks if Rect is inside QuadTree bounds
-bool QuadTree::isInBounds(Rect const&  r)
+bool Tree::isInBounds(Rect const&  r)
 {
     if (r.topLeft.y     > this->bounds.topLeft.y     &&
         r.topLeft.x     > this->bounds.topLeft.x     &&
@@ -53,7 +51,7 @@ bool QuadTree::isInBounds(Rect const&  r)
         return false;
 }
 
-bool QuadTree::isInBounds(point const&  p)
+bool Tree::isInBounds(point const&  p)
 {
     if (p.x > this->bounds.topLeft.x &&
         p.y > this->bounds.topLeft.y &&
@@ -65,23 +63,19 @@ bool QuadTree::isInBounds(point const&  p)
         return false;
 }
 
-void QuadTree::clear()
+void Tree::clear()
 {
     if (this != nullptr)
     {
         this->objects.clear();
-        this->UL->clear();
-        this->UL = nullptr;
-        this->UR->clear();
-        this->UR = nullptr;
-        this->LR->clear();
-        this->LR = nullptr;
-        this->LL->clear();
-        this->LL = nullptr;
+        for(ushort i=0; i<NUMBER_OF_NODES; ++i){
+            this->nodes[i]->clear();
+            this->nodes[i] = nullptr;
+        }
     }
 }
 
-void QuadTree::split()
+void Tree::split()
 {
     int subWidth = this->bounds.topLeft.x + (int)(bounds.getWidth() / 2);
     int subHeigth = this->bounds.topLeft.y + (int)(bounds.getHeigth() / 2);
@@ -105,15 +99,15 @@ void QuadTree::split()
     LLbound.bottomRight.x = subWidth;
     LLbound.bottomRight.y = this->bounds.bottomRight.y;
     //"SPLIT"
-    this->UL = new QuadTree(this->level + 1, ULbound);
-    this->UR = new QuadTree(this->level + 1, URbound);
-    this->LR = new QuadTree(this->level + 1, LRbound);
-    this->LL = new QuadTree(this->level + 1, LLbound);
+    this->nodes[0] = new Tree(this->level + 1, ULbound);
+    this->nodes[1] = new Tree(this->level + 1, URbound);
+    this->nodes[2] = new Tree(this->level + 1, LRbound);
+    this->nodes[3] = new Tree(this->level + 1, LLbound);
     isSplited = true;
 }
 
 //"wkladanie" elementu na drzewo
-bool QuadTree::insert(Rect const&  r)
+bool Tree::insert(Rect const&  r)
 {
     int counter = 0;
     Rect tmp;
@@ -135,125 +129,103 @@ bool QuadTree::insert(Rect const&  r)
         {
             tmp = objects.front();
             this->objects.pop_front();
-            if (this->UL->insert(tmp)){
-                counter--;
-                continue;
-            }
-            if (this->UR->insert(tmp)){
-                counter--;
-                continue;
-            }
-            if (this->LR->insert(tmp)){
-                counter--;
-                continue;
-            }
-            if (this->LL->insert(tmp)){
-                counter--;
-                continue;
-            }
+            for(ushort i=0; i<NUMBER_OF_NODES; ++i)
+                if(true==this->nodes[i]->insert(tmp)){
+                    counter--;
+                    break;
+                }
             //jezeli powyzsze niespelnione to jest nachodzi na bisectory line i powinno zostac
             this->addToObjects(tmp);
             counter--;
         }
     }
-    if (this->level < MAX_LEVELS && isSplited)
+    if (this->level < MAX_LEVELS && true==isSplited)
     {
-        if (this->UL->insert(r))
-            return true;
-        if (this->UR->insert(r))
-            return true;
-        if (this->LR->insert(r))
-            return true;
-        if (this->LL->insert(r))
-            return true;
+        for(ushort i=0 ;i<NUMBER_OF_NODES; ++i)
+            if (true==this->nodes[i]->insert(r))
+                return true;
         this->addToObjects(r);//jezeli powyzsze nie spelnione to musi byc na bisectory lines, czyli dodajemy do listy rodzica
         return true;//lezy na lini przeciecia wiec dodajemy do listy rodzica (@up), udalo sie dodac wiec true
     }
     return false;//nigdy nie powinno do tego dojsc//jedyne wytlumacznie max level lub obszar o bardzo malym rozmiarze//nie jestem pewien, do sprawdzenia!
 }
 
-/*
-bool QuadTree::checkCollisions2(Rect const& r, const Rect &ignore)
+
+bool Tree::checkCollisions(Rect const& r, const Rect &ignore)
 {
     if (isSplited)
     {
-        if (this->UL->bounds.rectsCollision(r))
-                return this->UL->checkCollisions(r, ignore);
+        for(ushort i=0; i<NUMBER_OF_NODES;++i)
+        if (this->nodes[i]->bounds.rectsCollision(r))
+                return this->nodes[i]->checkCollisions(r, ignore);
 
-        if (this->UR->bounds.rectsCollision(r))
-                return this->UR->checkCollisions(r, ignore);
 
-        if (this->LR->bounds.rectsCollision(r))
-                return this->LR->checkCollisions(r, ignore);
-
-        if (this->LL->bounds.rectsCollision(r))
-                return this->LL->checkCollisions(r, ignore);
     }
     return  this->checkCollisionsWithObjs(r, ignore);
 }
-*/
-bool QuadTree::checkCollisions(Rect const& r, const Rect &ignore)
-{
-    QuadTree* oldNode, *node = this;
-    QuadTreePtr* stack = new QuadTreePtr[nodeCount + 1];
-    QuadTreePtr* stackPtr = stack;
-    bool goUL, goUR, goLR, goLL;
-    *stackPtr++ = nullptr; // koniec pêtli gdy tu trafimy
 
-    while (node != nullptr)
-    {
-        if (node->isSplited)
-        {
-            goUL = node->UL->bounds.rectsCollision(r);
-            goUR = node->UR->bounds.rectsCollision(r);
-            goLR = node->LR->bounds.rectsCollision(r);
-            goLL = node->LL->bounds.rectsCollision(r);
-        }
-        else
-            goUL = goUR = goLR = goLL = false;
+//bool QuadTree::checkCollisions(Rect const& r, const Rect &ignore)
+//{
+//    QuadTree* oldNode, *node = this;
+//    QuadTreePtr* stack = new QuadTreePtr[nodeCount + 1];
+//    QuadTreePtr* stackPtr = stack;
+//    bool goUL, goUR, goLR, goLL;
+//    *stackPtr++ = nullptr; // koniec pï¿½tli gdy tu trafimy
+//
+//    while (node != nullptr)
+//    {
+//        if (node->isSplited)
+//        {
+//            goUL = node->UL->bounds.rectsCollision(r);
+//            goUR = node->UR->bounds.rectsCollision(r);
+//            goLR = node->LR->bounds.rectsCollision(r);
+//            goLL = node->LL->bounds.rectsCollision(r);
+//        }
+//        else
+//            goUL = goUR = goLR = goLL = false;
+//
+//        if (!goUL && !goUR && !goLL && !goLR)
+//        {
+//            if (node->checkCollisionsWithObjs(r, ignore))
+//            {
+//                delete stack;
+//                return true;
+//            }
+//            node = *--stackPtr;
+//        }
+//        else
+//        {
+//            oldNode = node;
+//
+//            if (goUL)
+//                node = node->UL;         
+//            else if (goUR)
+//                node = node->UR;
+//            else if (goLR)
+//                node = node->LR;
+//            else if (goLL) 
+//                node = node->LL;
+//
+//            oldNode->addNodesToStack(stackPtr, node, goUL, goUR, goLR, goLL);
+//        }    
+//    }
+//    delete stack;
+//    return false;
+//}
+//
+//void QuadTree::addNodesToStack(QuadTreePtr* stackPtr,QuadTree* except,bool isUL, bool isUR, bool isLR, bool isLL)
+//{
+//    if (isUL && except != UL)
+//        *stackPtr++ = UL;
+//    if (isUR && except != UR)
+//        *stackPtr++ = UR;
+//    if (isLR && except != LR)
+//        *stackPtr++ = LR;
+//    if (isLL && except != LL)
+//        *stackPtr++ = LL;
+//}
 
-        if (!goUL && !goUR && !goLL && !goLR)
-        {
-            if (node->checkCollisionsWithObjs(r, ignore))
-            {
-                delete stack;
-                return true;
-            }
-            node = *--stackPtr;
-        }
-        else
-        {
-            oldNode = node;
-
-            if (goUL)
-                node = node->UL;         
-            else if (goUR)
-                node = node->UR;
-            else if (goLR)
-                node = node->LR;
-            else if (goLL) 
-                node = node->LL;
-
-            oldNode->addNodesToStack(stackPtr, node, goUL, goUR, goLR, goLL);
-        }    
-    }
-    delete stack;
-    return false;
-}
-
-void QuadTree::addNodesToStack(QuadTreePtr* stackPtr,QuadTree* except,bool isUL, bool isUR, bool isLR, bool isLL)
-{
-    if (isUL && except != UL)
-        *stackPtr++ = UL;
-    if (isUR && except != UR)
-        *stackPtr++ = UR;
-    if (isLR && except != LR)
-        *stackPtr++ = LR;
-    if (isLL && except != LL)
-        *stackPtr++ = LL;
-}
-
-bool QuadTree::checkCollisionsWithObjs(Rect const&  r, const Rect &ignore)
+bool Tree::checkCollisionsWithObjs(Rect const&  r, const Rect &ignore)
 {
     for (Rect const& i : objects)
         if (i != ignore && i.rectsCollision(r))
@@ -262,7 +234,7 @@ bool QuadTree::checkCollisionsWithObjs(Rect const&  r, const Rect &ignore)
     return false;
 }
 
-bool QuadTree::checkCollisionObjs(point p, Rect& r)
+bool Tree::checkCollisionObjs(point p, Rect& r)
 {
     std::list<Rect>::iterator i;
     for(i=this->objects.begin(); i != this->objects.end(); ++i)
@@ -274,23 +246,18 @@ bool QuadTree::checkCollisionObjs(point p, Rect& r)
     return false;
 }
 
-bool QuadTree::checkCollisons(point p, Rect& r)
+bool Tree::checkCollisons(point p, Rect& r)
 {
-    QuadTree* current=this,*next;
+    Tree* current=this,*next;
     while(true){
         if (true==current->isSplited)
         {
-            if (current->UL->bounds.rectContains(p))
-                next = current->UL;
-
-            else if (current->UR->bounds.rectContains(p))
-                next = current->UR;
-
-            else if (current->LR->bounds.rectContains(p))
-                next = current->LR;
-
-            else if (current->LL->bounds.rectContains(p))
-                next = current->LL;
+            for(ushort i=0; i<NUMBER_OF_NODES; ++i)
+                if (true==current->nodes[i]->bounds.rectContains(p))
+                {
+                    next = current->nodes[i];
+                    break;
+                }
         }
         //tutaj dla kazdego sprawdzenie bisectory lines
         if (true==current->checkCollisionObjs(p, r))//KOLIZJA
@@ -303,7 +270,7 @@ bool QuadTree::checkCollisons(point p, Rect& r)
     }
 }
 
-Rect QuadTree::drawBiggestSquareAtPoint(point p)
+Rect Tree::drawBiggestSquareAtPoint(point p)
 {
     int dist;
     if (bounds.getHeigth() > bounds.getWidth())
@@ -341,7 +308,7 @@ Rect QuadTree::drawBiggestSquareAtPoint(point p)
     return output;//potencjalnie niebezpieczne
 }
 
-double QuadTree::getAdjustedGaussianFactor(Rect const& r, double const factor, FACTOR_TYPE type)
+double Tree::getAdjustedGaussianFactor(Rect const& r, double const factor, FACTOR_TYPE type)
 {
     bool isCollision = false;
     bool isDividing = true;
@@ -378,7 +345,7 @@ double QuadTree::getAdjustedGaussianFactor(Rect const& r, double const factor, F
 }
 
 
-Rect QuadTree::creatGaussianSurfFrom(Rect const & r, double const factor) // bez kolizji
+Rect Tree::creatGaussianSurfFrom(Rect const & r, double const factor) // bez kolizji
 {
     if (factor < 1)
     {
@@ -393,7 +360,7 @@ Rect QuadTree::creatGaussianSurfFrom(Rect const & r, double const factor) // bez
     return r.createGaussianSurface(factorX, factorY);
 }
 
-void QuadTree::printTree(std::string const& name)
+void Tree::printTree(std::string const& name)
 {
     std::string lvlSpaceNode = "", lvlSpaceRect = "";
     std::list<Rect>::iterator i;
@@ -416,9 +383,7 @@ void QuadTree::printTree(std::string const& name)
 
     if (isSplited)
     {
-        UL->printTree("UL");
-        UR->printTree("UR");
-        LR->printTree("LR");
-        LL->printTree("LL");
+        for(ushort i=0; i<NUMBER_OF_NODES;++i)
+            this->nodes[i]->printTree("UL");
     }
 }
