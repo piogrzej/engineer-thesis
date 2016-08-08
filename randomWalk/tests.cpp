@@ -51,18 +51,16 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
     ErrorHandler::getInstance() >> "TEST RandomWalk\n";
     Timer time;
     Parser parser(path, "<<");
-    Rect const& spaceSize = parser.getLayerSize(0);
-    Tree *mainTree = new Tree(0, spaceSize);//start Tree
-    createTree(mainTree, parser.getLayerAt(0));
-    mainTree->printTree("ROOT");
-
-
     Layer layer = parser.getLayerAt(0);
+    Rect const& spaceSize = parser.getLayerSize(0);
     Rect start = layer.at(RECT_ID);
+    Tree *mainTree = new Tree(0, layer.size(), spaceSize);//start Tree
     int pos;
     int* foundedRectCount = new int[layer.size()];
     std::fill(foundedRectCount, foundedRectCount + layer.size(), 0);
 
+    createTree(mainTree, layer);
+    mainTree->printTree("ROOT");
 
     time.start();
  
@@ -85,4 +83,5 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
     }
     ErrorHandler::getInstance() >> "Liczba bledow: " >> errors >> "razy\n";
     ErrorHandler::getInstance() >> "KONIEC TESTU!\n";
+    delete foundedRectCount;
 }

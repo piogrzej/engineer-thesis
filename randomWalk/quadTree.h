@@ -39,16 +39,15 @@ private:
     int             level;
     std::list<Rect> objects;
     Rect            bounds;
-    TreePtr     nodes[NUMBER_OF_NODES];
+    TreePtr         nodes[NUMBER_OF_NODES];
     bool            isSplited;
-
+    int             nodeCount;
     void            split();
     double          getAdjustedGaussianFactor(Rect const& r, double const factor, FACTOR_TYPE type);
    
 public:
-    static int      nodeCount;
+            Tree(int pLevel, int nodeSCount, Rect const& bounds);
 
-            Tree(int pLevel, Rect const& bounds);
     bool    isInBounds(point const& p);
     bool    isInBounds(Rect const& r);
     void    clear();
@@ -64,8 +63,10 @@ public:
     void    printTree(std::string const & name);
     Rect    creatGaussianSurfFrom(Rect const & r,double const factor);
 
-    // HELPERS
-    void    addNodesToStack(TreePtr* stackPtr, Tree* except, bool isUL, bool isUR, bool isLR, bool isLL);
+    // HELPER
+    void    addNodesToStack(TreePtr* stackPtr, Tree* except, bool collisions[]);
+    bool    checkIsAnyCollision(bool collisions[]);
+
 };
 
 #endif

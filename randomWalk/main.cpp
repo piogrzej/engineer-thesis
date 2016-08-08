@@ -36,11 +36,12 @@ int main(int argc, char *argv[])
     time.start();
     Parser parser(path, "<<",5);
     time.stop("Parser: ");
+    Layer const& layer = parser.getLayerAt(0);
     Rect const& spaceSize = parser.getLayerSize(0);
 
-    mainTree = new Tree(0, spaceSize);//start Tree
+    mainTree = new Tree(0,layer.size(), spaceSize);//start Tree
     time.start();
-    createTree(mainTree, parser.getLayerAt(0));
+    createTree(mainTree,layer);
     time.stop("Create tree: ");
 
     mainTree->printTree("ROOT");
@@ -52,7 +53,7 @@ int main(int argc, char *argv[])
 //    ErrorHandler::getInstance() >> "Poczatkowy: " >> start;
 //    ErrorHandler::getInstance() >> "Znaleziony: " >> founded;
 //    randomWalkTest("../tests/test2",100,0);
-    randomWalkTest("../tests/test1",100,0);
+    randomWalkTest("../tests/test",100,0);
 
     mainTree->clear();
 

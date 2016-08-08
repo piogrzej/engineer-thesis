@@ -4,16 +4,16 @@
 
 #include <string>
 
-int Tree::nodeCount = 0;
+using namespace std;
 
-Tree::Tree(int level, Rect const& bounds) 
+Tree::Tree(int level, int nodeSCount, Rect const& bounds) :
+level(level), 
+bounds(bounds), 
+nodeCount(nodeSCount),
+isSplited(false)
 {
-    this->level = level;
-    this->bounds = bounds;
     for(ushort i=0; i<NUMBER_OF_NODES; ++i)
-        this->nodes[i]=nullptr;
-    isSplited = false;
-    nodeCount++;
+        this->nodes[i] = nullptr;
 }
 
 void Tree::deleteObjects()
@@ -99,10 +99,10 @@ void Tree::split()
     LLbound.bottomRight.x = subWidth;
     LLbound.bottomRight.y = this->bounds.bottomRight.y;
     //"SPLIT"
-    this->nodes[0] = new Tree(this->level + 1, ULbound);
-    this->nodes[1] = new Tree(this->level + 1, URbound);
-    this->nodes[2] = new Tree(this->level + 1, LRbound);
-    this->nodes[3] = new Tree(this->level + 1, LLbound);
+    this->nodes[0] = new Tree(this->level + 1, nodeCount, ULbound);
+    this->nodes[1] = new Tree(this->level + 1, nodeCount, URbound);
+    this->nodes[2] = new Tree(this->level + 1, nodeCount, LRbound);
+    this->nodes[3] = new Tree(this->level + 1, nodeCount, LLbound);
     isSplited = true;
 }
 
@@ -150,7 +150,7 @@ bool Tree::insert(Rect const&  r)
     return false;//nigdy nie powinno do tego dojsc//jedyne wytlumacznie max level lub obszar o bardzo malym rozmiarze//nie jestem pewien, do sprawdzenia!
 }
 
-
+/*
 bool Tree::checkCollisions(Rect const& r, const Rect &ignore)
 {
     if (isSplited)
@@ -163,67 +163,73 @@ bool Tree::checkCollisions(Rect const& r, const Rect &ignore)
     }
     return  this->checkCollisionsWithObjs(r, ignore);
 }
+*/
+bool Tree::checkCollisions(Rect const& r, const Rect &ignore)
+{
+    Tree* oldNode, *node = this;
+    TreePtr* stack = new TreePtr[nodeCount + 1];
+    TreePtr* stackPtr = stack;
+    bool collisions[NUMBER_OF_NODES];
+    *stackPtr++ = nullptr; // koniec petli gdy tu trafimy
 
-//bool QuadTree::checkCollisions(Rect const& r, const Rect &ignore)
-//{
-//    QuadTree* oldNode, *node = this;
-//    QuadTreePtr* stack = new QuadTreePtr[nodeCount + 1];
-//    QuadTreePtr* stackPtr = stack;
-//    bool goUL, goUR, goLR, goLL;
-//    *stackPtr++ = nullptr; // koniec p�tli gdy tu trafimy
-//
-//    while (node != nullptr)
-//    {
-//        if (node->isSplited)
-//        {
-//            goUL = node->UL->bounds.rectsCollision(r);
-//            goUR = node->UR->bounds.rectsCollision(r);
-//            goLR = node->LR->bounds.rectsCollision(r);
-//            goLL = node->LL->bounds.rectsCollision(r);
-//        }
-//        else
-//            goUL = goUR = goLR = goLL = false;
-//
-//        if (!goUL && !goUR && !goLL && !goLR)
-//        {
-//            if (node->checkCollisionsWithObjs(r, ignore))
-//            {
-//                delete stack;
-//                return true;
-//            }
-//            node = *--stackPtr;
-//        }
-//        else
-//        {
-//            oldNode = node;
-//
-//            if (goUL)
-//                node = node->UL;         
-//            else if (goUR)
-//                node = node->UR;
-//            else if (goLR)
-//                node = node->LR;
-//            else if (goLL) 
-//                node = node->LL;
-//
-//            oldNode->addNodesToStack(stackPtr, node, goUL, goUR, goLR, goLL);
-//        }    
-//    }
-//    delete stack;
-//    return false;
-//}
-//
-//void QuadTree::addNodesToStack(QuadTreePtr* stackPtr,QuadTree* except,bool isUL, bool isUR, bool isLR, bool isLL)
-//{
-//    if (isUL && except != UL)
-//        *stackPtr++ = UL;
-//    if (isUR && except != UR)
-//        *stackPtr++ = UR;
-//    if (isLR && except != LR)
-//        *stackPtr++ = LR;
-//    if (isLL && except != LL)
-//        *stackPtr++ = LL;
-//}
+    while (node != nullptr)
+    {
+        if (node->isSplited)
+        {
+            for (int i = 0; i < NUMBER_OF_NODES; i++)
+                collisions[i] = node->nodes[i]->bounds.rectsCollision(r);
+        }
+        else
+            for (int i = 0; i < NUMBER_OF_NODES; i++)
+                collisions[i] = false;
+
+        if (false == checkIsAnyCollision(collisions))
+        {
+            if (node->checkCollisionsWithObjs(r, ignore))
+            {
+                delete stack;
+                return true;
+            }
+            node = *--stackPtr;
+        }
+        else
+        {
+            oldNode = node;
+
+            for (int i = 0; i < NUMBER_OF_NODES; i++)
+            {
+                if (collisions[i])
+                {
+                    node = node->nodes[i];
+                    break;
+                }
+            }
+
+            oldNode->addNodesToStack(stackPtr, node, collisions);
+        }    
+    }
+    delete stack;
+    return false;
+}
+
+bool Tree::checkIsAnyCollision(bool collisions[])
+{
+    for (int i = 0; i < NUMBER_OF_NODES; i++)
+    {
+        if (collisions[i])
+            return true;
+    }
+    return false;
+}
+
+void Tree::addNodesToStack(TreePtr* stackPtr,Tree* except, bool collisions[])
+{
+    for (int i = 0; i < NUMBER_OF_NODES; i++)
+    {
+        if (collisions[i] && except != nodes[i])
+            *stackPtr++ = nodes[i];
+    }
+}
 
 bool Tree::checkCollisionsWithObjs(Rect const&  r, const Rect &ignore)
 {
