@@ -12,6 +12,16 @@ Rect::~Rect()
 {
 }
 
+void Rect::changeDirection()
+{
+    if (getWidth() < 0 || getHeigth() < 0)
+    {
+        point tmp = topLeft;
+        topLeft = bottomRight;
+        bottomRight = tmp;
+    }
+}
+
 int Rect::getWidth() const {
     return (bottomRight.x - topLeft.x);
 }
@@ -42,7 +52,7 @@ bool Rect::rectsCollision(Rect const& r2) const
 }
 
 bool Rect::rectContains(point p) const {
-    if ((p.x>=topLeft.x) && (p.y>=topLeft.y) && (p.x<=bottomRight.x) && (p.y<=bottomRight.y)) 
+    if ((p.x >= topLeft.x) && (p.y >= topLeft.y) && (p.x <= bottomRight.x) && (p.y <= bottomRight.y)) 
         return true;
     else return false;
 }

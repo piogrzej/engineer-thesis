@@ -42,10 +42,10 @@ Rect Tree::getObjectAtIndex(int index)
 //checks if Rect is inside QuadTree bounds
 bool Tree::isInBounds(Rect const&  r)
 {
-    if (r.topLeft.y     > this->bounds.topLeft.y     &&
-        r.topLeft.x     > this->bounds.topLeft.x     &&
-        r.bottomRight.y < this->bounds.bottomRight.y &&
-        r.bottomRight.x < this->bounds.bottomRight.x) 
+    if (r.topLeft.y     >= this->bounds.topLeft.y     &&
+        r.topLeft.x     >= this->bounds.topLeft.x     &&
+        r.bottomRight.y <= this->bounds.bottomRight.y &&
+        r.bottomRight.x <= this->bounds.bottomRight.x) 
         return true;
     else 
         return false;
@@ -150,22 +150,11 @@ bool Tree::insert(Rect const&  r)
     return false;//nigdy nie powinno do tego dojsc//jedyne wytlumacznie max level lub obszar o bardzo malym rozmiarze//nie jestem pewien, do sprawdzenia!
 }
 
-/*
 bool Tree::checkCollisions(Rect const& r, const Rect &ignore)
 {
-    if (isSplited)
-    {
-        for(ushort i=0; i<NUMBER_OF_NODES;++i)
-        if (this->nodes[i]->bounds.rectsCollision(r))
-                return this->nodes[i]->checkCollisions(r, ignore);
+    if (false == isInBounds(r))
+        return true;
 
-
-    }
-    return  this->checkCollisionsWithObjs(r, ignore);
-}
-*/
-bool Tree::checkCollisions(Rect const& r, const Rect &ignore)
-{
     Tree* oldNode, *node = this;
     TreePtr* stack = new TreePtr[nodeCount + 1];
     TreePtr* stackPtr = stack;
@@ -278,7 +267,14 @@ bool Tree::checkCollisons(point p, Rect& r)
 
 Rect Tree::drawBiggestSquareAtPoint(point p)
 {
+    bool isCollision = false;
+    bool maxReached = false;
+    const int MIN_DIST = 1;
     int dist;
+
+    Rect output(p - 1, p + 1);
+    Rect init(p - 2, p + 2);
+
     if (bounds.getHeigth() > bounds.getWidth())
         dist = bounds.getHeigth();
     else
@@ -286,33 +282,35 @@ Rect Tree::drawBiggestSquareAtPoint(point p)
 
     dist *= BIGGEST_SQUARE_INIT_FACTOR;
 
-    bool maxReached=false;
-    int MIN_MOVE_DIST=3;
-    Rect output(point(p.x-1,p.y-1),point(p.x+1,p.y+1));
+    if (checkCollisions(output))
+        return output;
 
-    while(dist > MIN_MOVE_DIST || false == maxReached)
+    if (checkCollisions(init))
+        return init;
+
+     while((isCollision = checkCollisions(output)) || false == maxReached || dist >  MIN_DIST)
     {
-        if(true == checkCollisions(output))
+        if(isCollision)
         {
+            if(dist > 1)
+                dist /= 2;
             maxReached = true;
-            dist/=2;
-            output.topLeft.x+=dist;
-            output.topLeft.y+=dist;
-            output.bottomRight.x-=dist;
-            output.bottomRight.y-=dist;
+            output.topLeft += dist;
+            output.bottomRight -= dist;
         }
         else
         {
-            if(true == maxReached)  
-                dist /=2;
-            output.topLeft.x-=dist;
-            output.topLeft.y-=dist;
-            output.bottomRight.x+=dist;
-            output.bottomRight.y+=dist;
+            if(maxReached)  
+                dist /= 2;
+            output.topLeft -= dist;
+            output.bottomRight += dist;
         }
     }
-    return output;//potencjalnie niebezpieczne
+     if (p.x == output.bottomRight.x)
+         cout << "erroe" << endl;
+    return output;
 }
+
 
 double Tree::getAdjustedGaussianFactor(Rect const& r, double const factor, FACTOR_TYPE type)
 {

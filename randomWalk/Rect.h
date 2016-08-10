@@ -11,6 +11,10 @@ struct point
     int y;
     point() {}
     point(int pX, int pY) { x = pX; y = pY; }
+    void  operator+=(int scalar) {  x += scalar; y += scalar; }
+    void  operator-=(int scalar) {  x -= scalar; y -= scalar; }
+    point& operator+(int scalar) { return point(x + scalar, y + scalar); }
+    point& operator-(int scalar) { return point(x - scalar, y - scalar); }
 };
 
 class Rect
@@ -23,6 +27,7 @@ public:
     point   topLeft;
     point   bottomRight;
 
+    void    changeDirection();
     int     getWidth() const;
     int     getHeigth() const;
     bool    cmpRect(Rect const& r2) const;

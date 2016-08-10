@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 //    ErrorHandler::getInstance() >> "Poczatkowy: " >> start;
 //    ErrorHandler::getInstance() >> "Znaleziony: " >> founded;
 //    randomWalkTest("../tests/test2",100,0);
-    randomWalkTest("../tests/test",100,0);
+    randomWalkTest("../tests/test2",100,0);
 
     mainTree->clear();
 
