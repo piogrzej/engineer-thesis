@@ -13,8 +13,8 @@ struct point
     point(int pX, int pY) { x = pX; y = pY; }
     void  operator+=(int scalar) {  x += scalar; y += scalar; }
     void  operator-=(int scalar) {  x -= scalar; y -= scalar; }
-    point& operator+(int scalar) { return point(x + scalar, y + scalar); }
-    point& operator-(int scalar) { return point(x - scalar, y - scalar); }
+    point operator+(int scalar) { return point(x + scalar, y + scalar); }
+    point operator-(int scalar) { return point(x - scalar, y - scalar); }
 };
 
 class Rect

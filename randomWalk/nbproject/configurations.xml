@@ -62,11 +62,8 @@
           <standard>10</standard>
         </cTool>
         <ccTool>
-          <standard>8</standard>
+          <standard>11</standard>
         </ccTool>
-        <linkerTool>
-          <commandLine>-fopenmp</commandLine>
-        </linkerTool>
       </compileType>
       <item path="ErrorHandler.cpp" ex="false" tool="1" flavor2="0">
       </item>
