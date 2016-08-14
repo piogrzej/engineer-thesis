@@ -195,7 +195,7 @@ bool Tree::checkCollisions(Rect const& r, const Rect &ignore)
             }
 
             oldNode->addNodesToStack(stackPtr, node, collisions);
-        }    
+        }
     }
     delete stack;
     return false;

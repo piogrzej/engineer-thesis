@@ -112,8 +112,11 @@ Rect RandomWalk(Rect R, Tree* mainTree)
 
     precompute_unit_square_green(g, dgdx, dgdy, intg, Nsample);//wyliczanie funkcji greena
 
+#ifdef _WIN32
     rng_init(3);//inicjalizacja genaeratora
-
+#elif __linux__
+    rng_init(1);//inicjalizacja genaeratora
+#endif
     point p;
     double r;
     int index;
@@ -130,7 +133,7 @@ Rect RandomWalk(Rect R, Tree* mainTree)
         p = square.getPointFromNindex(index, NSAMPLE);
         ErrorHandler::getInstance() << p.x << "," << p.y << "\n";
 
-        if(false == mainTree->isInBounds(p) || R.rectContains(p))
+        if(false == mainTree->isInBounds(p))
         {
             broken = SPECIAL_VALUE_BOOLEAN;
             SPECIAL_ACTION;
@@ -142,8 +145,11 @@ Rect RandomWalk(Rect R, Tree* mainTree)
 
     if (false == broken)
         ErrorHandler::getInstance() >> "Ending: " >> output >> "\n";
-    else
+    else{
+        output.topLeft = point(-1,-1);
+        output.bottomRight = point(-1,-1);
         ErrorHandler::getInstance() >> "Random walk is out of the bounds!" >> "\n";
+    }
 
     return output;
 }

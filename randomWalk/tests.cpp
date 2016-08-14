@@ -56,8 +56,8 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
     Rect start = layer.at(RECT_ID);
     Tree *mainTree = new Tree(0, layer.size(), spaceSize);//start Tree
     int pos;
-    int* foundedRectCount = new int[layer.size()];
-    std::fill(foundedRectCount, foundedRectCount + layer.size(), 0);
+    int* foundedRectCount = new int[layer.size()+1];
+    std::fill(foundedRectCount, foundedRectCount + layer.size()+1, 0);
 
     createTree(mainTree, layer);
     mainTree->printTree("ROOT");
@@ -68,11 +68,19 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
     for (int i = 0; i < ITER_NUM; i++)
     {
         Rect founded = RandomWalk(start, mainTree);
-        pos = getRectIt(layer,founded);
-        if (pos != -1)
-            foundedRectCount[pos] += 1;
+        if(-1==founded.topLeft.x
+                &&-1==founded.topLeft.y
+                &&-1==founded.bottomRight.x
+                &&-1==founded.bottomRight.y)
+            ++foundedRectCount[layer.size()];
         else
-            errors++;
+        {
+            pos = getRectIt(layer,founded);
+            if (pos != -1)
+                foundedRectCount[pos] += 1;
+            else
+                errors++;
+        }
     }
     time.stop("RandomWalks: ");
 
@@ -81,6 +89,7 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
     {
         ErrorHandler::getInstance() >> rect >> "    znaleziony: " >> foundedRectCount[i++] >> "razy\n";
     }
+    ErrorHandler::getInstance() >>"out of bounds case znaleziony: " >> foundedRectCount[i++] >> "razy\n";
     ErrorHandler::getInstance() >> "Liczba bledow: " >> errors >> "razy\n";
     ErrorHandler::getInstance() >> "KONIEC TESTU!\n";
     delete foundedRectCount;
