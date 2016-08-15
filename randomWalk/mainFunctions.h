@@ -23,10 +23,8 @@
 #define GAUSSIAN_ACCURACY 10
 #define BIGGEST_SQUARE_INIT_FACTOR 0.05
 
-//funkcje "glowne" przetwarzanie itd
-void pointsFormLine(point * topLeft, point * bottomRight, char * line);
+
 void createTree(Tree * mainTree,Layer const& layer);
-Rect layerSpaceSize(FILE * pFile);
 Rect RandomWalk(Rect R, Tree* mainTree, int& pointCount);
 int getIndex(REAL64_t intg[NSAMPLE + 1], double rand);
 void printList(std::list<Rect> input);

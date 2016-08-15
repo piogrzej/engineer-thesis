@@ -4,9 +4,18 @@
 	Jest kompilowany za pomocą g++ w wersji 6.1.1.
 	Folder zawiera także automatycznie generowany przez IDE makefile,
 	więc kompilacja nie powinna sprawiać problemu również poza środowiskiem.
-	Projekt można także skompilować za pomocą kompilatora Micorsoftu.
-	@up Proszę Marcina o podanie szczegółów, załączenie plików itd.
-
+	
+	Folder randomWalk zawiera także projekt c++ Visual Studio 2013 (Toolset v12)
+	Wystarczy otworzyć plik .sln oraz skompilować.
+	
+	Program może zostać wywołany z użyciem parametrów:
+		parametry:
+		1: ścieżka do testu
+		2: ilość wywołań
+		3: startowy Rect
+		
+	W przeciwnym razie zostaną wywołane domyślne opcje, zdefiniowane w pliku main.cpp
+	
 ## Fragmenty kodu które mamy zamiar zrównoleglać
 
 	Cześć kodu jaką chlelibyśmy zrównoleglać to metody:

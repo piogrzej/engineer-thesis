@@ -48,11 +48,18 @@ int getRectIt(Layer const& layer, Rect const& rect)
 
 void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
 {
-    ErrorHandler::getInstance() >> "TEST RandomWalk\n";
+    ErrorHandler::getInstance() >> "RandomWalk \nTest: " >> path >> "\n";
 
     Parser parser(path, "<<");
     Layer layer = parser.getLayerAt(0);
     Rect const& spaceSize = parser.getLayerSize(0);
+
+    if (layer.size() <= RECT_ID || RECT_ID < 0 || ITER_NUM <= 0)
+    {
+        ErrorHandler::getInstance() >> "Incorrect args!" >> "\n";
+        exit(0);
+    }
+
     Rect start = layer.at(RECT_ID);
     Tree *mainTree = new Tree(0, layer.size(), spaceSize);//start Tree
     int pos, sumPointCount = 0;
@@ -95,6 +102,6 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
     ErrorHandler::getInstance() >> "Number of errors: " >> errors >> "\n";
     ErrorHandler::getInstance() >> "Avarage number of path's points: " >> sumPointCount / ITER_NUM >> "\n";
     Timer::getInstance().printResults();
-    ErrorHandler::getInstance() >> "KONIEC TESTU!\n";
+    ErrorHandler::getInstance() >> "END OF TEST!\n";
     delete foundedRectCount;
 }

@@ -5,6 +5,19 @@
 #include "tests.h"
 #include <iostream>
 
+#define DEFAULT_PATH "../tests/test"
+#define DEFAULT_RECT 10
+#define DEFAULT_ITERATION 100
+
+enum PARAMS
+{
+    PARAM_NAME,
+    PARAM_PATH,
+    PARAM_RECT,
+    PARAM_ITERATIONS,
+    PARAMS_COUNT
+};
+
 inline bool checkFile(char* name) 
 {
     std::ifstream f(name);
@@ -17,38 +30,37 @@ int main(int argc, char *argv[])
     char* path;
     char inputPath[300];//E:\\programowanie\\quadtree\\sigfill_chunk_x.mag
                         //C:\Users\Marcin\Documents\inzynierka\sigfill_chunk_x.gk
-    if (argc > 1)
+    if (argc == PARAMS_COUNT)
     {
-        path = argv[1];
+        path = argv[PARAM_PATH];
+
+        if (false == checkFile(path))
+        {
+            ErrorHandler::getInstance() >> "No such file!";
+            return 0;
+        }
+
+        try 
+        {
+            int rectNum = std::stoi(std::string(argv[PARAM_RECT]));
+            int iterNum = std::stoi(std::string(argv[PARAM_ITERATIONS]));
+
+            randomWalkTest(path, iterNum, rectNum);
+        }
+        catch (const std::invalid_argument& ia)
+        {
+            ErrorHandler::getInstance() >> "Invalid argument: " >> ia.what() >> '\n';
+            return 0;
+        }      
+    }
+    else if (argc > 1)
+    {
+        ErrorHandler::getInstance() >> "Incorrect number of args!\n";
     }
     else
     {
-        scanf("%s", inputPath);//wejscie
-        path = inputPath;
+        randomWalkTest(DEFAULT_PATH, DEFAULT_ITERATION, DEFAULT_RECT);
     }
-
-    if (false == checkFile(path))
-    {
-        ErrorHandler::getInstance() << "Nie ma takiego pliku!";
-        return 0;
-    }
-
-    Timer::getInstance().start("parser");
-    Parser parser(path, "<<",5);
-    Timer::getInstance().stop("parser");
-    Layer const& layer = parser.getLayerAt(0);
-    Rect const& spaceSize = parser.getLayerSize(0);
-
-    mainTree = new Tree(0,layer.size(), spaceSize);//start Tree
-    Timer::getInstance().start("createTree");
-    createTree(mainTree,layer);
-    Timer::getInstance().stop("createTree");
-
-    mainTree->printTree("ROOT");
-
-    randomWalkTest("../tests/test",100,10);
-
-    mainTree->clear();
-
+ 
     return 0;
 }
