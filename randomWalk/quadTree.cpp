@@ -359,7 +359,6 @@ Rect Tree::creatGaussianSurfFrom(Rect const & r, double const factor) // bez kol
 
     double factorX = getAdjustedGaussianFactor(r, factor, FACTOR_X);
     double factorY = getAdjustedGaussianFactor(r, factor, FACTOR_Y);
-    ErrorHandler::getInstance() >> factorX >> "," >> factorY >> "\n";
 
     return r.createGaussianSurface(factorX, factorY);
 }

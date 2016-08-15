@@ -1,5 +1,6 @@
 #include "mainFunctions.h"
 #include "ErrorHandler.h"
+#include "Timer.h"
 
 void pointsFormLine(point * topLeft, point * bottomRight, char * line)
 {
@@ -103,12 +104,15 @@ int getDistanceRomTwoPoints(point p1, point p2)
     return (int)sqrt((p1.x-p2.x)*(p1.x-p2.x)+(p1.y-p2.y)*(p1.y-p2.y));
 }
 
-Rect RandomWalk(Rect R, Tree* mainTree)
-{        
-    ErrorHandler::getInstance() >> "Starting: " >> R >> "\n";
-
+Rect RandomWalk(Rect R, Tree* mainTree, int& pointCount)
+{       
+    point p;
+    double r;
+    int index;
+    bool isCollison;
     REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
     UINT32_t Nsample = NSAMPLE;
+    pointCount = 0;
 
     precompute_unit_square_green(g, dgdx, dgdy, intg, Nsample);//wyliczanie funkcji greena
 
@@ -117,39 +121,46 @@ Rect RandomWalk(Rect R, Tree* mainTree)
 #elif __linux__
     rng_init(1);//inicjalizacja genaeratora
 #endif
-    point p;
-    double r;
-    int index;
-    bool isCollison;
+
+    ErrorHandler::getInstance() >> "Starting: " >> R >> "\n";
+    Timer::getInstance().start("createGaussianSurface");
     Rect output, square = mainTree->creatGaussianSurfFrom(R, 1.5);
-
-
+    Timer::getInstance().stop("createGaussianSurface");
     bool broken = false;
 
     do
     {
         r = myrand() / (double)(MY_RAND_MAX);
         index = getIndex(intg, r);
+        Timer::getInstance().start("getPointFromNindex");
         p = square.getPointFromNindex(index, NSAMPLE);
-        ErrorHandler::getInstance() << p.x << "," << p.y << "\n";
-
+        Timer::getInstance().stop("getPointFromNindex");
         if(false == mainTree->isInBounds(p))
         {
             broken = SPECIAL_VALUE_BOOLEAN;
             SPECIAL_ACTION;
         }
+        Timer::getInstance().start("drawBiggestSquareAtPoint");
         square = mainTree->drawBiggestSquareAtPoint(p);
+        Timer::getInstance().stop("drawBiggestSquareAtPoint");
+
+        Timer::getInstance().start("checkCollisons");
         isCollison = mainTree->checkCollisons(p, output);
+        Timer::getInstance().stop("checkCollisons");
+        pointCount++;
     }
     while (false == isCollison);
 
     if (false == broken)
         ErrorHandler::getInstance() >> "Ending: " >> output >> "\n";
-    else{
+
+    else
+    {
         output.topLeft = point(-1,-1);
         output.bottomRight = point(-1,-1);
-        ErrorHandler::getInstance() >> "Random walk is out of the bounds!" >> "\n";
+        ErrorHandler::getInstance() >> "Random walk is out of the bounds!\n";
     }
+    ErrorHandler::getInstance() << "Number of path's points: "  << pointCount << "\n";
 
     return output;
 }

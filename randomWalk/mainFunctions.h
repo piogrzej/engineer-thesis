@@ -27,7 +27,7 @@
 void pointsFormLine(point * topLeft, point * bottomRight, char * line);
 void createTree(Tree * mainTree,Layer const& layer);
 Rect layerSpaceSize(FILE * pFile);
-Rect RandomWalk(Rect R, Tree* mainTree);
+Rect RandomWalk(Rect R, Tree* mainTree, int& pointCount);
 int getIndex(REAL64_t intg[NSAMPLE + 1], double rand);
 void printList(std::list<Rect> input);
 

@@ -49,25 +49,26 @@ int getRectIt(Layer const& layer, Rect const& rect)
 void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
 {
     ErrorHandler::getInstance() >> "TEST RandomWalk\n";
-    Timer time;
+
     Parser parser(path, "<<");
     Layer layer = parser.getLayerAt(0);
     Rect const& spaceSize = parser.getLayerSize(0);
     Rect start = layer.at(RECT_ID);
     Tree *mainTree = new Tree(0, layer.size(), spaceSize);//start Tree
-    int pos;
+    int pos, sumPointCount = 0;
     int* foundedRectCount = new int[layer.size()+1];
     std::fill(foundedRectCount, foundedRectCount + layer.size()+1, 0);
 
     createTree(mainTree, layer);
     mainTree->printTree("ROOT");
 
-    time.start();
+    Timer::getInstance().start("_TotalTime:");
  
     int errors = 0;
     for (int i = 0; i < ITER_NUM; i++)
     {
-        Rect founded = RandomWalk(start, mainTree);
+        int counter;
+        Rect founded = RandomWalk(start, mainTree, counter);
         if(-1==founded.topLeft.x
                 &&-1==founded.topLeft.y
                 &&-1==founded.bottomRight.x
@@ -81,16 +82,19 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
             else
                 errors++;
         }
+        sumPointCount += counter;
     }
-    time.stop("RandomWalks: ");
+    Timer::getInstance().stop("_TotalTime:");
 
     int i = 0;
     for (Rect const& rect : layer)
     {
-        ErrorHandler::getInstance() >> rect >> "    znaleziony: " >> foundedRectCount[i++] >> "razy\n";
+        ErrorHandler::getInstance() >> rect >> " founded: " >> foundedRectCount[i++] >> " times\n";
     }
-    ErrorHandler::getInstance() >>"out of bounds case znaleziony: " >> foundedRectCount[i++] >> "razy\n";
-    ErrorHandler::getInstance() >> "Liczba bledow: " >> errors >> "razy\n";
+    ErrorHandler::getInstance() >> "Out of bounds case founded: " >> foundedRectCount[i++] >> " times\n";
+    ErrorHandler::getInstance() >> "Number of errors: " >> errors >> "\n";
+    ErrorHandler::getInstance() >> "Avarage number of path's points: " >> sumPointCount / ITER_NUM >> "\n";
+    Timer::getInstance().printResults();
     ErrorHandler::getInstance() >> "KONIEC TESTU!\n";
     delete foundedRectCount;
 }

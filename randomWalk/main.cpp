@@ -32,28 +32,21 @@ int main(int argc, char *argv[])
         ErrorHandler::getInstance() << "Nie ma takiego pliku!";
         return 0;
     }
-    Timer time;
-    time.start();
+
+    Timer::getInstance().start("parser");
     Parser parser(path, "<<",5);
-    time.stop("Parser: ");
+    Timer::getInstance().stop("parser");
     Layer const& layer = parser.getLayerAt(0);
     Rect const& spaceSize = parser.getLayerSize(0);
 
     mainTree = new Tree(0,layer.size(), spaceSize);//start Tree
-    time.start();
+    Timer::getInstance().start("createTree");
     createTree(mainTree,layer);
-    time.stop("Create tree: ");
+    Timer::getInstance().stop("createTree");
 
     mainTree->printTree("ROOT");
 
-//    Rect start = parser.getLayerAt(0).at(10);
-//    time.start();
-//    Rect founded = RandomWalk(start, mainTree);
-//    time.stop("Random Walk: ");
-//    ErrorHandler::getInstance() >> "Poczatkowy: " >> start;
-//    ErrorHandler::getInstance() >> "Znaleziony: " >> founded;
-//    randomWalkTest("../tests/test2",100,0);
-    randomWalkTest("../tests/test2",100,0);
+    randomWalkTest("../tests/test",100,10);
 
     mainTree->clear();
 
