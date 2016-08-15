@@ -48,20 +48,21 @@ long long Timer::stop()
 template<typename ObjectType, typename RetType,typename ...Args>
 RetType Timer::measure(std::string name, ObjectType& object, RetType (ObjectType::*method)(Args...), Args &&...args)
 {
+    // TO DO: referance handling
     startTime = timeNow();
 
     auto ret = (object.*method)(std::forward<Args>(args)...);
 
-    long long restult = stop();
+    long long result = stop();
 
     ResultMapIt it = resultMap.find(name);
 
     if (it == resultMap.end())
-        resultMap[name] = ResultPair(0, result);
+        resultMap[name] = ResultsData(0, timeNow());
     else
     {
         resultMap[name].count++;
-        resultMap[name] += result;
+        resultMap[name].resultsSum += result;
     }
 
     return ret;
