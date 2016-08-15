@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-using namespace std;
+
 
 struct point 
 {
@@ -39,7 +39,7 @@ public:
     Rect    createGaussianSurfaceY(double factorY) const;
     int     getPerimeter() const;
     point   getPointFromNindex(int index, int Nsample) const;
-    friend  ostream& operator<< (ostream&, Rect const&);
+    friend  std::ostream& operator<< (std::ostream&, Rect const&);
     bool    operator==(const Rect& r2) const;
     bool    operator!=(const Rect& r2) const { return !(*this == r2); }
 };

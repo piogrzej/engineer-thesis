@@ -26,11 +26,11 @@ void randomIndexTest()
         double randNum = myrand() / (double)(MY_RAND_MAX);
         index = getIndex(intg, randNum);
         s += index;
-        cout << index << " ";
+        std::cout << index << " ";
     }
     s = s / ITER;
-    cout << endl;
-    cout << "srednia=" << s << endl;
+    std::cout << "\n";
+    std::cout << "srednia=" << s << "\n";
 }
 
 int getRectIt(Layer const& layer, Rect const& rect)

@@ -160,7 +160,7 @@ bool Rect::operator==(const Rect & r2) const
     else
         return false;
 }
-ostream& operator<< (ostream &wyjscie, Rect const& ex)
+std::ostream& operator<< (std::ostream &wyjscie, Rect const& ex)
 {
     wyjscie << "Rect TL: x:" << ex.topLeft.x<<", y:" << ex.topLeft.y << "  BR: x:" << ex.bottomRight.x << ", y:" << ex.bottomRight.y;
     return wyjscie;

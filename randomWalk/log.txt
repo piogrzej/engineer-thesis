@@ -1,4 +1,4 @@
-Parser: 106 micros 
+Parser: 17524 micros 
 Create tree: 14 micros 
 ROOT objects: 6
 |---Rect TL: x:514, y:45  BR: x:665, y:82
@@ -53,901 +53,811 @@ ROOT objects: 6
 |  |---Rect TL: x:320, y:850  BR: x:420, y:964
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-25,187
-36,231
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,815
-29,771
-77,781
-98,685
-215,603
-247,369
-231,216
-Ending: Rect TL: x:123, y:200  BR: x:802, y:300
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,817
-59,890
--19,938
+25,955
+22,999
+63,1024
+118,1042
+133,1079
 Random walk is out of the bounds!
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-25,295
-24,251
-7,294
-32,289
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,468
-6,424
-31,437
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,925
--18,870
--16,870
--13,871
--7,868
--8,880
--9,869
--19,867
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,360
--19,367
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,988
--19,958
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,828
-73,901
-93,809
-183,905
-177,903
-165,897
-141,895
-93,895
-164,799
-214,758
-230,849
-231,848
-230,846
-228,843
-227,837
-229,849
-230,848
-232,847
-231,849
-230,848
-228,848
-230,847
-230,845
-232,849
-231,849
-232,848
-231,846
-234,845
-232,849
-233,849
-232,849
-231,850
-Ending: Rect TL: x:190, y:850  BR: x:290, y:964
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,222
-79,234
-80,233
-Ending: Rect TL: x:80, y:200  BR: x:93, y:323
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,198
-69,184
-54,183
-44,158
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,371
--19,370
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,760
-29,804
-77,804
--19,825
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,179
-51,155
-95,157
-53,167
-38,135
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,750
-69,724
-156,690
-96,865
-90,958
-189,916
-188,915
-190,913
-Ending: Rect TL: x:190, y:850  BR: x:290, y:964
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,804
-13,848
--19,867
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,111
-52,155
-96,138
-157,114
-159,156
-120,148
-86,97
-157,199
-199,191
-209,192
-198,197
-199,213
-Ending: Rect TL: x:123, y:200  BR: x:802, y:300
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,295
-69,304
-63,294
-47,280
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,384
-10,324
-19,353
--9,391
--19,382
+55,676
+-18,692
+-16,690
+-13,693
+-13,687
+-16,693
+-16,690
+-15,693
+-11,690
+-4,692
+-19,687
 Random walk is out of the bounds!
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
 55,309
-79,314
-80,314
-Ending: Rect TL: x:80, y:200  BR: x:93, y:323
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,317
-15,361
-32,394
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,328
-69,302
-59,306
-78,290
-76,289
+79,324
+78,323
+78,325
+76,325
+73,325
+71,319
+71,312
+73,319
+72,313
+65,308
+68,295
+68,284
+79,288
+78,289
+76,291
+77,288
+77,290
 77,292
-76,294
-76,297
-73,298
-73,292
-75,286
-71,286
-78,282
-76,281
-79,280
-78,281
-80,279
+75,292
+71,293
+78,292
+76,293
+73,291
+70,285
+69,294
+73,304
+79,300
+78,299
+78,301
+80,299
 Ending: Rect TL: x:80, y:200  BR: x:93, y:323
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-25,739
-69,741
--18,704
--16,706
--13,709
--7,707
--6,719
--19,717
+25,944
+-19,927
 Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,384
-92,444
--19,481
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,49
--3,75
--19,80
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,168
-24,197
-33,154
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,847
-8,803
-33,804
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,730
-68,803
-31,890
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,622
-79,695
--19,696
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,265
-31,268
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,241
-69,255
-75,265
-79,263
-79,262
-80,262
-Ending: Rect TL: x:80, y:200  BR: x:93, y:323
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,122
-36,78
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,739
-47,695
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
 55,763
-79,690
-177,684
--18,719
--20,720
+24,690
+67,704
+68,618
+-19,581
 Random walk is out of the bounds!
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-55,687
-38,760
+55,395
+126,356
+134,388
+148,324
+199,349
+188,454
+318,373
+206,181
+207,180
+Ending: Rect TL: x:200, y:100  BR: x:300, y:180
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,739
+-19,718
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,306
+-2,262
+-13,279
+-15,273
+-15,277
+-11,279
+-8,286
+-5,297
+-6,310
+7,318
+32,310
 Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-55,417
--18,357
--16,357
--17,360
--19,359
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,371
-69,398
-52,325
-62,350
-62,375
-113,339
-118,358
-151,346
-168,289
-Ending: Rect TL: x:123, y:200  BR: x:802, y:300
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,988
--19,997
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,244
-79,262
-80,261
-Ending: Rect TL: x:80, y:200  BR: x:93, y:323
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,100
-38,144
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,222
-41,246
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,825
--19,838
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,760
-6,716
-12,691
-21,722
-7,683
-8,708
-29,733
--2,781
--19,775
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,655
-103,728
--18,677
--18,675
--18,677
--16,676
--16,673
--17,670
--19,671
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,674
-69,637
-39,724
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,547
--18,516
--16,516
--19,518
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,339
-11,383
--19,378
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,155
-69,166
-102,145
-51,162
-38,125
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,631
--19,607
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,100
-69,97
-81,10
-75,29
-65,67
-141,44
-137,-7
-137,-5
-137,-9
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,804
-69,792
--18,786
--17,788
--17,786
--15,784
--19,781
+25,750
+13,794
+-19,789
 Random walk is out of the bounds!
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
 25,609
-69,579
--18,556
--16,555
--15,558
--14,554
--19,552
+69,602
+-18,607
+-20,606
 Random walk is out of the bounds!
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-55,60
-124,55
-148,119
-97,132
-95,199
-97,199
-98,202
-97,198
-98,195
-94,192
-87,195
-91,195
-92,191
-85,190
-88,199
-88,200
+25,198
+-19,183
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,179
+79,174
+54,173
+79,160
+87,199
+87,200
 Ending: Rect TL: x:80, y:200  BR: x:93, y:323
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-55,763
--18,811
--20,811
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,103
-73,176
-96,161
-92,123
-Ending: Rect TL: x:80, y:100  BR: x:93, y:123
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,890
--19,857
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,955
--19,954
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,644
-68,717
-139,804
-89,803
--10,793
--9,784
--10,794
--1,792
-2,774
--19,782
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,135
-28,71
-32,24
--1,19
-0,1
-10,-7
-9,-9
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,79
-43,123
+55,276
+31,279
 Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-25,652
-69,642
-156,699
-183,849
-189,850
-188,849
-187,851
-186,849
-183,848
-183,854
-181,848
-188,850
-189,852
-188,851
-187,849
-189,848
-188,850
-186,848
-185,845
-185,841
-192,839
-190,849
-189,848
-188,850
-187,852
-186,854
-188,857
-186,857
-186,854
-189,853
-190,853
+55,914
+21,841
+-18,843
+-16,841
+-19,842
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,923
+69,946
+88,859
+189,861
+188,860
+186,859
+183,859
+186,865
+185,868
+181,867
+183,874
+177,870
+165,873
+189,857
+189,856
+190,856
 Ending: Rect TL: x:190, y:850  BR: x:290, y:964
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-25,187
--19,175
+55,850
+76,923
+171,993
+168,965
+153,986
+189,995
+159,993
+165,1023
+143,1079
 Random walk is out of the bounds!
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-25,934
-69,970
--18,961
--19,959
+25,836
+10,880
+18,909
+15,946
+-18,944
+-16,943
+-19,941
 Random walk is out of the bounds!
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-25,317
-50,273
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,306
-17,262
-53,259
-28,261
-36,308
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,696
-17,652
-20,688
--19,690
+55,38
+102,8
+96,25
+129,3
+117,-1
+124,2
+117,13
+139,10
+120,5
+127,-8
+125,-7
+127,-7
+128,-9
 Random walk is out of the bounds!
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-25,901
-69,898
-129,985
-113,1045
-124,1012
-104,947
-189,972
-196,971
-190,965
-189,964
-189,963
-188,964
-187,962
-186,964
-183,963
-189,964
-188,963
-190,964
-Ending: Rect TL: x:190, y:850  BR: x:290, y:964
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,414
--19,397
+25,155
+-5,111
+-3,124
+13,126
+23,94
+23,136
+-4,94
+11,91
+-19,96
 Random walk is out of the bounds!
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-55,168
-86,146
-60,95
-52,16
-52,41
-83,91
-182,85
-191,68
-190,37
-181,82
-166,64
-163,29
-157,67
-147,109
-160,58
-119,96
-98,17
-95,-8
-93,-6
-90,-7
-88,-5
-84,-7
-82,-7
-82,-9
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,68
--19,90
+25,771
+-19,752
 Random walk is out of the bounds!
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
 55,611
-15,684
--2,651
--5,668
--5,655
--18,647
--16,647
--17,644
--17,646
--17,644
--17,646
--15,646
--13,642
--7,644
-5,650
-29,652
-64,700
-147,628
-Ending: Rect TL: x:123, y:500  BR: x:156, y:680
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,858
-69,853
-35,940
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,717
+18,684
+55,699
+-18,706
+-17,704
+-16,702
+-17,705
+-17,703
+-16,705
+-16,708
 -19,709
 Random walk is out of the bounds!
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
+25,858
+-19,851
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,382
+17,426
+-19,438
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,133
+45,89
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,652
+-19,622
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,685
+45,641
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,436
+-19,398
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,958
+24,885
+-19,885
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,122
+69,115
+57,199
+71,177
+49,175
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,114
+128,92
+199,87
+211,84
+196,80
+215,69
+185,57
+227,51
+233,3
+221,6
+217,-9
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,317
+27,361
+-18,347
+-19,345
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,284
+69,272
+59,266
+40,258
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,349
+13,305
+45,312
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
 25,328
-36,372
+31,284
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,652
+-19,622
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,676
+128,703
+154,557
+Ending: Rect TL: x:123, y:500  BR: x:156, y:680
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,284
+34,240
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,265
+79,261
+78,260
+76,261
+76,264
+76,261
+76,264
+75,267
+71,263
+75,256
+76,260
+79,261
+78,261
+80,259
+Ending: Rect TL: x:80, y:200  BR: x:93, y:323
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,276
+72,252
+68,245
+69,234
+79,236
+80,235
+Ending: Rect TL: x:80, y:200  BR: x:93, y:323
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,601
+128,552
+Ending: Rect TL: x:123, y:500  BR: x:156, y:680
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,501
+50,545
 Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
 55,655
-30,728
+-18,653
+-16,652
+-15,649
+-14,653
+-15,648
+-15,644
+-14,648
+-11,653
+-8,660
+-14,671
+-19,673
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,750
+4,794
+27,776
+18,731
+18,694
+-19,690
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,739
+-19,746
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,222
+31,218
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,1042
+39,1005
 Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
 25,858
-3,814
-6,792
--10,817
--10,808
--5,817
--2,830
-7,847
-21,822
--18,816
--20,816
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,144
-4,100
--9,77
--10,87
--14,78
--9,74
--19,80
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,209
-17,253
-53,278
-59,303
-52,284
-59,259
-78,263
-80,261
-Ending: Rect TL: x:80, y:200  BR: x:93, y:323
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,157
-97,184
-82,190
-76,181
-94,187
-91,175
-67,190
-71,178
-50,190
+69,837
+46,924
 Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
+55,752
+128,759
+38,750
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,925
+44,852
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,828
+114,901
+39,884
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,644
+94,571
+207,609
+433,477
+Ending: Rect TL: x:400, y:456  BR: x:500, y:600
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,880
+31,836
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,428
+128,414
+218,423
+200,299
+Ending: Rect TL: x:123, y:200  BR: x:802, y:300
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,631
+31,587
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,869
+24,825
+23,782
+-19,797
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,393
+52,437
+10,366
+7,337
+32,333
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,393
+-19,378
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,925
+-18,859
+-20,858
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
 55,774
-128,737
-16,730
-51,733
-72,663
-77,572
-173,523
-292,331
-307,181
-313,181
-307,179
-310,173
-301,172
-300,173
-Ending: Rect TL: x:200, y:100  BR: x:300, y:180
+128,763
+214,750
+259,651
+-18,556
+-16,555
+-16,552
+-13,553
+-13,559
+-11,565
+-11,572
+-4,567
+11,568
+28,598
+42,551
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-25,144
-25,100
-69,129
-139,96
-111,36
-95,81
-114,171
-112,143
-135,87
-154,151
-199,124
-198,123
-197,125
-195,124
-199,121
-200,120
-Ending: Rect TL: x:200, y:100  BR: x:300, y:180
+55,157
+97,137
+120,76
+137,-3
+143,-2
+148,-9
+Random walk is out of the bounds!
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-55,254
-64,278
-49,278
+25,241
+-19,243
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,839
+79,912
+53,1010
+57,941
+-19,915
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,557
+-18,540
+-16,539
+-13,536
+-17,530
+-15,532
+-16,536
+-18,539
+-16,539
+-15,536
+-19,535
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,319
+41,343
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,869
+36,825
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,611
+-18,600
+-20,601
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,200
+31,214
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,847
+-19,856
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,847
+-19,858
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,81
+73,8
+71,-9
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,990
+59,917
+-19,871
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,774
+128,781
+61,747
+24,668
+67,643
+153,617
+Ending: Rect TL: x:123, y:500  BR: x:156, y:680
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,882
+76,809
+153,714
+113,581
+131,449
+6,346
+-19,334
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,652
+25,608
+48,564
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,168
+84,199
+83,198
+81,198
+80,200
+Ending: Rect TL: x:80, y:200  BR: x:93, y:323
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,187
+32,231
 Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
 55,741
 -18,748
--17,750
--15,751
--13,747
--14,741
--19,744
+-20,747
 Random walk is out of the bounds!
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-55,633
-41,560
+25,252
+69,284
+69,294
+79,297
+78,296
+80,295
+Ending: Rect TL: x:80, y:200  BR: x:93, y:323
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,652
+-19,642
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,319
+79,320
+80,319
+Ending: Rect TL: x:80, y:200  BR: x:93, y:323
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,966
+-19,949
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,958
+68,885
+41,798
 Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-55,417
-30,344
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,706
-69,712
-156,696
-236,871
+55,871
+128,878
+189,908
+189,909
+188,908
+190,907
 Ending: Rect TL: x:190, y:850  BR: x:290, y:964
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-55,309
-31,299
-Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,244
-79,255
-78,256
-78,254
-79,256
-80,256
+55,233
+64,257
+79,254
+78,253
+78,255
+80,255
 Ending: Rect TL: x:80, y:200  BR: x:93, y:323
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-55,839
-62,912
-141,888
-93,906
--3,846
--8,862
-3,859
-25,862
-57,818
--19,804
+55,817
+53,744
+-19,745
 Random walk is out of the bounds!
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-25,977
-48,933
+55,49
+88,107
+Ending: Rect TL: x:80, y:100  BR: x:93, y:123
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,406
+128,392
+169,459
+302,520
+256,313
+124,389
+189,387
+284,358
+209,535
+420,606
+400,932
+Ending: Rect TL: x:320, y:850  BR: x:420, y:964
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+25,620
+69,622
+112,535
+243,569
+326,324
+426,467
+Ending: Rect TL: x:400, y:456  BR: x:500, y:600
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,828
+128,835
+119,896
+49,849
 Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-55,60
--14,66
--19,64
+55,752
+-18,773
+-16,775
+-15,772
+-17,768
+-17,766
+-18,768
+-18,766
+-17,764
+-19,764
 Random walk is out of the bounds!
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-25,198
-50,154
+25,934
+0,978
+-19,979
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,298
+59,322
+63,341
+63,324
+79,336
+91,333
+100,331
+102,338
+115,341
+102,362
+140,381
+116,324
+124,302
+94,299
+93,298
+Ending: Rect TL: x:80, y:200  BR: x:93, y:323
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,644
+50,571
 Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-55,179
-65,203
-52,207
-49,182
+25,1009
+-19,1013
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,925
+-18,885
+-19,883
+Random walk is out of the bounds!
+Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
+1.5,1.06201
+55,189
+31,192
 Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-25,274
-3,318
--15,296
--14,292
--19,294
+25,165
+-19,151
 Random walk is out of the bounds!
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-55,860
-128,820
-67,833
--19,893
-Random walk is out of the bounds!
+55,168
+24,143
+35,186
+Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-25,674
--19,664
-Random walk is out of the bounds!
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,687
--18,708
--18,706
--18,708
--18,710
+55,676
+-18,709
+-18,711
 -16,710
--13,712
--9,718
--13,708
--12,714
--5,710
--8,723
--19,724
+-19,711
 Random walk is out of the bounds!
 Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
 1.5,1.06201
-55,244
-70,220
-74,229
-71,224
-71,231
-69,238
-79,237
-79,238
-80,237
-Ending: Rect TL: x:80, y:200  BR: x:93, y:323
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-55,839
-38,912
+55,265
+53,289
+39,314
 Ending: Rect TL: x:30, y:40  BR: x:50, y:1030
-Starting: Rect TL: x:30, y:40  BR: x:50, y:1030
-1.5,1.06201
-25,339
--19,308
-Random walk is out of the bounds!
-RandomWalks: 1441217 micros 
-Rect TL: x:30, y:40  BR: x:50, y:1030    znaleziony: 33razy
+RandomWalks: 1452348 micros 
+Rect TL: x:30, y:40  BR: x:50, y:1030    znaleziony: 31razy
 Rect TL: x:1000, y:40  BR: x:1020, y:1030    znaleziony: 0razy
 Rect TL: x:80, y:100  BR: x:93, y:123    znaleziony: 1razy
-Rect TL: x:123, y:200  BR: x:802, y:300    znaleziony: 3razy
+Rect TL: x:123, y:200  BR: x:802, y:300    znaleziony: 1razy
 Rect TL: x:80, y:200  BR: x:93, y:323    znaleziony: 9razy
-Rect TL: x:123, y:500  BR: x:156, y:680    znaleziony: 1razy
+Rect TL: x:123, y:500  BR: x:156, y:680    znaleziony: 3razy
 Rect TL: x:701, y:50  BR: x:764, y:90    znaleziony: 0razy
 Rect TL: x:801, y:50  BR: x:923, y:90    znaleziony: 0razy
 Rect TL: x:803, y:600  BR: x:900, y:700    znaleziony: 0razy
 Rect TL: x:600, y:700  BR: x:700, y:750    znaleziony: 0razy
 Rect TL: x:700, y:800  BR: x:800, y:900    znaleziony: 0razy
-Rect TL: x:400, y:456  BR: x:500, y:600    znaleziony: 0razy
-Rect TL: x:200, y:100  BR: x:300, y:180    znaleziony: 2razy
+Rect TL: x:400, y:456  BR: x:500, y:600    znaleziony: 2razy
+Rect TL: x:200, y:100  BR: x:300, y:180    znaleziony: 1razy
 Rect TL: x:320, y:100  BR: x:420, y:180    znaleziony: 0razy
-Rect TL: x:190, y:850  BR: x:290, y:964    znaleziony: 5razy
-Rect TL: x:320, y:850  BR: x:420, y:964    znaleziony: 0razy
-out of bounds case znaleziony: 46razy
+Rect TL: x:190, y:850  BR: x:290, y:964    znaleziony: 2razy
+Rect TL: x:320, y:850  BR: x:420, y:964    znaleziony: 1razy
+out of bounds case znaleziony: 49razy
 Liczba bledow: 0razy
 KONIEC TESTU!

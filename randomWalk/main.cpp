@@ -7,7 +7,7 @@
 
 inline bool checkFile(char* name) 
 {
-    ifstream f(name);
+    std::ifstream f(name);
     return f.good();
 }
 

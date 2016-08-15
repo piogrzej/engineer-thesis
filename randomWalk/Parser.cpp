@@ -8,7 +8,7 @@ Parser::Parser(char * fileName, char * delimiter, int layerNum)
 	if (nullptr == fileName && nullptr == delimiter)
 		ErrorHandler::getInstance() >> "Podaj sciezke i separator!";
 
-	ifstream file(fileName, std::ios::in);
+	std::ifstream file(fileName, std::ios::in);
 	if (file.is_open())
 	{
 		char line[MAX_LINE_SIZE];
@@ -37,7 +37,7 @@ Parser::Parser(char * fileName, char * delimiter, int layerNum)
 		}
 	}
 	else
-		ErrorHandler::getInstance() >> "Nie mo¿na otworzyæ pliku!";
+		ErrorHandler::getInstance() >> "Nie moï¿½na otworzyï¿½ pliku!";
 }
 
 Parser::~Parser()
