@@ -3,18 +3,18 @@
 
 #include <iostream>
 
-
+typedef float floatingPoint;
 
 struct point 
 {
-    int x;
-    int y;
+    floatingPoint x;
+    floatingPoint y;
     point() {}
-    point(int pX, int pY) { x = pX; y = pY; }
-    void  operator+=(int scalar) {  x += scalar; y += scalar; }
-    void  operator-=(int scalar) {  x -= scalar; y -= scalar; }
-    point operator+(int scalar) { return point(x + scalar, y + scalar); }
-    point operator-(int scalar) { return point(x - scalar, y - scalar); }
+    point(floatingPoint pX, floatingPoint pY) { x = pX; y = pY; }
+    void  operator+=(floatingPoint scalar) {  x += scalar; y += scalar; }
+    void  operator-=(floatingPoint scalar) {  x -= scalar; y -= scalar; }
+    point operator+(floatingPoint scalar) { return point(x + scalar, y + scalar); }
+    point operator-(floatingPoint scalar) { return point(x - scalar, y - scalar); }
 };
 
 class Rect

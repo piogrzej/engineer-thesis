@@ -269,8 +269,8 @@ Rect Tree::drawBiggestSquareAtPoint(point p)
 {
     bool isCollision = false;
     bool maxReached = false;
-    const int MIN_DIST = 1;
-    int dist;
+    const floatingPoint MIN_DIST = .1;
+    floatingPoint dist;
 
     Rect output(p - 1, p + 1);
     Rect init(p - 2, p + 2);
