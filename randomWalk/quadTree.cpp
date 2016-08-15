@@ -386,7 +386,7 @@ void Tree::printTree(std::string const& name)
 
     if (isSplited)
     {
-        for(ushort i=0; i<NUMBER_OF_NODES;++i)
-            this->nodes[i]->printTree("UL");
+        for(ushort i=0; i < NUMBER_OF_NODES;++i)
+            this->nodes[i]->printTree("Node");
     }
 }
