@@ -29,8 +29,8 @@ public:
 	~Timer();
 
     static Timer&      getInstance();
-	void               start(std::string const& title);
-	void               stop(std::string const& title);
+    void               start(std::string const& title);
+    void               stop(std::string const& title);
     long long          stop();
     void               printResults();
 
@@ -38,7 +38,7 @@ public:
     RetType     measure(std::string name, ObjectType& object, RetType (ObjectType::*method)(Args...), Args &&... args);
 
 private:
-	TimePoint startTime;
+    TimePoint startTime;
     ResultMap resultMap;
 };
 
