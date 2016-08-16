@@ -63,21 +63,21 @@ bool Rect::rectContains(Rect r) const {
     else return false;
 }
 
-Rect  Rect::createGaussianSurfaceX(double factorX) const
+Rect  Rect::createGaussianSurfaceX(floatingPoint factorX) const
 {
     return createGaussianSurface(factorX, 1);
 }
 
-Rect  Rect::createGaussianSurfaceY(double factorY) const
+Rect  Rect::createGaussianSurfaceY(floatingPoint factorY) const
 {
     return createGaussianSurface(1, factorY);
 }
-Rect Rect::createGaussianSurface(double factorX, double factorY) const 
+Rect Rect::createGaussianSurface(floatingPoint factorX, floatingPoint factorY) const 
 {
-    double middleX = double(topLeft.x + bottomRight.x) / 2.;
-    double middleY = double(topLeft.y + bottomRight.y) / 2.;
-    double vectorX = double(topLeft.x) - middleX;
-    double vectorY = double(topLeft.y) - middleY;
+    floatingPoint middleX = floatingPoint(topLeft.x + bottomRight.x) / 2.;
+    floatingPoint middleY = floatingPoint(topLeft.y + bottomRight.y) / 2.;
+    floatingPoint vectorX = floatingPoint(topLeft.x) - middleX;
+    floatingPoint vectorY = floatingPoint(topLeft.y) - middleY;
     Rect gaussSurface;
     vectorX *= factorX;
     vectorY *= factorY;
@@ -97,7 +97,7 @@ int Rect::getPerimeter() const
 
 point Rect::getPointFromNindex(int index, int Nsample) const {//MAM NADZIEJE ZE NIGDZIE SIE NIE WALNALEM BO TO SKOMPLIKOWANA GEOMETRIA
     int perimeter = this->getPerimeter();
-    double vector = (double)perimeter / (double)Nsample;
+    floatingPoint vector = (floatingPoint)perimeter / (floatingPoint)Nsample;
     int heigth = this->getHeigth();
     int width = this->getWidth();
     point ret;

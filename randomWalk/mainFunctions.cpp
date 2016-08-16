@@ -10,7 +10,7 @@ void createTree(Tree * mainTree, Layer const& layer){
     }
 }
 
-int getIndex(REAL64_t intg[NSAMPLE + 1], double rand){
+int getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand){
     for (int i = 0; i <= NSAMPLE; ++i)
     {
         if (intg[i] <= rand && intg[i + 1] > rand) 
@@ -26,7 +26,7 @@ int getDistanceRomTwoPoints(point p1, point p2)
 Rect RandomWalk(Rect R, Tree* mainTree, int& pointCount)
 {       
     point p;
-    double r;
+    floatingPoint r;
     int index;
     bool isCollison;
     REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
@@ -49,7 +49,7 @@ Rect RandomWalk(Rect R, Tree* mainTree, int& pointCount)
 
     do
     {
-        r = myrand() / (double)(MY_RAND_MAX);
+        r = myrand() / (floatingPoint)(MY_RAND_MAX);
         index = getIndex(intg, r);
         Timer::getInstance().start("getPointFromNindex");
         p = square.getPointFromNindex(index, NSAMPLE);
@@ -88,7 +88,7 @@ void printList(std::list<Rect> input)
 {
     int i=0;
     for(std::list<Rect>::iterator iter = input.begin(); iter != input.end(); ++iter){
-        i++;
+        ++i;
         std::cout<<i<<" "<< iter->topLeft.x<<" "<<iter->topLeft.y<<" "<<iter->bottomRight.x<<" "<<iter->bottomRight.y<<std::endl;
-     }
+    }
 }

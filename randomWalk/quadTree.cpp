@@ -288,7 +288,7 @@ Rect Tree::drawBiggestSquareAtPoint(point p)
     if (checkCollisions(init))
         return init;
 
-     while((isCollision = checkCollisions(output)) || false == maxReached || dist >  MIN_DIST)
+    while((isCollision = checkCollisions(output)) || false == maxReached || dist >  MIN_DIST)
     {
         if(isCollision)
         {
@@ -312,13 +312,13 @@ Rect Tree::drawBiggestSquareAtPoint(point p)
 }
 
 
-double Tree::getAdjustedGaussianFactor(Rect const& r, double const factor, FACTOR_TYPE type)
+floatingPoint Tree::getAdjustedGaussianFactor(Rect const& r, floatingPoint const factor, FACTOR_TYPE type)
 {
     bool isCollision = false;
     bool isDividing = true;
     bool isFirstIt = true;
-    double adjustedFactor = factor;
-    double leftBound = 1., righBound = factor;
+    floatingPoint adjustedFactor = factor;
+    floatingPoint leftBound = 1., righBound = factor;
 
     Rect surface;
 
@@ -349,7 +349,7 @@ double Tree::getAdjustedGaussianFactor(Rect const& r, double const factor, FACTO
 }
 
 
-Rect Tree::creatGaussianSurfFrom(Rect const & r, double const factor) // bez kolizji
+Rect Tree::creatGaussianSurfFrom(Rect const & r, floatingPoint const factor) // bez kolizji
 {
     if (factor < 1)
     {
@@ -357,8 +357,8 @@ Rect Tree::creatGaussianSurfFrom(Rect const & r, double const factor) // bez kol
         return r;
     }
 
-    double factorX = getAdjustedGaussianFactor(r, factor, FACTOR_X);
-    double factorY = getAdjustedGaussianFactor(r, factor, FACTOR_Y);
+    floatingPoint factorX = getAdjustedGaussianFactor(r, factor, FACTOR_X);
+    floatingPoint factorY = getAdjustedGaussianFactor(r, factor, FACTOR_Y);
 
     return r.createGaussianSurface(factorX, factorY);
 }
