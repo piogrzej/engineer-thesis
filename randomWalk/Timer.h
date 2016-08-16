@@ -33,8 +33,8 @@ public:
 	~Timer();
 
     static Timer&      getInstance();
-	void               start(std::string const& title);
-	void               stop(std::string const& title);
+    void               start(std::string const& title);
+    void               stop(std::string const& title);
     long long          stop();
     void               printResults();
 
@@ -46,7 +46,7 @@ public:
     void measure(std::string name, void(*method)(Args...), Args &&...args);
 
 private:
-	TimePoint startTime;
+    TimePoint startTime;
     ResultMap resultMap;
 
     void      updateMap(std::string const name, long long value);

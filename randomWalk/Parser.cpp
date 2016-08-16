@@ -75,8 +75,8 @@ Rect Parser::getLayerSize(int layerIt)
 		if (rect.bottomRight.y > bottomY)
 			bottomY = rect.bottomRight.y;
 	}
-    int add_space_w = double(rightX - leftX) * BOUNDS_MUL_FACTOR;
-    int add_space_h = double(bottomY - topY) * BOUNDS_MUL_FACTOR;
+    int add_space_w = floatingPoint(rightX - leftX) * BOUNDS_MUL_FACTOR;
+    int add_space_h = floatingPoint(bottomY - topY) * BOUNDS_MUL_FACTOR;
 
 	return Rect(point(leftX  - add_space_w, topY    - add_space_w),
                 point(rightX + add_space_w, bottomY + add_space_w));

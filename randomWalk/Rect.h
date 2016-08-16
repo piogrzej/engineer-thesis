@@ -34,9 +34,9 @@ public:
     bool    rectsCollision(Rect const& r2) const;
     bool    rectContains(point p) const;
     bool    rectContains(Rect r) const;
-    Rect    createGaussianSurface(double factorX, double factorY) const;
-    Rect    createGaussianSurfaceX(double factorX) const;
-    Rect    createGaussianSurfaceY(double factorY) const;
+    Rect    createGaussianSurface(floatingPoint factorX, floatingPoint factorY) const;
+    Rect    createGaussianSurfaceX(floatingPoint factorX) const;
+    Rect    createGaussianSurfaceY(floatingPoint factorY) const;
     int     getPerimeter() const;
     point   getPointFromNindex(int index, int Nsample);
     friend  std::ostream& operator<< (std::ostream&, Rect const&);

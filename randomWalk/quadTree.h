@@ -44,7 +44,7 @@ private:
     bool            isSplited;
     int             nodeCount;
     void            split();
-    double          getAdjustedGaussianFactor(Rect const& r, double const factor, FACTOR_TYPE type);
+    floatingPoint          getAdjustedGaussianFactor(Rect const& r, floatingPoint const factor, FACTOR_TYPE type);
    
 public:
             Tree(int pLevel, int nodeSCount, Rect const& bounds);
@@ -62,7 +62,7 @@ public:
     bool    checkCollisons(point p, Rect& r);
     Rect    drawBiggestSquareAtPoint(point p);
     void    printTree(std::string const & name);
-    Rect    creatGaussianSurfFrom(Rect& r,double const factor);
+    Rect    creatGaussianSurfFrom(Rect const & r,floatingPoint const factor);
 
     // HELPER
     void    addNodesToStack(TreePtr* stackPtr, Tree* except, bool collisions[]);
