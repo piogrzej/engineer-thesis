@@ -64,12 +64,15 @@ Rect RandomWalk(Rect R, Tree* mainTree, int& pointCount)
 #else
         p = square.getPointFromNindex(getIndex(intg, r), NSAMPLE);
 #endif
-
         if(false == mainTree->isInBounds(p))
         {
             broken = SPECIAL_VALUE_BOOLEAN;
             SPECIAL_ACTION;
         }
+#ifdef DEBUG_MODE
+        ErrorHandler::getInstance() << p.x << "," << p.y << "\n";
+#endif
+
 #ifdef MEASURE_MODE
         square = Timer::getInstance().measure("drawBiggestSquareAtPoint", *mainTree, 
                                               &Tree::drawBiggestSquareAtPoint, point(p));
