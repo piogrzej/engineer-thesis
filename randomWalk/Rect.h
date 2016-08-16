@@ -20,7 +20,7 @@ struct point
 class Rect
 {
 public:
-    Rect() {}
+    Rect() { bottomRight = topLeft = point(-1, -1);  } // incorrect rect
     Rect(point tLeft, point bRight);
     ~Rect();
 
@@ -38,7 +38,7 @@ public:
     Rect    createGaussianSurfaceX(double factorX) const;
     Rect    createGaussianSurfaceY(double factorY) const;
     int     getPerimeter() const;
-    point   getPointFromNindex(int index, int Nsample) const;
+    point   getPointFromNindex(int index, int Nsample);
     friend  std::ostream& operator<< (std::ostream&, Rect const&);
     bool    operator==(const Rect& r2) const;
     bool    operator!=(const Rect& r2) const { return !(*this == r2); }

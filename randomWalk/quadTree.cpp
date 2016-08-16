@@ -349,7 +349,7 @@ double Tree::getAdjustedGaussianFactor(Rect const& r, double const factor, FACTO
 }
 
 
-Rect Tree::creatGaussianSurfFrom(Rect const & r, double const factor) // bez kolizji
+Rect Tree::creatGaussianSurfFrom(Rect& r, double const factor) // bez kolizji
 {
     if (factor < 1)
     {

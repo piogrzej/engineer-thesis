@@ -62,7 +62,7 @@ public:
     bool    checkCollisons(point p, Rect& r);
     Rect    drawBiggestSquareAtPoint(point p);
     void    printTree(std::string const & name);
-    Rect    creatGaussianSurfFrom(Rect const & r,double const factor);
+    Rect    creatGaussianSurfFrom(Rect& r,double const factor);
 
     // HELPER
     void    addNodesToStack(TreePtr* stackPtr, Tree* except, bool collisions[]);

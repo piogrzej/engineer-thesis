@@ -95,7 +95,7 @@ int Rect::getPerimeter() const
     return (2 * (this->bottomRight.x - this->topLeft.x) + 2 * (this->bottomRight.y - this->topLeft.y));
 }
 
-point Rect::getPointFromNindex(int index, int Nsample) const {//MAM NADZIEJE ZE NIGDZIE SIE NIE WALNALEM BO TO SKOMPLIKOWANA GEOMETRIA
+point Rect::getPointFromNindex(int index, int Nsample) {//MAM NADZIEJE ZE NIGDZIE SIE NIE WALNALEM BO TO SKOMPLIKOWANA GEOMETRIA
     int perimeter = this->getPerimeter();
     double vector = (double)perimeter / (double)Nsample;
     int heigth = this->getHeigth();

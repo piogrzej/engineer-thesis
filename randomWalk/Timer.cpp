@@ -1,8 +1,5 @@
 #include "Timer.h"
 
-#define timeNow() std::chrono::high_resolution_clock::now()
-#define duration(a) std::chrono::duration_cast<std::chrono::microseconds>(a).count()
-
 Timer::Timer()
 {
 }
@@ -45,28 +42,6 @@ long long Timer::stop()
     return duration(timeNow() - startTime);
 }
 
-template<typename ObjectType, typename RetType,typename ...Args>
-RetType Timer::measure(std::string name, ObjectType& object, RetType (ObjectType::*method)(Args...), Args &&...args)
-{
-    // TO DO: referance handling
-    startTime = timeNow();
-
-    auto ret = (object.*method)(std::forward<Args>(args)...);
-
-    long long result = stop();
-
-    ResultMapIt it = resultMap.find(name);
-
-    if (it == resultMap.end())
-        resultMap[name] = ResultsData(0, timeNow());
-    else
-    {
-        resultMap[name].count++;
-        resultMap[name].resultsSum += result;
-    }
-
-    return ret;
-}
 
 void Timer::printResults()
 {
@@ -77,5 +52,18 @@ void Timer::printResults()
             "    Avarage execution time: " << avarage << "us\n" <<
             "    Total execution time: " << it->second.resultsSum << "us\n" <<
             "    Executions count: " << it->second.count << "\n";
+    }
+}
+
+void Timer::updateMap(std::string const name, long long value)
+{
+    ResultMapIt it = resultMap.find(name);
+
+    if (it == resultMap.end())
+        resultMap[name] = ResultsData(1, timeNow());
+    else
+    {
+        resultMap[name].count++;
+        resultMap[name].resultsSum += value;
     }
 }

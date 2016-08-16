@@ -24,7 +24,8 @@ int getDistanceRomTwoPoints(point p1, point p2)
 }
 
 Rect RandomWalk(Rect R, Tree* mainTree, int& pointCount)
-{       
+{   
+    Rect output;
     point p;
     double r;
     int index;
@@ -42,45 +43,55 @@ Rect RandomWalk(Rect R, Tree* mainTree, int& pointCount)
 #endif
 
     ErrorHandler::getInstance() << "Starting: " << R << "\n";
-    Timer::getInstance().start("createGaussianSurface");
-    Rect output, square = mainTree->creatGaussianSurfFrom(R, 1.5);
-    Timer::getInstance().stop("createGaussianSurface");
+
+
+#ifdef MEASURE_MODE
+    Rect square = Timer::getInstance().measure("createGaussianSurface", *mainTree, 
+                                               &Tree::creatGaussianSurfFrom, R, 1.5);
+#else
+    Rect square = mainTree->creatGaussianSurfFrom(R, 1.5);
+#endif
+
     bool broken = false;
 
     do
     {
         r = myrand() / (double)(MY_RAND_MAX);
-        index = getIndex(intg, r);
-        Timer::getInstance().start("getPointFromNindex");
-        p = square.getPointFromNindex(index, NSAMPLE);
-        Timer::getInstance().stop("getPointFromNindex");
+
+#ifdef MEASURE_MODE
+        p = Timer::getInstance().measure("getPointFromNindex",square,
+                                         &Rect::getPointFromNindex, getIndex(intg, r), NSAMPLE);
+#else
+        p = square.getPointFromNindex(getIndex(intg, r), NSAMPLE);
+#endif
+
         if(false == mainTree->isInBounds(p))
         {
             broken = SPECIAL_VALUE_BOOLEAN;
             SPECIAL_ACTION;
         }
-        Timer::getInstance().start("drawBiggestSquareAtPoint");
+#ifdef MEASURE_MODE
+        square = Timer::getInstance().measure("drawBiggestSquareAtPoint", *mainTree, 
+                                              &Tree::drawBiggestSquareAtPoint, point(p));
+        isCollison = Timer::getInstance().measure("checkCollisons", *mainTree, 
+                                              &Tree::checkCollisons, point(p), output);
+#else
         square = mainTree->drawBiggestSquareAtPoint(p);
-        Timer::getInstance().stop("drawBiggestSquareAtPoint");
-
-        Timer::getInstance().start("checkCollisons");
         isCollison = mainTree->checkCollisons(p, output);
-        Timer::getInstance().stop("checkCollisons");
+#endif
+
         pointCount++;
     }
     while (false == isCollison);
+
+    ErrorHandler::getInstance() << "Number of path's points: " << pointCount << "\n";
 
     if (false == broken)
         ErrorHandler::getInstance() << "Ending: " << output << "\n";
 
     else
-    {
-        output.topLeft = point(-1,-1);
-        output.bottomRight = point(-1,-1);
         ErrorHandler::getInstance() << "Random walk is out of the bounds!\n";
-    }
-    ErrorHandler::getInstance() << "Number of path's points: "  << pointCount << "\n";
-
+    
     return output;
 }
 

@@ -49,13 +49,17 @@ int getRectIt(Layer const& layer, Rect const& rect)
 void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
 {
     ErrorHandler::getInstance() >> "RandomWalk \nTest: " >> path >> "\n";
-    Timer::getInstance().start("TotalTime");
 
+#ifdef MEASURE_MODE
+    Timer::getInstance().start("TotalTime");
     Timer::getInstance().start("_Parser");
     Parser parser(path, "<<");
     Timer::getInstance().stop("_Parser");
+#else
+    Parser parser(path, "<<");
+#endif
 
-    Layer layer = parser.getLayerAt(0);
+    const Layer layer = parser.getLayerAt(0);
 
     Rect const& spaceSize = parser.getLayerSize(0);
 
@@ -71,23 +75,27 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
     int* foundedRectCount = new int[layer.size()+1];
     std::fill(foundedRectCount, foundedRectCount + layer.size()+1, 0);
 
-    Timer::getInstance().start("_CreateTree");
+#ifdef MEASURE_MODE
+    Timer::getInstance().measure("_CreateTree", &createTree, &(*mainTree), layer);
+#else
     createTree(mainTree, layer);
-    Timer::getInstance().stop("_CreateTree");
+#endif
 
     mainTree->printTree("ROOT");
 
+#ifdef MEASURE_MODE
     Timer::getInstance().start("_RandomWalk Total");
- 
+#endif
+
     int errors = 0;
     for (int i = 0; i < ITER_NUM; i++)
     {
         int counter;
         Rect founded = RandomWalk(start, mainTree, counter);
-        if(-1==founded.topLeft.x
-                &&-1==founded.topLeft.y
-                &&-1==founded.bottomRight.x
-                &&-1==founded.bottomRight.y)
+        if(-1 == founded.topLeft.x &&
+           -1 == founded.topLeft.y &&
+           -1 == founded.bottomRight.x &&
+           -1 == founded.bottomRight.y)
             ++foundedRectCount[layer.size()];
         else
         {
@@ -99,7 +107,10 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
         }
         sumPointCount += counter;
     }
+
+#ifdef MEASURE_MODE
     Timer::getInstance().stop("_RandomWalk Total");
+#endif
 
     int i = 0;
     
@@ -111,8 +122,12 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
     
     ErrorHandler::getInstance() >> "Number of errors: " >> errors >> "\n";
     ErrorHandler::getInstance() >> "Avarage number of path's points: " >> sumPointCount / ITER_NUM >> "\n";
+    delete foundedRectCount;
+
+#ifdef MEASURE_MODE
     Timer::getInstance().stop("TotalTime");
     Timer::getInstance().printResults();
+#endif
+
     ErrorHandler::getInstance() >> "END OF TEST!\n";
-    delete foundedRectCount;
 }
