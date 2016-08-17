@@ -1,12 +1,12 @@
 #include "Parser.h"
-#include "ErrorHandler.h"
+#include "Logger.h"
 
 #include <sstream>
 
 Parser::Parser(char * fileName, char * delimiter, int layerNum)
 {
 	if (nullptr == fileName && nullptr == delimiter)
-		ErrorHandler::getInstance() >> "Podaj sciezke i separator!";
+		ErrorLogger::getInstance() >> "Podaj sciezke i separator!";
 
 	std::ifstream file(fileName, std::ios::in);
 	if (file.is_open())
@@ -37,7 +37,7 @@ Parser::Parser(char * fileName, char * delimiter, int layerNum)
 		}
 	}
 	else
-		ErrorHandler::getInstance() >> "Nie mozna otworzyc pliku!";
+		ErrorLogger::getInstance() >> "Nie mozna otworzyc pliku!";
 }
 
 Parser::~Parser()
@@ -48,7 +48,7 @@ Rect Parser::getLayerSize(int layerIt)
 {
     if (layerIt >= layers.size())
     {
-        ErrorHandler::getInstance() >> "Nie ma takiej warstwy!\n";
+        ErrorLogger::getInstance() >> "Nie ma takiej warstwy!\n";
         return Rect();
     }
 	int leftX, rightX, topY, bottomY;
@@ -104,7 +104,7 @@ Rect Parser::loadRectFromLine(char * line)
 	}
 	catch (std::exception const & e)
 	{
-		ErrorHandler::getInstance() << e.what();
+		ErrorLogger::getInstance() << e.what();
 	}
 
 	point topLeft, rightBottom;

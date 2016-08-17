@@ -25,7 +25,7 @@
 
 
 void createTree(Tree * mainTree,Layer const& layer);
-Rect RandomWalk(Rect R, Tree* mainTree, int& pointCount);
+Rect RandomWalk(Rect const& R, Tree* mainTree, int& pointCount);
 int getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand);
 void printList(std::list<Rect> input);
 

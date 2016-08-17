@@ -114,7 +114,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;DEBUG_MODE;MEASURE_MODE;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,7 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ErrorHandler.cpp" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="green.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainFunctions.cpp" />
@@ -155,7 +155,7 @@
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ErrorHandler.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="green.h" />
     <ClInclude Include="mainFunctions.h" />
     <ClInclude Include="mempool.h" />

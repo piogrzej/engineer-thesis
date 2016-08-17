@@ -44,7 +44,7 @@ private:
     bool            isSplited;
     int             nodeCount;
     void            split();
-    floatingPoint          getAdjustedGaussianFactor(Rect const& r, floatingPoint const factor, FACTOR_TYPE type);
+    floatingPoint   getAdjustedGaussianFactor(Rect const& r, floatingPoint const factor, FACTOR_TYPE type);
    
 public:
             Tree(int pLevel, int nodeSCount, Rect const& bounds);

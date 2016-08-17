@@ -1,5 +1,5 @@
 #include "quadTree.h"
-#include "ErrorHandler.h"
+#include "Logger.h"
 #include "mainFunctions.h"
 
 #include <string>
@@ -353,7 +353,7 @@ Rect Tree::creatGaussianSurfFrom(Rect const & r, floatingPoint const factor) // 
 {
     if (factor < 1)
     {
-        ErrorHandler::getInstance() >> "CreateGaussian: Nieprawidlowy wspolczynnik!\n";
+        ErrorLogger::getInstance() >> "CreateGaussian: Nieprawidlowy wspolczynnik!\n";
         return r;
     }
 
@@ -376,12 +376,12 @@ void Tree::printTree(std::string const& name)
             lvlSpaceNode += "|  ";
         lvlSpaceRect += "|  ";
     }
-    ErrorHandler::getInstance() << lvlSpaceNode << name << " objects: " << this->objects.size() << "\n";
+    ErrorLogger::getInstance() << lvlSpaceNode << name << " objects: " << this->objects.size() << "\n";
     lvlSpaceRect += "|---";
 
     for(i=this->objects.begin(); i != this->objects.end(); ++i)
     {
-        ErrorHandler::getInstance() << lvlSpaceRect << *i << "\n";
+        ErrorLogger::getInstance() << lvlSpaceRect << *i << "\n";
     }
 
     if (isSplited)

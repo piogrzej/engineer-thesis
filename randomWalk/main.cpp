@@ -1,13 +1,13 @@
 #include "mainFunctions.h"
 #include "Parser.h"
-#include "ErrorHandler.h"
+#include "Logger.h"
 #include "Timer.h"
 #include "tests.h"
 #include <iostream>
 
 #define DEFAULT_PATH "../tests/test"
 #define DEFAULT_RECT 10
-#define DEFAULT_ITERATION 100
+#define DEFAULT_ITERATION 1000
 
 enum PARAMS
 {
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 
         if (false == checkFile(path))
         {
-            ErrorHandler::getInstance() >> "No such file!";
+            ErrorLogger::getInstance() >> "No such file!";
             return 0;
         }
 
@@ -49,13 +49,13 @@ int main(int argc, char *argv[])
         }
         catch (const std::invalid_argument& ia)
         {
-            ErrorHandler::getInstance() >> "Invalid argument: " >> ia.what() >> '\n';
+            ErrorLogger::getInstance() >> "Invalid argument: " >> ia.what() >> '\n';
             return 0;
         }      
     }
     else if (argc > 1)
     {
-        ErrorHandler::getInstance() >> "Incorrect number of args!\n";
+        ErrorLogger::getInstance() >> "Incorrect number of args!\n";
     }
     else
     {

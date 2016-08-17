@@ -4,8 +4,6 @@
 #include <utility>
 #include <map>
 
-#include "ErrorHandler.h"
-
 #define timeNow() std::chrono::high_resolution_clock::now()
 #define duration(a) std::chrono::duration_cast<std::chrono::microseconds>(a).count()
 //#define MEASURE_MODE 1
@@ -29,9 +27,6 @@ class Timer
 {
 
 public:
-	Timer();
-	~Timer();
-
     static Timer&      getInstance();
     void               start(std::string const& title);
     void               stop(std::string const& title);
@@ -43,13 +38,16 @@ public:
     template<typename RetType, typename ...Args>
     RetType measure(std::string name, RetType (*method)(Args...), Args &&...args);
     template<typename ...Args>
-    void measure(std::string name, void(*method)(Args...), Args &&...args);
+    void    measure(std::string name, void(*method)(Args...), Args &&...args);
 
 private:
     TimePoint startTime;
     ResultMap resultMap;
 
     void      updateMap(std::string const name, long long value);
+
+              Timer() {};
+             ~Timer() {};
 };
 
 template<typename ObjectType, typename RetType, typename ...Args>

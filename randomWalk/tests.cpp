@@ -1,4 +1,4 @@
-#include "ErrorHandler.h"
+#include "Logger.h"
 #include "tests.h"
 #include "green.h"
 #include "mainFunctions.h"
@@ -8,6 +8,7 @@
 
 #define NSAMPLE 200
 #define ITER 50
+
 
 void randomIndexTest()
 {
@@ -47,9 +48,8 @@ int getRectIt(Layer const& layer, Rect const& rect)
 
 void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
 {
-    ErrorHandler::getInstance() >> "RandomWalk \nTest: " >> path >> "\n";
-
 #ifdef MEASURE_MODE
+    TimeLogger::getInstance() << "RandomWalk \nTest: " << path << "\n";
     Timer::getInstance().start("TotalTime");
     Timer::getInstance().start("_Parser");
     Parser parser(path, "<<");
@@ -57,6 +57,7 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
 #else
     Parser parser(path, "<<");
 #endif
+    ErrorLogger::getInstance() >> "RandomWalk \nTest: " >> path >> "\n";
 
     const Layer layer = parser.getLayerAt(0);
 
@@ -64,7 +65,7 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
 
     if (layer.size() <= RECT_ID || RECT_ID < 0 || ITER_NUM <= 0)
     {
-        ErrorHandler::getInstance() >> "Incorrect args!" >> "\n";
+        ErrorLogger::getInstance() >> "Incorrect args!" >> "\n";
         exit(0);
     }
 
@@ -80,7 +81,9 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
     createTree(mainTree, layer);
 #endif
 
+#ifdef DEBUG_MODE 
     mainTree->printTree("ROOT");
+#endif
 
 #ifdef MEASURE_MODE
     Timer::getInstance().start("_RandomWalk Total");
@@ -112,21 +115,22 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
 #endif
 
     int i = 0;
-    
+
+#ifdef DEBUG_MODE 
     for (Rect const& rect : layer)
     {
-        ErrorHandler::getInstance() >> rect >> " founded: " >> foundedRectCount[i++] >> " times\n";
+        ErrorLogger::getInstance() << rect << " founded: " << foundedRectCount[i++] << " times\n";
     }
-    ErrorHandler::getInstance() >> "Out of bounds case founded: " >> foundedRectCount[i++] >> " times\n";
+    ErrorLogger::getInstance() << "Out of bounds case founded: " << foundedRectCount[i++] << " times\n";
     
-    ErrorHandler::getInstance() >> "Number of errors: " >> errors >> "\n";
-    ErrorHandler::getInstance() >> "Avarage number of path's points: " >> sumPointCount / ITER_NUM >> "\n";
-    delete foundedRectCount;
+    ErrorLogger::getInstance() << "Number of errors: " << errors << "\n";
+    ErrorLogger::getInstance() << "Avarage number of path's points: " << sumPointCount / ITER_NUM << "\n";
+#endif
 
 #ifdef MEASURE_MODE
     Timer::getInstance().stop("TotalTime");
     Timer::getInstance().printResults();
 #endif
-
-    ErrorHandler::getInstance() >> "END OF TEST!\n";
+    delete foundedRectCount;
+    ErrorLogger::getInstance() >> "END OF TEST!\n";
 }

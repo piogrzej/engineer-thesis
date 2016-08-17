@@ -1,5 +1,5 @@
 #include "mainFunctions.h"
-#include "ErrorHandler.h"
+#include "Logger.h"
 #include "Timer.h"
 
 
@@ -23,7 +23,7 @@ int getDistanceRomTwoPoints(point p1, point p2)
     return (int)sqrt((p1.x-p2.x)*(p1.x-p2.x)+(p1.y-p2.y)*(p1.y-p2.y));
 }
 
-Rect RandomWalk(Rect R, Tree* mainTree, int& pointCount)
+Rect RandomWalk(Rect const& R, Tree* mainTree, int& pointCount)
 {   
     Rect output;
     point p;
@@ -42,12 +42,12 @@ Rect RandomWalk(Rect R, Tree* mainTree, int& pointCount)
     rng_init(1);//inicjalizacja genaeratora
 #endif
 
-    ErrorHandler::getInstance() << "Starting: " << R << "\n";
+    ErrorLogger::getInstance() << "Starting: " << R << "\n";
 
 
 #ifdef MEASURE_MODE
     Rect square = Timer::getInstance().measure("createGaussianSurface", *mainTree, 
-                                               &Tree::creatGaussianSurfFrom, R, 1.5);
+                                               &Tree::creatGaussianSurfFrom, R, floatingPoint(1.5));
 #else
     Rect square = mainTree->creatGaussianSurfFrom(R, 1.5);
 #endif
@@ -70,7 +70,7 @@ Rect RandomWalk(Rect R, Tree* mainTree, int& pointCount)
             SPECIAL_ACTION;
         }
 #ifdef DEBUG_MODE
-        ErrorHandler::getInstance() << p.x << "," << p.y << "\n";
+        ErrorLogger::getInstance() << p.x << "," << p.y << "\n";
 #endif
 
 #ifdef MEASURE_MODE
@@ -87,13 +87,13 @@ Rect RandomWalk(Rect R, Tree* mainTree, int& pointCount)
     }
     while (false == isCollison);
 
-    ErrorHandler::getInstance() << "Number of path's points: " << pointCount << "\n";
+    ErrorLogger::getInstance() << "Number of path's points: " << pointCount << "\n";
 
     if (false == broken)
-        ErrorHandler::getInstance() << "Ending: " << output << "\n";
+        ErrorLogger::getInstance() << "Ending: " << output << "\n";
 
     else
-        ErrorHandler::getInstance() << "Random walk is out of the bounds!\n";
+        ErrorLogger::getInstance() << "Random walk is out of the bounds!\n";
     
     return output;
 }

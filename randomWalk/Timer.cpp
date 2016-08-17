@@ -1,12 +1,5 @@
 #include "Timer.h"
-
-Timer::Timer()
-{
-}
-
-Timer::~Timer()
-{
-}
+#include "Logger.h"
 
 Timer &Timer::getInstance()
 {
@@ -48,7 +41,7 @@ void Timer::printResults()
     for (ResultMapIt it = resultMap.begin(); it != resultMap.end(); ++it)
     {
         long long avarage = it->second.resultsSum / it->second.count;
-        ErrorHandler::getInstance() << it->first.c_str() << ":\n" <<
+        TimeLogger::getInstance() << it->first.c_str() << ":\n" <<
             "    Avarage execution time: " << avarage << "us\n" <<
             "    Total execution time: " << it->second.resultsSum << "us\n" <<
             "    Executions count: " << it->second.count << "\n";
