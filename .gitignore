@@ -1,6 +1,7 @@
 randomWalk/build
 randomWalk/dist
 randomWalk/log.txt
+randomWalk/errorLog.txt
 v06/Debug/
 v06/RandomWalk.sdf
 sigfill_chunk_x.gk

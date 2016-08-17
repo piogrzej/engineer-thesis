@@ -4,7 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>ErrorHandler.h</itemPath>
+      <itemPath>Logger.h</itemPath>
       <itemPath>Parser.h</itemPath>
       <itemPath>Rect.h</itemPath>
       <itemPath>Timer.h</itemPath>
@@ -24,7 +24,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>ErrorHandler.cpp</itemPath>
+      <itemPath>Logger.cpp</itemPath>
       <itemPath>Parser.cpp</itemPath>
       <itemPath>Rect.cpp</itemPath>
       <itemPath>Timer.cpp</itemPath>
@@ -76,9 +76,9 @@
           <standard>11</standard>
         </ccTool>
       </compileType>
-      <item path="ErrorHandler.cpp" ex="false" tool="1" flavor2="0">
+      <item path="Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="ErrorHandler.h" ex="false" tool="3" flavor2="0">
+      <item path="Logger.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Parser.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -149,9 +149,9 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="ErrorHandler.cpp" ex="false" tool="1" flavor2="0">
+      <item path="Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="ErrorHandler.h" ex="false" tool="3" flavor2="0">
+      <item path="Logger.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Parser.cpp" ex="false" tool="1" flavor2="0">
       </item>

@@ -35,7 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/ErrorHandler.o \
+	${OBJECTDIR}/Logger.o \
 	${OBJECTDIR}/Parser.o \
 	${OBJECTDIR}/Rect.o \
 	${OBJECTDIR}/Timer.o \
@@ -73,10 +73,10 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/randomwalk: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/randomwalk ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/ErrorHandler.o: ErrorHandler.cpp 
+${OBJECTDIR}/Logger.o: Logger.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ErrorHandler.o ErrorHandler.cpp
+	$(COMPILE.cc) -g -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Logger.o Logger.cpp
 
 ${OBJECTDIR}/Parser.o: Parser.cpp 
 	${MKDIR} -p ${OBJECTDIR}
