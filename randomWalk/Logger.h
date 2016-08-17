@@ -20,7 +20,7 @@ public:
 protected:
     std::fstream logFile;
 
-             AbstractLogger(std::string name, int mode);
+             AbstractLogger(std::string name, std::ios_base::openmode  mode);
     virtual ~AbstractLogger();
 };
 

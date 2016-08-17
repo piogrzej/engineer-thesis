@@ -2,7 +2,7 @@
 
 
 
-AbstractLogger::AbstractLogger(std::string name, int mode)
+AbstractLogger::AbstractLogger(std::string name, std::ios_base::openmode  mode)
 {
     logFile.open(name.c_str(), mode);
     logFile << INITIAL_TEXT_LOG;
