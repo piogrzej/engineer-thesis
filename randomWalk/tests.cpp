@@ -68,7 +68,7 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
         ErrorLogger::getInstance() >> "Incorrect args!" >> "\n";
         exit(0);
     }
-
+  
     Rect start = layer.at(RECT_ID);
     Tree *mainTree = new Tree(0, layer.size(), spaceSize);//start Tree
     int pos, sumPointCount = 0;
@@ -76,7 +76,7 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
     std::fill(foundedRectCount, foundedRectCount + layer.size()+1, 0);
 
 #ifdef MEASURE_MODE
-    Timer::getInstance().measure("_CreateTree", &createTree, &(*mainTree), layer);
+    Timer::getInstance().measure<Tree*,const Layer&>("_CreateTree", &createTree, &(*mainTree), layer);
 #else
     createTree(mainTree, layer);
 #endif
