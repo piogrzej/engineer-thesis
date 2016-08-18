@@ -32,14 +32,16 @@ public:
     void               stop(std::string const& title);
     long long          stop();
     void               printResults();
-
+    
+    template<typename RetType>
+    void    measure(std::string name, RetType(*method)(void));
     template<typename ObjectType, typename RetType, typename ...Args>
     RetType measure(std::string name, ObjectType& object, RetType (ObjectType::*method)(Args...), Args &&...args);
     template<typename RetType, typename ...Args>
     RetType measure(std::string name, RetType (*method)(Args...), Args &&...args);
     template<typename ...Args>
     void    measure(std::string name, void(*method)(Args...), Args &&...args);
-
+    
 private:
     TimePoint startTime;
     ResultMap resultMap;
@@ -78,6 +80,16 @@ inline void Timer::measure(std::string name, void(*method)(Args...), Args && ...
     TimePoint start = timeNow();
 
     method(std::forward<Args>(args)...);
+
+    updateMap(name, duration(timeNow() - start));
+}
+
+template<typename RetType>
+inline void Timer::measure(std::string name, RetType(*method)(void))
+{
+    TimePoint start = timeNow();
+
+    method();
 
     updateMap(name, duration(timeNow() - start));
 }

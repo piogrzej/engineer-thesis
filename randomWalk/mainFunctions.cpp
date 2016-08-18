@@ -33,8 +33,14 @@ Rect RandomWalk(Rect const& R, Tree* mainTree, int& pointCount)
     REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
     UINT32_t Nsample = NSAMPLE;
     pointCount = 0;
-
-    precompute_unit_square_green(g, dgdx, dgdy, intg, Nsample);//wyliczanie funkcji greena
+    
+    // EXAMPLE: Timer::getInstance().measure("rand",&rand);
+#ifdef MEASURE_MODE
+    Timer::getInstance().measure<REAL64_t*,REAL64_t*,REAL64_t*,REAL64_t*,UINTpt_t>("precompute",
+                         &precompute_unit_square_green,g, dgdx, dgdy, intg, NSAMPLE);//wyliczanie funkcji greena
+#else
+    precompute_unit_square_green(g,dgdx,dgdy,intg,NSAMPLE);
+#endif
 
 #ifdef _WIN32
     rng_init(3);//inicjalizacja genaeratora
