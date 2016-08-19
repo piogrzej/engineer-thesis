@@ -2,6 +2,7 @@
 #include "Logger.h"
 #include "Timer.h"
 
+#define MEASURE_MODE
 
 void createTree(Tree * mainTree, Layer const& layer){
     for(Rect const& rect : layer)
@@ -62,7 +63,12 @@ Rect RandomWalk(Rect const& R, Tree* mainTree, int& pointCount)
 
     do
     {
+#ifdef MEASURE_MODE
+        r = ((floatingPoint)Timer::getInstance().measure("myrand",myrand))/(floatingPoint)(MY_RAND_MAX);
+#else
         r = myrand() / (floatingPoint)(MY_RAND_MAX);
+#endif
+        
 
 #ifdef MEASURE_MODE
         p = Timer::getInstance().measure("getPointFromNindex",square,

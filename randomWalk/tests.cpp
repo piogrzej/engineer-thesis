@@ -9,6 +9,7 @@
 #define NSAMPLE 200
 #define ITER 50
 
+#define MEASURE_MODE
 
 void randomIndexTest()
 {

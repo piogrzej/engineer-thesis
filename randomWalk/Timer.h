@@ -34,7 +34,7 @@ public:
     void               printResults();
     
     template<typename RetType>
-    void    measure(std::string name, RetType(*method)(void));
+    RetType    measure(std::string name, RetType(*method)(void));
     template<typename ObjectType, typename RetType, typename ...Args>
     RetType measure(std::string name, ObjectType& object, RetType (ObjectType::*method)(Args...), Args &&...args);
     template<typename RetType, typename ...Args>
@@ -85,7 +85,7 @@ inline void Timer::measure(std::string name, void(*method)(Args...), Args && ...
 }
 
 template<typename RetType>
-inline void Timer::measure(std::string name, RetType(*method)(void))
+inline RetType Timer::measure(std::string name, RetType(*method)(void))
 {
     TimePoint start = timeNow();
 

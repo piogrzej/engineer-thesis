@@ -73,7 +73,7 @@
           <standard>10</standard>
         </cTool>
         <ccTool>
-          <standard>11</standard>
+          <standard>8</standard>
         </ccTool>
       </compileType>
       <item path="Logger.cpp" ex="false" tool="1" flavor2="0">
