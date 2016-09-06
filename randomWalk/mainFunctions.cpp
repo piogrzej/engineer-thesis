@@ -37,8 +37,9 @@ Rect RandomWalk(Rect const& R, Tree* mainTree, int& pointCount)
     
     // EXAMPLE: Timer::getInstance().measure("rand",&rand);
 #ifdef MEASURE_MODE
-    Timer::getInstance().measure<REAL64_t*,REAL64_t*,REAL64_t*,REAL64_t*,UINTpt_t>("precompute",
-                         &precompute_unit_square_green,g, dgdx, dgdy, intg, NSAMPLE);//wyliczanie funkcji greena
+    Timer::getInstance().start("precompute");
+    precompute_unit_square_green(g, dgdx, dgdy, intg, NSAMPLE);
+    Timer::getInstance().stop("precompute");
 #else
     precompute_unit_square_green(g,dgdx,dgdy,intg,NSAMPLE);
 #endif

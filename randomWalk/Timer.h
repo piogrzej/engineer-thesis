@@ -89,7 +89,7 @@ inline RetType Timer::measure(std::string name, RetType(*method)(void))
 {
     TimePoint start = timeNow();
 
-    method();
-
+    auto ret = method();
     updateMap(name, duration(timeNow() - start));
+    return ret;
 }
