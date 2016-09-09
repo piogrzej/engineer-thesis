@@ -37,7 +37,10 @@ Parser::Parser(char * fileName, char * delimiter, int layerNum)
 		}
 	}
 	else
-		ErrorLogger::getInstance() >> "Nie mozna otworzyc pliku!";
+	{
+		ErrorLogger::getInstance() >> "Nie mozna otworzyc pliku!\n";
+		exit(0);
+	}
 }
 
 Parser::~Parser()
