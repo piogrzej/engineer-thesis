@@ -2,4 +2,6 @@
 //org.eclipse.debug.core.PREFERRED_DELEGATES/org.eclipse.cdt.launch.attachLaunchType=com.nvidia.cuda.ide.debug.launch.attachCLaunch,debug,;
 //org.eclipse.debug.core.PREFERRED_DELEGATES/org.eclipse.cdt.launch.postmortemLaunchType=com.nvidia.cuda.ide.debug.coreCLaunch,debug,;
 //org.eclipse.debug.core.PREFERRED_DELEGATES/org.eclipse.cdt.launch.remoteApplicationLaunchType=com.nvidia.cuda.ide.remote.cudagdbserverrun,debug,;com.nvidia.cuda.ide.remote.cudagdbserverrun,run,;
+TerminalPrefInvertColors=true
 eclipse.preferences.version=1
+overriddenByCSS=,TerminalPrefInvertColors,

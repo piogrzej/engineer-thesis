@@ -90,3 +90,57 @@ Error:
     cudaFree(dev_b);
     
 }
+
+/*
+#include<cuda.h>
+#include<stdio.h>
+*/
+
+class vector{
+public:
+    int values[10];
+};
+
+
+__device__ int fact(int f)
+{
+  if(f == 0)
+    return 1;
+  else
+    return f * fact(f - 1);
+}
+
+__global__ void fillVector(vector* a){
+    a->values[blockIdx.x]=blockIdx.x;
+}
+
+__global__ void printVector(vector* a){
+    printf("%i \n",a->values[blockIdx.x]);
+}
+
+//exmaple of recurison and calling kernels form kernels
+__global__ void factVector(vector* a){
+	a->values[blockIdx.x]=fact(a->values[blockIdx.x]);
+	printVector<<<1,1>>>(a);
+}
+
+/*
+int main() {
+    vector *d_v;
+    cudaMalloc(&d_v,sizeof(vector));
+
+    fillVector<<<10,1>>>(d_v);
+
+    printVector<<<10,1>>>(d_v);
+
+    factVector<<<10,1>>>(d_v);
+
+    printVector<<<10,1>>>(d_v);
+
+
+
+    cudaFree(d_v);
+
+    return 0;
+}
+*/
