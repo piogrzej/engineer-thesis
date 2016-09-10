@@ -11,3 +11,5 @@ v06/RandomWalk.sdf
 sigfill_chunk_x.gk
 v06/v06.vcxproj.user
 .metadata/
+/randomWalk/.settings/
+/randomWalk/.cproject
