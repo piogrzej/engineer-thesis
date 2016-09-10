@@ -1,0 +1,5 @@
+connection.Piotr.com.nvidia.cuda.ide.build.core.Cpu=x86_64
+connection.Piotr.default_sync_project_location=/home/marcin/inzynierka
+connection.Piotr.preemption=true
+connection.Piotr.remote.port=2345
+eclipse.preferences.version=1

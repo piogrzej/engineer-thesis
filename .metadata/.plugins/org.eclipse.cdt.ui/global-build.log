@@ -1,0 +1,56 @@
+21:46:14 **** Incremental Build of configuration Debug for project randomWalk ****
+make all -C /home/marcin/inzynierka/randomWalk/Debug 
+make: Wejście do katalogu '/home/marcin/inzynierka/randomWalk/Debug'
+make: Nie ma nic do zrobienia w 'all'.
+make: Opuszczenie katalogu '/home/marcin/inzynierka/randomWalk/Debug'
+> Shell Completed (exit code = 0)
+21:47:08 **** Incremental Build of configuration Debug for project randomWalk ****
+make all -C /home/marcin/inzynierka/randomWalk/Debug 
+make: Wejście do katalogu '/home/marcin/inzynierka/randomWalk/Debug'
+make: Nie ma nic do zrobienia w 'all'.
+make: Opuszczenie katalogu '/home/marcin/inzynierka/randomWalk/Debug'
+> Shell Completed (exit code = 0)
+21:49:16 **** Incremental Build of configuration Debug for project randomWalk ****
+make all -C /home/marcin/inzynierka/randomWalk/Debug 
+make: Wejście do katalogu '/home/marcin/inzynierka/randomWalk/Debug'
+Building file: ../Parser.cpp
+Invoking: NVCC Compiler
+/opt/cuda/bin/nvcc -G -g -O0 -std=c++11 -gencode arch=compute_30,code=sm_30 -gencode arch=compute_52,code=sm_52 -m64 -odir "." -M -o "Parser.d" "../Parser.cpp"
+/opt/cuda/bin/nvcc -G -g -O0 -std=c++11 --compile -m64  -x c++ -o  "Parser.o" "../Parser.cpp"
+Finished building: ../Parser.cpp
+ 
+Building target: randomWalk
+Invoking: NVCC Linker
+/opt/cuda/bin/nvcc --cudart static --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_52,code=compute_52 -gencode arch=compute_30,code=sm_30 -gencode arch=compute_52,code=sm_52 -m64 -link -o  "randomWalk"  ./Logger.o ./Parser.o ./Rect.o ./Timer.o ./green.o ./kernel.o ./main.o ./mainFunctions.o ./mempool.o ./porttype.o ./quadTree.o ./randgen.o ./tests.o   
+Finished building target: randomWalk
+ 
+make: Opuszczenie katalogu '/home/marcin/inzynierka/randomWalk/Debug'
+> Shell Completed (exit code = 0)
+22:09:15 **** Build of configuration Debug for project randomWalk ****
+make all -C /home/marcin/inzynierka/randomWalk/Debug 
+make: Wejście do katalogu '/home/marcin/inzynierka/randomWalk/Debug'
+Building file: ../Parser.cpp
+Invoking: NVCC Compiler
+/opt/cuda/bin/nvcc -G -g -O0 -std=c++11 -gencode arch=compute_30,code=sm_30 -gencode arch=compute_52,code=sm_52 -m64 -odir "." -M -o "Parser.d" "../Parser.cpp"
+/opt/cuda/bin/nvcc -G -g -O0 -std=c++11 --compile -m64  -x c++ -o  "Parser.o" "../Parser.cpp"
+Finished building: ../Parser.cpp
+ 
+Building target: randomWalk
+Invoking: NVCC Linker
+/opt/cuda/bin/nvcc --cudart static --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_52,code=compute_52 -gencode arch=compute_30,code=sm_30 -gencode arch=compute_52,code=sm_52 -m64 -link -o  "randomWalk"  ./Logger.o ./Parser.o ./Rect.o ./Timer.o ./green.o ./kernel.o ./main.o ./mainFunctions.o ./mempool.o ./porttype.o ./quadTree.o ./randgen.o ./tests.o   
+Finished building target: randomWalk
+ 
+make: Opuszczenie katalogu '/home/marcin/inzynierka/randomWalk/Debug'
+> Shell Completed (exit code = 0)
+22:12:02 **** Incremental Build of configuration Debug for project randomWalk ****
+make all -C /home/marcin/inzynierka/randomWalk/Debug 
+make: Wejście do katalogu '/home/marcin/inzynierka/randomWalk/Debug'
+make: Nie ma nic do zrobienia w 'all'.
+make: Opuszczenie katalogu '/home/marcin/inzynierka/randomWalk/Debug'
+> Shell Completed (exit code = 0)
+22:13:00 **** Incremental Build of configuration Debug for project randomWalk ****
+make all -C /home/marcin/inzynierka/randomWalk/Debug 
+make: Wejście do katalogu '/home/marcin/inzynierka/randomWalk/Debug'
+make: Nie ma nic do zrobienia w 'all'.
+make: Opuszczenie katalogu '/home/marcin/inzynierka/randomWalk/Debug'
+> Shell Completed (exit code = 0)
