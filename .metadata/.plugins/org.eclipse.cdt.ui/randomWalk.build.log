@@ -1,9 +1,0 @@
-22:13:00 **** Incremental Build of configuration Debug for project randomWalk ****
-make all -C /home/marcin/inzynierka/randomWalk/Debug 
-make: Wejście do katalogu '/home/marcin/inzynierka/randomWalk/Debug'
-make: Nie ma nic do zrobienia w 'all'.
-make: Opuszczenie katalogu '/home/marcin/inzynierka/randomWalk/Debug'
-> Shell Completed (exit code = 0)
-
-22:13:00 Build Finished (took 403ms)
-

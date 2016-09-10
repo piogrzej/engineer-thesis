@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;RandomWalkCuda/mian.cpp&apos; to &apos;main.cpp&apos;" description="Rename resource &apos;mian.cpp&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="mian.cpp" name="main.cpp" stamp="1473369619707" updateReferences="true"/>
-</session>
