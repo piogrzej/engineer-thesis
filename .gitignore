@@ -3,8 +3,11 @@ randomWalk/dist
 randomWalk/log.txt
 randomWalk/errorLog.txt
 randomWalk/timeLog.txt
-andomWalk/.ptp-sync/
+randomWalk/.ptp-sync/
+RandomWalkCuda/
+RemoteSystemsTempFiles/
 v06/Debug/
 v06/RandomWalk.sdf
 sigfill_chunk_x.gk
 v06/v06.vcxproj.user
+.metadata/
