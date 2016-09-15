@@ -1,7 +1,8 @@
 #ifndef CUDA_FUNC
 #define CUDA_FUNC
 
-extern void addWithCuda(int *c, const int *a, const int *b, unsigned int size);
+extern bool initCuda(int argc, char **argv);
+extern void randomWalkCUDA(char* path, int ITER_NUM, int RECT_ID);
 
 
 

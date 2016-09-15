@@ -1,8 +1,19 @@
 #include "mainFunctions.h"
 #include "Logger.h"
 #include "Timer.h"
+#include "tests.h"
+#include "parallelFunc.h"
 
 #define MEASURE_MODE
+
+void runRandomWalk(char* path, int ITER_NUM, int RECT_ID)
+{
+	if(GPU_FLAG)
+		randomWalkCUDA(path,ITER_NUM,RECT_ID);
+	else
+		randomWalkTest(path,ITER_NUM,RECT_ID);
+
+}
 
 void createTree(Tree * mainTree, Layer const& layer){
     for(Rect const& rect : layer)

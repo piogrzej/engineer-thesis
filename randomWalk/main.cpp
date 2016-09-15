@@ -2,7 +2,6 @@
 #include "Parser.h"
 #include "Logger.h"
 #include "Timer.h"
-#include "tests.h"
 #include "parallelFunc.h"
 
 #include <iostream>
@@ -33,12 +32,9 @@ int main(int argc, char *argv[])
     char inputPath[300];//E:\\programowanie\\quadtree\\sigfill_chunk_x.mag
                         //C:\Users\Marcin\Documents\inzynierka\sigfill_chunk_x.gk
 
-    const int arraySize = 5;
-    const int a[arraySize] = { 1, 2, 3, 4, 5 };
-    const int b[arraySize] = { 10, 20, 30, 40, 50 };
-    int c[arraySize] = { 0 };
-
-    addWithCuda(c, a, b, arraySize);
+    if(GPU_FLAG &&
+       !initCuda(argc,argv))
+    	return 0;
 
     if (argc == PARAMS_COUNT)
     {
@@ -55,7 +51,7 @@ int main(int argc, char *argv[])
             int rectNum = std::stoi(std::string(argv[PARAM_RECT]));
             int iterNum = std::stoi(std::string(argv[PARAM_ITERATIONS]));
 
-            randomWalkTest(path, iterNum, rectNum);
+            runRandomWalk(path, iterNum, rectNum);
         }
         catch (const std::invalid_argument& ia)
         {
@@ -69,7 +65,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        randomWalkTest(DEFAULT_PATH, DEFAULT_ITERATION, DEFAULT_RECT);
+    	runRandomWalk(DEFAULT_PATH, DEFAULT_ITERATION, DEFAULT_RECT);
     }
  
     return 0;
