@@ -16,7 +16,7 @@ void runRandomWalk(char* path, int ITER_NUM, int RECT_ID)
 }
 
 void createTree(Tree * mainTree, Layer const& layer){
-    for(Rect const& rect : layer)
+    for(RectHost const& rect : layer)
     {
         mainTree->insert(rect);
     }
@@ -35,9 +35,9 @@ int getDistanceRomTwoPoints(point p1, point p2)
     return (int)sqrt((p1.x-p2.x)*(p1.x-p2.x)+(p1.y-p2.y)*(p1.y-p2.y));
 }
 
-Rect RandomWalk(Rect const& R, Tree* mainTree, int& pointCount)
+RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount)
 {   
-    Rect output;
+    RectHost output;
     point p;
     floatingPoint r;
     int index;
@@ -65,10 +65,10 @@ Rect RandomWalk(Rect const& R, Tree* mainTree, int& pointCount)
 
 
 #ifdef MEASURE_MODE
-    Rect square = Timer::getInstance().measure("createGaussianSurface", *mainTree, 
+    RectHost square = Timer::getInstance().measure("createGaussianSurface", *mainTree, 
                                                &Tree::creatGaussianSurfFrom, R, floatingPoint(1.5));
 #else
-    Rect square = mainTree->creatGaussianSurfFrom(R, 1.5);
+    RectHost square = mainTree->creatGaussianSurfFrom(R, 1.5);
 #endif
 
     bool broken = false;
@@ -84,7 +84,7 @@ Rect RandomWalk(Rect const& R, Tree* mainTree, int& pointCount)
 
 #ifdef MEASURE_MODE
         p = Timer::getInstance().measure("getPointFromNindex",square,
-                                         &Rect::getPointFromNindex, getIndex(intg, r), NSAMPLE);
+                                         &RectHost::getPointFromNindex, getIndex(intg, r), NSAMPLE);
 #else
         p = square.getPointFromNindex(getIndex(intg, r), NSAMPLE);
 #endif
@@ -122,10 +122,10 @@ Rect RandomWalk(Rect const& R, Tree* mainTree, int& pointCount)
     return output;
 }
 
-void printList(std::list<Rect> input)
+void printList(std::list<RectHost> input)
 {
     int i=0;
-    for(std::list<Rect>::iterator iter = input.begin(); iter != input.end(); ++iter){
+    for(std::list<RectHost>::iterator iter = input.begin(); iter != input.end(); ++iter){
         ++i;
         std::cout<<i<<" "<< iter->topLeft.x<<" "<<iter->topLeft.y<<" "<<iter->bottomRight.x<<" "<<iter->bottomRight.y<<std::endl;
     }

@@ -38,31 +38,31 @@ class Tree
 {
 private:
     int             level;
-    std::list<Rect> objects;
-    Rect            bounds;
+    std::list<RectHost> objects;
+    RectHost            bounds;
     TreePtr         nodes[NUMBER_OF_NODES];
     bool            isSplited;
     int             nodeCount;
     void            split();
-    floatingPoint   getAdjustedGaussianFactor(Rect const& r, floatingPoint const factor, FACTOR_TYPE type);
+    floatingPoint   getAdjustedGaussianFactor(RectHost const& r, floatingPoint const factor, FACTOR_TYPE type);
    
 public:
-            Tree(int pLevel, int nodeSCount, Rect const& bounds);
+            Tree(int pLevel, int nodeSCount, RectHost const& bounds);
 
     bool    isInBounds(point const& p);
-    bool    isInBounds(Rect const& r);
+    bool    isInBounds(RectHost const& r);
     void    clear();
-    bool    insert(Rect const& r);
-    Rect    getObjectAtIndex(int index);
-    void    addToObjects(Rect const& r);
+    bool    insert(RectHost const& r);
+    RectHost    getObjectAtIndex(int index);
+    void    addToObjects(RectHost const& r);
     void    deleteObjects();
-    bool    checkCollisions(Rect const& r, const Rect &ignore = Rect());
-    bool    checkCollisionsWithObjs(Rect const& r, const Rect &ignore);
-    bool    checkCollisionObjs(point p, Rect &r);
-    bool    checkCollisons(point p, Rect& r);
-    Rect    drawBiggestSquareAtPoint(point p);
+    bool    checkCollisions(RectHost const& r, const RectHost &ignore = RectHost());
+    bool    checkCollisionsWithObjs(RectHost const& r, const RectHost &ignore);
+    bool    checkCollisionObjs(point p, RectHost &r);
+    bool    checkCollisons(point p, RectHost& r);
+    RectHost    drawBiggestSquareAtPoint(point p);
     void    printTree(std::string const & name);
-    Rect    creatGaussianSurfFrom(Rect const & r,floatingPoint const factor);
+    RectHost    creatGaussianSurfFrom(RectHost const & r,floatingPoint const factor);
 
     // HELPER
     void    addNodesToStack(TreePtr* stackPtr, Tree* except, bool collisions[]);

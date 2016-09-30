@@ -34,10 +34,10 @@ void randomIndexTest()
     std::cout << "srednia=" << s << "\n";
 }
 
-int getRectIt(Layer const& layer, Rect const& rect)
+int getRectIt(Layer const& layer, RectHost const& rect)
 {
     int i = 0;
-    for (Rect const& rIt : layer)
+    for (RectHost const& rIt : layer)
     {
         if (rIt == rect)
             return i;
@@ -62,7 +62,7 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
 
     const Layer layer = parser.getLayerAt(0);
 
-    Rect const& spaceSize = parser.getLayerSize(0);
+    RectHost const& spaceSize = parser.getLayerSize(0);
 
     if (layer.size() <= RECT_ID || RECT_ID < 0 || ITER_NUM <= 0)
     {
@@ -70,7 +70,7 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
         exit(0);
     }
   
-    Rect start = layer.at(RECT_ID);
+    RectHost start = layer.at(RECT_ID);
     Tree *mainTree = new Tree(0, layer.size(), spaceSize);//start Tree
     int pos, sumPointCount = 0;
     int* foundedRectCount = new int[layer.size()+1];
@@ -94,7 +94,7 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
     for (int i = 0; i < ITER_NUM; i++)
     {
         int counter;
-        Rect founded = RandomWalk(start, mainTree, counter);
+        RectHost founded = RandomWalk(start, mainTree, counter);
         if(-1 == founded.topLeft.x &&
            -1 == founded.topLeft.y &&
            -1 == founded.bottomRight.x &&
@@ -118,7 +118,7 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
     int i = 0;
 
 #ifdef DEBUG_MODE 
-    for (Rect const& rect : layer)
+    for (RectHost const& rect : layer)
     {
         ErrorLogger::getInstance() << rect << " founded: " << foundedRectCount[i++] << " times\n";
     }

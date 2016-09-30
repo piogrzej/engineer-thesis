@@ -63,15 +63,18 @@ template<typename V> __device__ void d_vector<V>::add(V r){
 }
 
 
-template<typename V> __device__ void d_vector<V>::rem(const int index){
-	if(index==((*valuesSize)-1))
-		--(*size);
-	else if(index<((*valuesSize)-1))
-		for(int i=index; i<(*size-1);++i)
-		{
-			values[i]=values[i+1];
-		}
-	--(*size);
+template<typename V> __device__ void d_vector<V>::rem(const int index)
+{
+    if(index == ((*valuesSize)-1))
+	    --(*size);
+    else if(index < ((*valuesSize)-1))
+    {
+      for(int i=index; i<(*size-1);++i)
+      {
+	      values[i]=values[i+1];
+      }
+      --(*size);
+    }
 }
 
 template<typename V> __device__ V d_vector<V>::operator[](const int index){
@@ -92,7 +95,7 @@ template<typename V> __device__ V d_vector<V>::get(int index){
 		//TODO return "error" msg
 	}
 }
-
+/*
 __global__ void testVector(){
 	d_vector<rect> *d_v = new d_vector<rect>();
 	for(int i=0; i<100;++i)
@@ -120,4 +123,4 @@ int main() {
 				<< " ms" << std::endl;
 
     return 0;
-}
+}*/

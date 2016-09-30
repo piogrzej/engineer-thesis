@@ -47,17 +47,17 @@ Parser::~Parser()
 {
 }
 
-Rect Parser::getLayerSize(int layerIt)
+RectHost Parser::getLayerSize(int layerIt)
 {
     if (layerIt >= layers.size())
     {
         ErrorLogger::getInstance() >> "Nie ma takiej warstwy!\n";
-        return Rect();
+        return RectHost();
     }
 	int leftX, rightX, topY, bottomY;
 	Layer layer = layers[layerIt];
 	bool start = true;
-	for (const Rect& rect : layer)
+	for (const RectHost& rect : layer)
 	{
 		if (start)
 		{
@@ -81,16 +81,16 @@ Rect Parser::getLayerSize(int layerIt)
     int add_space_w = floatingPoint(rightX - leftX) * BOUNDS_MUL_FACTOR;
     int add_space_h = floatingPoint(bottomY - topY) * BOUNDS_MUL_FACTOR;
 
-	return Rect(point(leftX  - add_space_w, topY    - add_space_w),
+	return RectHost(point(leftX  - add_space_w, topY    - add_space_w),
                 point(rightX + add_space_w, bottomY + add_space_w));
 }
 
-Rect Parser::loadRectFromLine(char * line)
+RectHost Parser::loadRectFromLine(char * line)
 {
 	if (nullptr == line)
-		return Rect();
+		return RectHost();
 
-	Rect rect;
+	RectHost rect;
 	std::string lineStr(line);
 	std::stringstream stream(lineStr); // it is much more safe than atoi, thers exceptions
 	int cord[4];

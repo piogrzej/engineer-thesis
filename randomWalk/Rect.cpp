@@ -2,17 +2,17 @@
 
 #include <math.h>
 
-Rect::Rect(point tLeft, point bRight)
+RectHost::RectHost(point tLeft, point bRight)
 {
 	topLeft = tLeft;
 	bottomRight = bRight;
 }
 
-Rect::~Rect()
+RectHost::~RectHost()
 {
 }
 
-void Rect::changeDirection()
+void RectHost::changeDirection()
 {
     if (getWidth() < 0 || getHeigth() < 0)
     {
@@ -22,15 +22,15 @@ void Rect::changeDirection()
     }
 }
 
-int Rect::getWidth() const {
+int RectHost::getWidth() const {
     return (bottomRight.x - topLeft.x);
 }
 
-int Rect::getHeigth() const {
+int RectHost::getHeigth() const {
     return (bottomRight.y - topLeft.y);
 }
 
-bool Rect::cmpRect(Rect const& r2) const {
+bool RectHost::cmpRect(RectHost const& r2) const {
     if (this->bottomRight.x == r2.bottomRight.x &&
             this->bottomRight.y == r2.bottomRight.y &&
             this->topLeft.x == r2.topLeft.x &&
@@ -40,7 +40,7 @@ bool Rect::cmpRect(Rect const& r2) const {
         return false;
 }
 
-bool Rect::rectsCollision(Rect const& r2) const 
+bool RectHost::rectsCollision(RectHost const& r2) const 
 {
     if (bottomRight.x >= r2.topLeft.x &&
         r2.bottomRight.x >= topLeft.x    &&
@@ -51,34 +51,34 @@ bool Rect::rectsCollision(Rect const& r2) const
 	return false;
 }
 
-bool Rect::rectContains(point p) const {
+bool RectHost::rectContains(point p) const {
     if ((p.x >= topLeft.x) && (p.y >= topLeft.y) && (p.x <= bottomRight.x) && (p.y <= bottomRight.y)) 
         return true;
     else return false;
 }
 
-bool Rect::rectContains(Rect r) const {
+bool RectHost::rectContains(RectHost r) const {
     if(r.topLeft.x>this->topLeft.x && r.topLeft.y>this->topLeft.y && r.bottomRight.x<this->bottomRight.x && r.bottomRight.y<this->bottomRight.y)
         return true;
     else return false;
 }
 
-Rect  Rect::createGaussianSurfaceX(floatingPoint factorX) const
+RectHost  RectHost::createGaussianSurfaceX(floatingPoint factorX) const
 {
     return createGaussianSurface(factorX, 1);
 }
 
-Rect  Rect::createGaussianSurfaceY(floatingPoint factorY) const
+RectHost  RectHost::createGaussianSurfaceY(floatingPoint factorY) const
 {
     return createGaussianSurface(1, factorY);
 }
-Rect Rect::createGaussianSurface(floatingPoint factorX, floatingPoint factorY) const 
+RectHost RectHost::createGaussianSurface(floatingPoint factorX, floatingPoint factorY) const 
 {
     floatingPoint middleX = floatingPoint(topLeft.x + bottomRight.x) / 2.;
     floatingPoint middleY = floatingPoint(topLeft.y + bottomRight.y) / 2.;
     floatingPoint vectorX = floatingPoint(topLeft.x) - middleX;
     floatingPoint vectorY = floatingPoint(topLeft.y) - middleY;
-    Rect gaussSurface;
+    RectHost gaussSurface;
     vectorX *= factorX;
     vectorY *= factorY;
 
@@ -90,12 +90,12 @@ Rect Rect::createGaussianSurface(floatingPoint factorX, floatingPoint factorY) c
     return gaussSurface;
 }
 
-int Rect::getPerimeter() const
+int RectHost::getPerimeter() const
 {
     return (2 * (this->bottomRight.x - this->topLeft.x) + 2 * (this->bottomRight.y - this->topLeft.y));
 }
 
-point Rect::getPointFromNindex(int index, int Nsample) {//MAM NADZIEJE ZE NIGDZIE SIE NIE WALNALEM BO TO SKOMPLIKOWANA GEOMETRIA
+point RectHost::getPointFromNindex(int index, int Nsample) {//MAM NADZIEJE ZE NIGDZIE SIE NIE WALNALEM BO TO SKOMPLIKOWANA GEOMETRIA
     int perimeter = this->getPerimeter();
     floatingPoint vector = (floatingPoint)perimeter / (floatingPoint)Nsample;
     int heigth = this->getHeigth();
@@ -150,7 +150,7 @@ point Rect::getPointFromNindex(int index, int Nsample) {//MAM NADZIEJE ZE NIGDZI
         return ret;
     }
 }
-bool Rect::operator==(const Rect & r2) const
+bool RectHost::operator==(const RectHost & r2) const
 {
     if (r2.topLeft.x == topLeft.x &&
         r2.topLeft.y == topLeft.y &&
@@ -160,7 +160,7 @@ bool Rect::operator==(const Rect & r2) const
     else
         return false;
 }
-std::ostream& operator<< (std::ostream &wyjscie, Rect const& ex)
+std::ostream& operator<< (std::ostream &wyjscie, RectHost const& ex)
 {
     wyjscie << "Rect TL: x:" << ex.topLeft.x<<", y:" << ex.topLeft.y << "  BR: x:" << ex.bottomRight.x << ", y:" << ex.bottomRight.y;
     return wyjscie;

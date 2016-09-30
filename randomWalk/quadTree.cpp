@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Tree::Tree(int level, int nodeSCount, Rect const& bounds) :
+Tree::Tree(int level, int nodeSCount, RectHost const& bounds) :
 level(level), 
 bounds(bounds), 
 nodeCount(nodeSCount),
@@ -21,15 +21,15 @@ void Tree::deleteObjects()
     objects.clear();
 }
 
-void Tree::addToObjects(Rect const&  r)
+void Tree::addToObjects(RectHost const&  r)
 {
     objects.push_back(r);
 }
 
-Rect Tree::getObjectAtIndex(int index)
+RectHost Tree::getObjectAtIndex(int index)
 {
     int counter=0;
-    std::list<Rect>::iterator i;
+    std::list<RectHost>::iterator i;
 
     for(i=objects.begin(); i != objects.end(); ++i)
     {
@@ -40,7 +40,7 @@ Rect Tree::getObjectAtIndex(int index)
 }
 
 //checks if Rect is inside QuadTree bounds
-bool Tree::isInBounds(Rect const&  r)
+bool Tree::isInBounds(RectHost const&  r)
 {
     if (r.topLeft.y     >= this->bounds.topLeft.y     &&
         r.topLeft.x     >= this->bounds.topLeft.x     &&
@@ -79,7 +79,7 @@ void Tree::split()
 {
     int subWidth = this->bounds.topLeft.x + (int)(bounds.getWidth() / 2);
     int subHeigth = this->bounds.topLeft.y + (int)(bounds.getHeigth() / 2);
-    Rect ULbound, URbound, LRbound, LLbound;
+    RectHost ULbound, URbound, LRbound, LLbound;
     //UL
     ULbound.topLeft = this->bounds.topLeft;
     ULbound.bottomRight.x = subWidth;
@@ -107,10 +107,10 @@ void Tree::split()
 }
 
 //"wkladanie" elementu na drzewo
-bool Tree::insert(Rect const&  r)
+bool Tree::insert(RectHost const&  r)
 {
     int counter = 0;
-    Rect tmp;
+    RectHost tmp;
 
     if (!this->isInBounds(r)) 
         return false;
@@ -150,7 +150,7 @@ bool Tree::insert(Rect const&  r)
     return false;//nigdy nie powinno do tego dojsc//jedyne wytlumacznie max level lub obszar o bardzo malym rozmiarze//nie jestem pewien, do sprawdzenia!
 }
 
-bool Tree::checkCollisions(Rect const& r, const Rect &ignore)
+bool Tree::checkCollisions(RectHost const& r, const RectHost &ignore)
 {
     if (false == isInBounds(r))
         return true;
@@ -220,28 +220,28 @@ void Tree::addNodesToStack(TreePtr* stackPtr,Tree* except, bool collisions[])
     }
 }
 
-bool Tree::checkCollisionsWithObjs(Rect const&  r, const Rect &ignore)
+bool Tree::checkCollisionsWithObjs(RectHost const&  r, const RectHost &ignore)
 {
-    for (Rect const& i : objects)
+    for (RectHost const& i : objects)
         if (i != ignore && i.rectsCollision(r))
             return true;
 
     return false;
 }
 
-bool Tree::checkCollisionObjs(point p, Rect& r)
+bool Tree::checkCollisionObjs(point p, RectHost& r)
 {
-    std::list<Rect>::iterator i;
+    std::list<RectHost>::iterator i;
     for(i=this->objects.begin(); i != this->objects.end(); ++i)
         if(i->rectContains(p))
         {
-            r = Rect(i->topLeft,i->bottomRight);
+            r = RectHost(i->topLeft,i->bottomRight);
             return true;
         }
     return false;
 }
 
-bool Tree::checkCollisons(point p, Rect& r)
+bool Tree::checkCollisons(point p, RectHost& r)
 {
     Tree* current=this,*next;
     while(true){
@@ -265,15 +265,15 @@ bool Tree::checkCollisons(point p, Rect& r)
     }
 }
 
-Rect Tree::drawBiggestSquareAtPoint(point p)
+RectHost Tree::drawBiggestSquareAtPoint(point p)
 {
     bool isCollision = false;
     bool maxReached = false;
     const floatingPoint MIN_DIST = .1;
     floatingPoint dist;
 
-    Rect output(p - 1, p + 1);
-    Rect init(p - 2, p + 2);
+    RectHost output(p - 1, p + 1);
+    RectHost init(p - 2, p + 2);
 
     if (bounds.getHeigth() > bounds.getWidth())
         dist = bounds.getHeigth();
@@ -312,7 +312,7 @@ Rect Tree::drawBiggestSquareAtPoint(point p)
 }
 
 
-floatingPoint Tree::getAdjustedGaussianFactor(Rect const& r, floatingPoint const factor, FACTOR_TYPE type)
+floatingPoint Tree::getAdjustedGaussianFactor(RectHost const& r, floatingPoint const factor, FACTOR_TYPE type)
 {
     bool isCollision = false;
     bool isDividing = true;
@@ -320,7 +320,7 @@ floatingPoint Tree::getAdjustedGaussianFactor(Rect const& r, floatingPoint const
     floatingPoint adjustedFactor = factor;
     floatingPoint leftBound = 1., righBound = factor;
 
-    Rect surface;
+    RectHost surface;
 
     for (int i = 0; i < GAUSSIAN_ACCURACY; i++)
     {
@@ -349,7 +349,7 @@ floatingPoint Tree::getAdjustedGaussianFactor(Rect const& r, floatingPoint const
 }
 
 
-Rect Tree::creatGaussianSurfFrom(Rect const & r, floatingPoint const factor) // bez kolizji
+RectHost Tree::creatGaussianSurfFrom(RectHost const & r, floatingPoint const factor) // bez kolizji
 {
     if (factor < 1)
     {
@@ -366,7 +366,7 @@ Rect Tree::creatGaussianSurfFrom(Rect const & r, floatingPoint const factor) // 
 void Tree::printTree(std::string const& name)
 {
     std::string lvlSpaceNode = "", lvlSpaceRect = "";
-    std::list<Rect>::iterator i;
+    std::list<RectHost>::iterator i;
 
     for (int i = 0; i < level; i++)
     {
