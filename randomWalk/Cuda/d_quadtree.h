@@ -12,7 +12,7 @@
 #include "../Rect.h"
 #include "params.h"
 
-enum class NODE_ID
+enum NODE_ID
 {
   UP_LEFT,
   UP_RIGHT,
@@ -33,11 +33,14 @@ public:
   __host__ __device__ void 	setId(int newId)  { id = newId;}
   __host__ __device__ int 	getLevel() const { return level;}
   __host__ __device__ void 	setLevel(int lvl)  { level = lvl;}
+  __host__ __device__ void 	setChild(int child, int index)  { chldIndices[child] = index; }
+  __host__ __device__ void 	setLBounds(RectCuda rect)  { bounds = rect;}
   __host__ __device__ RectCuda  getBounds() { return bounds; }
   __host__ __device__ int 	rectCount() const{  return startOff - endOff;}
+  __host__ __device__ void 	setOff(int start, int end) { startOff = start;endOff = end;}
   __host__ __device__ int 	startRectOff() const{  return startOff; }
   __host__ __device__ int 	endRectOff() const{  return endOff;}
-  __host__ __device__ int	operator[](const int index) { return chldPtrs[index]; }
+  __host__ __device__ int	operator[](const int index) { return chldIndices[index]; }
   __host__ __device__ __forceinline__
 		      point2    getCenter()
   {
@@ -47,9 +50,9 @@ public:
   }
 
 private:
-  int        id; // Wskaźnik to globalnej tablicy węzłów
-  int        chldPtrs[NODES_NUMBER];
-  int        startOff; // wskaźnik do tablicy gdzie rozpoczynaja sie obiekty znajdujace sie w tym węźle
+  int        id; // indeks to globalnej tablicy węzłów
+  int        chldIndices[NODES_NUMBER];
+  int        startOff; // indesky do tablicy gdzie rozpoczynaja sie obiekty znajdujace sie w tym węźle
   int	     endOff;
   int	     level;
   RectCuda   bounds;

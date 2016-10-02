@@ -14,12 +14,19 @@
 
 #define NODES_NUMBER 4
 
+__device__ __host__ int nodesCountAtLevel(int level)
+{
+  return (1 - pow(NODES_NUMBER,level)) /
+	 (1 - level);
+}
+
 struct Params
 {
   //CUDA PARAMS
         const int THREAD_PER_BLOCK = 128;
 	      int WARP_SIZE; // inicjalizowane przez cudaInit
 	      int WARPS_PER_BLOCK;
+	      int SHARED_MEM_SIZE;
 
  // RANDOM WALK params
 
