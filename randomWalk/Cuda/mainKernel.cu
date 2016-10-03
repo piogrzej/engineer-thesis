@@ -1,15 +1,19 @@
 
+
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
-#include "../Parser.h"
-#include "d_quadtree.h"
-#include "params.h"
-
+#include <cuda.h>
+#include <device_functions.h>
+#include <cuda_runtime_api.h>
 #include <thrust/device_vector.h>
 #include <thrust/host_vector.h>
 #include <helper_cuda.h>
 #include <stdio.h>
 #include <vector>
+
+#include "../Parser.h"
+#include "d_quadtree.h"
+#include "params.h"
 
 __global__ void createQuadTree(d_QuadTree* nodes, RectCuda** rects, Params* d_params);
 
@@ -52,7 +56,7 @@ void randomWalkCUDA(char* path, int ITER_NUM, int RECT_ID)
     const std::vector<RectHost>& layer = parser.getLayerAt(0); // na razie 0 warstwa hardcode
     RectHost const& spaceSize = parser.getLayerSize(0);
 
-    RectCuda rects[layer.size()];
+    RectCuda* rects = new RectCuda[layer.size()];
     RectCuda* d_rects[2]; // potrzebujemy dodatkowy buffor pomocniczy, dlatego 2
     for(int i = 0; i < layer.size(); i++)
       {
@@ -161,10 +165,10 @@ __global__ void createQuadTree(d_QuadTree* nodes, RectCuda** rects, Params* para
 #pragma unroll
       for(int offset = 1; laneId < params->WARPS_PER_BLOCK; offset *= 2)
 	{
-	  int countPerWarp = __shfl_up(rectCount, offset,params->WARPS_PER_BLOCK);
+	//  int countPerWarp = __shfl_up(rectCount, offset,params->WARPS_PER_BLOCK);
 
-	  if(laneId >= offset)
-	      rectCount += countPerWarp;
+	 // if(laneId >= offset)
+	 //     rectCount += countPerWarp;
 	}
       if(laneId < params->WARPS_PER_BLOCK)
 	rectsCountNode[warpId][laneId] = rectCount;
@@ -250,8 +254,8 @@ __global__ void createQuadTree(d_QuadTree* nodes, RectCuda** rects, Params* para
 	startNodeAtLevel[childIndex + NODE_ID::DOWN_RIGHT].setOff(rectsCountNode[2][warpId],rectsCountNode[3][warpId]);
 
 
-	createQuadTree<<<childCount,childCount * params->THREAD_PER_BLOCK ,
-	childCount * params->THREAD_PER_BLOCK * sizeof(int)>>>(nodes,rects,params);
+	//createQuadTree<<<childCount,childCount * params->THREAD_PER_BLOCK ,
+//	childCount * params->THREAD_PER_BLOCK * sizeof(int)>>>(nodes,rects,params);
     }
   // nie skonczone
 

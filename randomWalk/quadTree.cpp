@@ -77,8 +77,8 @@ void Tree::clear()
 
 void Tree::split()
 {
-    int subWidth = this->bounds.topLeft.x + (int)(bounds.getWidth() / 2);
-    int subHeigth = this->bounds.topLeft.y + (int)(bounds.getHeigth() / 2);
+    floatingPoint subWidth = this->bounds.topLeft.x + (int)(bounds.getWidth() / 2);
+    floatingPoint subHeigth = this->bounds.topLeft.y + (int)(bounds.getHeigth() / 2);
     RectHost ULbound, URbound, LRbound, LLbound;
     //UL
     ULbound.topLeft = this->bounds.topLeft;
@@ -269,7 +269,7 @@ RectHost Tree::drawBiggestSquareAtPoint(point p)
 {
     bool isCollision = false;
     bool maxReached = false;
-    const floatingPoint MIN_DIST = .1;
+    const floatingPoint MIN_DIST = .1f;
     floatingPoint dist;
 
     RectHost output(p - 1, p + 1);

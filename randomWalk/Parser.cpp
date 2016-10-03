@@ -54,7 +54,7 @@ RectHost Parser::getLayerSize(int layerIt)
         ErrorLogger::getInstance() >> "Nie ma takiej warstwy!\n";
         return RectHost();
     }
-	int leftX, rightX, topY, bottomY;
+	floatingPoint leftX, rightX, topY, bottomY;
 	Layer layer = layers[layerIt];
 	bool start = true;
 	for (const RectHost& rect : layer)
@@ -93,7 +93,7 @@ RectHost Parser::loadRectFromLine(char * line)
 	RectHost rect;
 	std::string lineStr(line);
 	std::stringstream stream(lineStr); // it is much more safe than atoi, thers exceptions
-	int cord[4];
+	floatingPoint cord[4];
 	int i = 0;
 	std::string header;
 	stream >> header;

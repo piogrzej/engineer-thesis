@@ -16,8 +16,8 @@
 
 __device__ __host__ int nodesCountAtLevel(int level)
 {
-  return (1 - pow(NODES_NUMBER,level)) /
-	 (1 - level);
+  return int((1 - powf(NODES_NUMBER,level)) /
+	 (1 - level));
 }
 
 struct Params

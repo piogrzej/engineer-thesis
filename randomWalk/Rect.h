@@ -29,8 +29,8 @@ public:
     point   bottomRight;
 
     void    changeDirection();
-    int     getWidth() const;
-    int     getHeigth() const;
+ floatingPoint     getWidth() const;
+ floatingPoint     getHeigth() const;
     bool    cmpRect(RectHost const& r2) const;
     bool    rectsCollision(RectHost const& r2) const;
     bool    rectContains(point p) const;

@@ -22,11 +22,11 @@ void RectHost::changeDirection()
     }
 }
 
-int RectHost::getWidth() const {
+floatingPoint RectHost::getWidth() const {
     return (bottomRight.x - topLeft.x);
 }
 
-int RectHost::getHeigth() const {
+floatingPoint RectHost::getHeigth() const {
     return (bottomRight.y - topLeft.y);
 }
 
