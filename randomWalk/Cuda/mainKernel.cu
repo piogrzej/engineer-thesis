@@ -15,7 +15,7 @@
 #include "d_quadtree.h"
 #include "params.h"
 
-__global__ void createQuadTree(d_QuadTree* nodes, RectCuda** rects, Params* d_params);
+__global__ void createQuadTree(d_QuadTree* nodes, RectCuda* rects, Params* d_params);
 
 bool initCuda(int argc, char **argv)
 {
@@ -55,9 +55,8 @@ void randomWalkCUDA(char* path, int ITER_NUM, int RECT_ID)
     Parser parser(path, "<<");
     const std::vector<RectHost>& layer = parser.getLayerAt(0); // na razie 0 warstwa hardcode
     RectHost const& spaceSize = parser.getLayerSize(0);
-
+    RectCuda* d_rects;
     RectCuda* rects = new RectCuda[layer.size()];
-    RectCuda* d_rects[2]; // potrzebujemy dodatkowy buffor pomocniczy, dlatego 2
     for(int i = 0; i < layer.size(); i++)
       {
         RectHost const& r = layer[i];
@@ -67,15 +66,14 @@ void randomWalkCUDA(char* path, int ITER_NUM, int RECT_ID)
     int nodesTableSize= sizeof(d_QuadTree)*params.MAX_NUM_NODES;
     d_QuadTree root(0,0,params.MAX_NUM_NODES);
 
-    checkCudaErrors(cudaMalloc((void**)&d_rects[0],rectTableSize));
-    checkCudaErrors(cudaMalloc((void**)&d_rects[1],rectTableSize));
+    checkCudaErrors(cudaMalloc((void**)&d_rects,rectTableSize * 2)); // potrzebujemy bufora dlatego 2
     checkCudaErrors(cudaMalloc((void**)&d_nodes,nodesTableSize));
     checkCudaErrors(cudaMalloc((void**)&d_params,sizeof(Params)));
-    checkCudaErrors(cudaMemcpy(d_rects[0],&rects,rectTableSize, cudaMemcpyHostToDevice));
+    checkCudaErrors(cudaMemcpy(d_rects,&rects,rectTableSize, cudaMemcpyHostToDevice));
     checkCudaErrors(cudaMemcpy(d_nodes,&root,sizeof(d_QuadTree), cudaMemcpyHostToDevice));
     checkCudaErrors(cudaMemcpy(d_params,&params,sizeof(Params), cudaMemcpyHostToDevice));
-
     printf("test %d\n",params.WARP_SIZE);
+
     createQuadTree<<<1,params.THREAD_PER_BLOCK,params.SHARED_MEM_SIZE>>>(d_nodes,d_rects,d_params);
     checkCudaErrors(cudaGetLastError());
     checkCudaErrors(cudaMemcpy(&params,d_params,sizeof(Params), cudaMemcpyDeviceToHost));
@@ -83,7 +81,7 @@ void randomWalkCUDA(char* path, int ITER_NUM, int RECT_ID)
 
 }
 
-__global__ void createQuadTree(d_QuadTree* nodes, RectCuda** rects, Params* params)
+__global__ void createQuadTree(d_QuadTree* nodes, RectCuda* rects, Params* params)
 {
   extern __shared__ int sharedMemory[]; // trzymamy tu ilość rectów w danym węźle w każdym warpie
   const int warpId = threadIdx.x / warpSize; // Id warpa w bloku
@@ -91,6 +89,9 @@ __global__ void createQuadTree(d_QuadTree* nodes, RectCuda** rects, Params* para
   const int nodeId = blockIdx.x; // id node wzgledam parenta
   d_QuadTree &node = nodes[nodeId]; // 1 blok to jeden wezel
   int rectCount = node.rectCount();
+  RectCuda* buffer[2];
+  buffer[0] = rects;
+  buffer[1] = &rects[rectCount+1];
 
   if(node.getLevel() >= params->MAX_LEVEL || rectCount <= params->MIN_RECT_IN_NODE) // dwa warunki zakonczenia albo okreslona ilosc poziomow albo satysfakcjonujace nas rozdrobnienie
     {
@@ -105,8 +106,8 @@ __global__ void createQuadTree(d_QuadTree* nodes, RectCuda** rects, Params* para
     }
 
   point2 center = node.getCenter();
-  const RectCuda* roRects = rects[node.getLevel() % 2]; // read only rects
-  RectCuda* sortedRects = rects[(node.getLevel() + 1) % 2]; //
+  const RectCuda* roRects = buffer[node.getLevel() % 2]; // read only rects
+  RectCuda* sortedRects = buffer[(node.getLevel() + 1) % 2]; //
   // Kazdy warp (32thready) bedzie wykonywany jednoczesnie, rozdzielamy na nasze warpy
   // robote po rowno
   int rectsPerWarp = (node.rectCount() + params->WARPS_PER_BLOCK - 1) / params->WARPS_PER_BLOCK;
@@ -138,6 +139,7 @@ __global__ void createQuadTree(d_QuadTree* nodes, RectCuda** rects, Params* para
       bool TLy = rect.topLeft.y    < center.y;
       bool BRx = rect.bottmRight.x < center.x;
       bool BRy = rect.bottmRight.y < center.y;
+      printf("w: %d t: %d rect: %d %d\n",warpId, laneId,(int)rect.topLeft.x,rect.topLeft.y);
 
 #pragma unroll
       for(int i = 0; i < params->QUAD_TREE_CHILD_NUM; i++)// petla tylko do skrocenia kodu, ale unrollem preprocesor ja wyciagnie na normalny kod
@@ -145,7 +147,6 @@ __global__ void createQuadTree(d_QuadTree* nodes, RectCuda** rects, Params* para
 	  bool xMask = !(i % 2); // prawdziwe dla 0 , 2
 	  bool yMask = i < 2;	// prawdziew dla 0 , 1
 	  bool pred = (TLx && BRx && xMask) && ( TLy && BRy && yMask);
-
 	  int rectsMatches = __popc(__ballot(isActive && pred));
 
 	  if(rectsMatches > 0 && laneId == 0) // 1 watek dodaje wyniki calego warpa + optymalizacja
@@ -258,9 +259,6 @@ __global__ void createQuadTree(d_QuadTree* nodes, RectCuda** rects, Params* para
 //	childCount * params->THREAD_PER_BLOCK * sizeof(int)>>>(nodes,rects,params);
     }
   // nie skonczone
-
-  printf("warpId: %d  threadId: %d \n", threadIdx.x / params->WARP_SIZE, threadIdx.x);
-
 }
 
 

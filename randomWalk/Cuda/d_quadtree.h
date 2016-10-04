@@ -36,7 +36,7 @@ public:
   __host__ __device__ void 	setChild(int child, int index)  { chldIndices[child] = index; }
   __host__ __device__ void 	setLBounds(RectCuda rect)  { bounds = rect;}
   __host__ __device__ RectCuda  getBounds() { return bounds; }
-  __host__ __device__ int 	rectCount() const{  return startOff - endOff;}
+  __host__ __device__ int 	rectCount() const{  return endOff - startOff;}
   __host__ __device__ void 	setOff(int start, int end) { startOff = start;endOff = end;}
   __host__ __device__ int 	startRectOff() const{  return startOff; }
   __host__ __device__ int 	endRectOff() const{  return endOff;}

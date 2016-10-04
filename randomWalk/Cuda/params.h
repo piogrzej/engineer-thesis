@@ -31,8 +31,8 @@ struct Params
  // RANDOM WALK params
 
     	const int QUAD_TREE_CHILD_NUM = NODES_NUMBER;
-    	const int MAX_LEVEL = 8;
-    	const int MIN_RECT_IN_NODE = 16;
+    	const int MAX_LEVEL = 4;
+    	const int MIN_RECT_IN_NODE = 4;
     	const int MAX_NUM_NODES = (1 - pow(QUAD_TREE_CHILD_NUM,MAX_LEVEL)) /
 			          (1 - QUAD_TREE_CHILD_NUM);
 
