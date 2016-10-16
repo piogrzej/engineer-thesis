@@ -22,11 +22,13 @@
 #define NSAMPLE 200
 #define GAUSSIAN_ACCURACY 10
 #define BIGGEST_SQUARE_INIT_FACTOR 0.05
+#define GEN_TEST_FILE_PERCET_OF_RECTS_IN_LAYER 0.25;                            
 
 
 void createTree(Tree * mainTree,Layer const& layer);
 Rect RandomWalk(Rect const& R, Tree* mainTree, int& pointCount);
 int getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand);
 void printList(std::list<Rect> input);
+void generateTestFile(Rect space, unsigned long long numOfRects);               //przykadlowe uzycie: ilosc elementow 100, rozmair przestrzeni 10000
 
 #endif
