@@ -136,7 +136,7 @@ void generateTestFile(Rect maxSpace, unsigned long long numOfRects)
     printf("%d, %d\n",MAX_L,MAX_H);
     
     Tree *mainTree = new Tree(0, numOfRects, maxSpace);
-    std::ofstream output("..//generatedtests//test.txt");
+    std::ofstream output("..//generatedtests//test"+std::to_string(numOfRects)+".txt");
     
     output << "magic\ntech mayukh\ntimestamp 536610539\n<< metal3 >>\n";
     
