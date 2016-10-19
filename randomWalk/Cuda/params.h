@@ -17,7 +17,7 @@
 __device__ __host__ int nodesCountAtLevel(int level)
 {
   return int((1 - powf(NODES_NUMBER,level)) /
-	 (1 - level));
+	 (1 - NODES_NUMBER));
 }
 
 struct Params
@@ -31,10 +31,11 @@ struct Params
  // RANDOM WALK params
 
     	const int QUAD_TREE_CHILD_NUM = NODES_NUMBER;
-    	const int MAX_LEVEL = 4;
-    	const int MIN_RECT_IN_NODE = 4;
+    	const int MAX_LEVEL = 6;
+    	const int MIN_RECT_IN_NODE = 16;
     	const int MAX_NUM_NODES = (1 - pow(QUAD_TREE_CHILD_NUM,MAX_LEVEL)) /
 			          (1 - QUAD_TREE_CHILD_NUM);
+    	      int  TOTAL_RECT;
 
 /*
  * MIN_RECT_IN_NODE - inicjalnie root ma wszystkie recty rozdysponowuje je do osiagniecia tej liczby

@@ -11,14 +11,14 @@ typedef float  floatingPoint;
 
 struct RectCuda
 {
-	point2 topLeft;
-	point2 bottmRight;
-	__host__ __device__ RectCuda(point2 topLeft, point2 bottmRight) :
+  float2 topLeft;
+  float2 bottmRight;
+	__host__ __device__ RectCuda(float2 topLeft, float2 bottmRight) :
 	    topLeft(topLeft),
 	    bottmRight(bottmRight)	{};
 	__host__ __device__ RectCuda(){};
-	__host__ __device__ RectCuda(floatingPoint x0,floatingPoint x1,
-	                             floatingPoint y0,floatingPoint y1)
+	__host__ __device__ RectCuda(float x0,float x1,
+	                             float y0,float y1)
 	{
 		topLeft.x=x0;
 		topLeft.y=y0;
@@ -27,6 +27,13 @@ struct RectCuda
 	}
 
 	__host__ __device__ ~RectCuda(){};
+	__host__ __device__ __forceinline__ bool contains(RectCuda const& rect)
+	{
+           return  topLeft.x <= rect.topLeft.x &&
+		   topLeft.y <= rect.topLeft.y &&
+		   bottmRight.x >= rect.bottmRight.x &&
+		   bottmRight.y >= rect.bottmRight.y;
+	}
 };
 
 template<class V>

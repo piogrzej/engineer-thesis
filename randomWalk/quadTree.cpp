@@ -77,8 +77,8 @@ void Tree::clear()
 
 void Tree::split()
 {
-    floatingPoint subWidth = this->bounds.topLeft.x + (int)(bounds.getWidth() / 2);
-    floatingPoint subHeigth = this->bounds.topLeft.y + (int)(bounds.getHeigth() / 2);
+    floatingPoint subWidth = this->bounds.topLeft.x + (bounds.getWidth() / 2);
+    floatingPoint subHeigth = this->bounds.topLeft.y + (bounds.getHeigth() / 2);
     RectHost ULbound, URbound, LRbound, LLbound;
     //UL
     ULbound.topLeft = this->bounds.topLeft;
