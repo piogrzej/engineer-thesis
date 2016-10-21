@@ -132,7 +132,7 @@ void printList(std::list<RectHost> input)
     }
 }
 
-void generateTestFile(Rect maxSpace, unsigned long long numOfRects)
+void generateTestFile(RectHost maxSpace, unsigned long long numOfRects)
 {
     
     printf("generateTestFile: numer of rects %llu\n",numOfRects);
@@ -152,7 +152,7 @@ void generateTestFile(Rect maxSpace, unsigned long long numOfRects)
     
     output << "magic\ntech mayukh\ntimestamp 536610539\n<< metal3 >>\n";
     
-    Rect random;
+    RectHost random;
     
 #ifdef _WIN32
     rng_init(3);//inicjalizacja genaeratora
@@ -162,7 +162,7 @@ void generateTestFile(Rect maxSpace, unsigned long long numOfRects)
     
     for(unsigned long long i=0; i<numOfRects; ++i)
     {
-        printf("generateTestFile: %llu/%llu\n",i,numOfRects);
+       // printf("generateTestFile: %llu/%llu\n",i,numOfRects);
         
         do
         {

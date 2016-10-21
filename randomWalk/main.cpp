@@ -66,6 +66,7 @@ int main(int argc, char *argv[])
     {
     	runRandomWalk(DEFAULT_PATH, DEFAULT_ITERATION, DEFAULT_RECT);
     }
- 
+
+	//generateTestFile(RectHost(point(0.,0.),point(10000000.,10000000. )),300000);
     return 0;
 }

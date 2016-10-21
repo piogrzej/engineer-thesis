@@ -31,6 +31,6 @@ RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount);
 int getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand);
 void runRandomWalk(char* path, int ITER_NUM, int RECT_ID);
 void printList(std::list<RectHost> input);
-void generateTestFile(Rect space, unsigned long long numOfRects);               //przykadlowe uzycie: ilosc elementow 100, rozmair przestrzeni 10000
+void generateTestFile(RectHost space, unsigned long long numOfRects);               //przykadlowe uzycie: ilosc elementow 100, rozmair przestrzeni 10000
 
 #endif
