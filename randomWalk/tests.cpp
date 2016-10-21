@@ -77,7 +77,9 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
     std::fill(foundedRectCount, foundedRectCount + layer.size()+1, 0);
 
 #ifdef MEASURE_MODE
-    Timer::getInstance().measure<Tree*,const Layer&>("_CreateTree", &createTree, &(*mainTree), layer);
+    Timer::getInstance().start("Create Tree");
+    createTree(mainTree, layer);
+    Timer::getInstance().stop("Create Tree");
 #else
     createTree(mainTree, layer);
 #endif

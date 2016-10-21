@@ -2,8 +2,8 @@
 #include "device_launch_parameters.h"
 #include <cuda.h>
 #include <device_functions.h>
-#include <helper_cuda.h>
 
+#include "helper_cuda.h"
 #include "createquadtree.h"
 #include "params.h"
 #include "../Logger.h"
