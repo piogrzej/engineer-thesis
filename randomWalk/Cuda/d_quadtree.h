@@ -10,7 +10,8 @@
 
 #include "d_vector.h"
 #include "../Rect.h"
-#include "params.h"
+
+#define NODES_NUMBER 4
 
 enum NODE_ID
 {
@@ -62,6 +63,13 @@ private:
 
 };
 
+struct QuadTreeManager
+{
+    RectCuda* rects;
+    d_QuadTree* nodes;
+    d_QuadTree* root;
 
+    int rectsCount;
+};
 
 #endif /* QUADTREE_H_ */
