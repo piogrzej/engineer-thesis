@@ -1,3 +1,4 @@
+#include <fstream>
 #include "mainFunctions.h"
 #include "Logger.h"
 #include "Timer.h"
@@ -129,4 +130,55 @@ void printList(std::list<RectHost> input)
         ++i;
         std::cout<<i<<" "<< iter->topLeft.x<<" "<<iter->topLeft.y<<" "<<iter->bottomRight.x<<" "<<iter->bottomRight.y<<std::endl;
     }
+}
+
+void generateTestFile(Rect maxSpace, unsigned long long numOfRects)
+{
+    
+    printf("generateTestFile: numer of rects %llu\n",numOfRects);
+    const int MIN_X = maxSpace.topLeft.x;
+    const int MIN_Y = maxSpace.topLeft.y;
+    const int MAX_X = maxSpace.bottomRight.x;
+    const int MAX_Y = maxSpace.bottomRight.y;
+    const unsigned int L = MAX_X-MIN_X;
+    const unsigned int H = MAX_Y-MIN_Y;
+    const int MAX_L = ((MAX_X-MIN_X)/numOfRects)*GEN_TEST_FILE_PERCET_OF_RECTS_IN_LAYER;
+    const int MAX_H = ((MAX_Y-MIN_Y)/numOfRects)*GEN_TEST_FILE_PERCET_OF_RECTS_IN_LAYER;
+    
+    printf("%d, %d\n",MAX_L,MAX_H);
+    
+    Tree *mainTree = new Tree(0, numOfRects, maxSpace);
+    std::ofstream output("..//generatedtests//test.txt");
+    
+    output << "magic\ntech mayukh\ntimestamp 536610539\n<< metal3 >>\n";
+    
+    Rect random;
+    
+#ifdef _WIN32
+    rng_init(3);//inicjalizacja genaeratora
+#elif __linux__
+    rng_init(1);//inicjalizacja genaeratora
+#endif
+    
+    for(unsigned long long i=0; i<numOfRects; ++i)
+    {
+        printf("generateTestFile: %llu/%llu\n",i,numOfRects);
+        
+        do
+        {
+            random.topLeft.x = MIN_X + myrand()%L;
+            if(random.topLeft.x>MAX_L) random.topLeft.x - MAX_L;
+            random.topLeft.y = MIN_Y + myrand()%H;
+            if(random.topLeft.y>MAX_H) random.topLeft.y - MAX_H;
+
+            random.bottomRight.x = random.topLeft.x+myrand()%+MAX_L;
+            random.bottomRight.y = random.topLeft.y+myrand()%+MAX_L;
+        }while(true==mainTree->checkCollisions(random));
+        mainTree->insert(random);
+        output<<"rect "<<(int)random.topLeft.x<<" "<<(int)random.topLeft.y<<" "<<(int)random.bottomRight.x<<" "<<(int)random.bottomRight.y<<"\n";
+      
+    }
+    output << "<< metal3 >>";
+    printf("generateTestFile: end\n");
+    output.close();
 }
