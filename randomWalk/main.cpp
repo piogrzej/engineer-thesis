@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-#define DEFAULT_PATH "../tests/test"
+#define DEFAULT_PATH "../generatedtests/test1000000.txt"
 #define DEFAULT_RECT 10
 #define DEFAULT_ITERATION 1000
 

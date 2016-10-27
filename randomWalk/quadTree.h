@@ -3,7 +3,7 @@
 
 #define NUMBER_OF_NODES 4
 #define MAX_OBJECTS 4
-#define MAX_LEVELS 10
+#define MAX_LEVELS 20
 #define GAUSS_SURFACE_MULTIPLIER 1.1
 #define BOUNDS_MUL_FACTOR 0.01 // percent of whole space size that the space will be increased
 

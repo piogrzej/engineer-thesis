@@ -4,7 +4,7 @@
 #include <device_functions.h>
 #include <helper_cuda.h>
 
-#include "../Logger.h"
+#include "Logger.h"
 
 bool initCuda(int argc, char **argv)
 {

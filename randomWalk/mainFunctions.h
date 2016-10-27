@@ -8,7 +8,7 @@
 #define SPECIAL_ACTION break
 #define SPECIAL_VALUE_BOOLEAN true
 #endif
-#define GPU_FLAG 1
+#define GPU_FLAG 0
 
 #include<stdlib.h>//atoi
 #include<string.h>//strcmp
