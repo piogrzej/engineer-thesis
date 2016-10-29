@@ -62,7 +62,7 @@ __host__ __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
     }
 }
 
-__device__ bool d_QuadTree::checkCollisionObjs(point2 p, d_Rect &r)
+__host__ __device__ bool d_QuadTree::checkCollisionObjs(point2 p, d_Rect &r)
 {
     for(ushort i = this->startRectOff(); i < this->endRectOff(); ++i)
     {
@@ -203,4 +203,19 @@ __host__ __device__ bool d_QuadTree::checkCollisionsWithObjs(d_Rect const& r, co
                 return true;
 
         return false;
+}
+
+__host__ __device__ d_Rect d_QuadTree::createGaussianSurfFrom(d_Rect const & r, floatingPoint const factor) // bez kolizji
+{
+    if (factor < 1)
+    {
+        //ErrorLogger::getInstance() >> "CreateGaussian: Nieprawidlowy wspolczynnik!\n";
+        printf("CreateGaussian: Nieprawidlowy wspolczynnik!\n");
+        return r;
+    }
+
+    floatingPoint factorX = getAdjustedGaussianFactor(r, factor, FACTOR_X);
+    floatingPoint factorY = getAdjustedGaussianFactor(r, factor, FACTOR_Y);
+
+    return r.createGaussianSurface(factorX, factorY);
 }

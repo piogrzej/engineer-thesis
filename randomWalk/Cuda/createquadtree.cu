@@ -12,7 +12,7 @@
 __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* d_params,int lvlMul);
 bool checkQuadTree(const d_QuadTree *nodes,int idx,d_Rect *rects, int& count);
 
-QuadTreeManager createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& spaceSize,bool doCheck)
+QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& spaceSize,bool doCheck)
 {
   Params params;
   params.WARP_SIZE = 32;
@@ -65,12 +65,14 @@ QuadTreeManager createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& sp
 	       ErrorLogger::getInstance() <<"Blad tworzenia drzewa\n";
   }
 
-  QuadTreeManager tree;
-  tree.nodes = d_nodes;
-  tree.root = d_nodes;
-  tree.rects = d_rects;
-  tree.rectsCount = layer.size();
-  return tree;
+  QuadTreeManager* d_tree;
+  unsigned int size=sizeof(QuadTreeManager);
+  cudaMalloc((void **)&d_tree,size);
+  d_tree->nodes = d_nodes;
+  d_tree->root = d_nodes;
+  d_tree->rects = d_rects;
+  d_tree->rectsCount = layer.size();
+  return d_tree;
 }
 
 /* Ogólny flow:

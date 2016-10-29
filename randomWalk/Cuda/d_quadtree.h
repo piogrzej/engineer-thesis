@@ -10,6 +10,7 @@
 
 #include "d_Rect.h"
 #include "params.h"
+#include "green.h"
 #include <stdio.h>
 
 #define NODES_NUMBER 4
@@ -39,6 +40,7 @@ struct QuadTreeManager
     d_Rect* rects;
     d_QuadTree* nodes;
     d_QuadTree* root;
+    REAL64_t* d_intg;
 
     int rectsCount;
 };
