@@ -18,6 +18,7 @@
 
 #define NSAMPLE 200
 
+
 // TO DO: brzydkie kopiowanie, trzeba poprawić
 // TO DO: wykrywanie ilosci threadow, thread/block, (cudaDeviceProp)
 QuadTreeManager* randomWalkCudaInit(char* path)
@@ -85,3 +86,9 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
     }
     while (false == isCollison);
 }
+
+void randomWalkCudaWrapper(int dimBlck,int dimThread,QuadTreeManager* quadTree, int RECT_ID,floatingPoint *output,unsigned int randomSeed=time(NULL))
+{
+    randomWalkCuda<<<dimBlck,dimThread>>>(quadTree,RECT_ID,output,time(NULL));
+}
+
