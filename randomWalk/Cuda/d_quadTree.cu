@@ -219,3 +219,39 @@ __host__ __device__ d_Rect d_QuadTree::createGaussianSurfFrom(d_Rect const & r, 
 
     return r.createGaussianSurface(factorX, factorY);
 }
+
+__host__ __device__ floatingPoint d_QuadTree::getAdjustedGaussianFactor(d_Rect const& r, floatingPoint const factor, FACTOR_TYPE type)
+{
+    bool isCollision = false;
+    bool isDividing = true;
+    bool isFirstIt = true;
+    floatingPoint adjustedFactor = factor;
+    floatingPoint leftBound = 1., righBound = factor;
+
+    d_Rect surface;
+
+    for (int i = 0; i < GAUSSIAN_ACCURACY; i++)
+    {
+        surface = (type == FACTOR_X) ?
+                r.createGaussianSurfaceX(adjustedFactor) :
+                r.createGaussianSurfaceY(adjustedFactor);
+
+        isCollision = (!isInBounds(surface) || checkCollisions(surface, r));
+
+        if (isFirstIt && !isCollision)
+            break;
+        if ((isCollision && !isDividing) ||
+            !isCollision &&  isDividing)
+        {
+            isDividing = !isDividing;
+        }
+
+        if (isDividing)
+            adjustedFactor = righBound = (leftBound + righBound) / 2.;
+        else
+            adjustedFactor = leftBound = (leftBound + righBound) / 2.;
+
+        isFirstIt = false;
+    }
+    return adjustedFactor;
+}

@@ -13,14 +13,14 @@
 
 #include "mainkernels.h"
 #include "Parser.h"
-#include "Logger.h"
-#include "Timer.h"
+#include "utils/Logger.h"
+#include "utils/Timer.h"
 
 #define NSAMPLE 200
 
 // TO DO: brzydkie kopiowanie, trzeba poprawić
 // TO DO: wykrywanie ilosci threadow, thread/block, (cudaDeviceProp)
-QuadTreeManager* randomWalkCudaInit(char* path, int ITER_NUM, int RECT_ID)
+QuadTreeManager* randomWalkCudaInit(char* path)
 {
     ErrorLogger::getInstance() >> "Random Walk CUDA\n";
     Timer::getInstance().start("Parser");
@@ -34,7 +34,6 @@ QuadTreeManager* randomWalkCudaInit(char* path, int ITER_NUM, int RECT_ID)
     Timer::getInstance().printResults();
     //tworzenie i kopiowanie intg do pamieci device
     REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
-    UINT32_t Nsample = NSAMPLE;
     precompute_unit_square_green(g,dgdx,dgdy,intg,NSAMPLE);
     int sizeOfIntg = (NSAMPLE + 1)*sizeof(REAL64_t);
     cudaMalloc((void **)&(treeMng->d_intg),sizeOfIntg);
@@ -49,6 +48,7 @@ __device__ int getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand){
         if (intg[i] <= rand && intg[i + 1] > rand)
             return i;
     }
+    return -1;
 }
 
 __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned int *output, unsigned int randomSeed=time(NULL))
@@ -64,17 +64,22 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
     d_Rect rectOutput;
     point2 p;
     floatingPoint r;
-    int index;
     bool isCollison;
-    d_Rect square = quadTreeMn->root->createGaussianSurfFrom(R, 1.5);
+    d_Rect square = quadTreeMn->root->createGaussianSurfFrom(quadTreeMn->rects[RECT_ID], 1.5);
     output[blockIdx.x]=0;
 
-    bool broken = false;
+    //bool broken = false;
 
     do
     {
         r = curand_uniform(&state);
-        p = square.getPointFromNindex(getIndex(quadTree->d_intg, r), NSAMPLE);
+        p = square.getPointFromNindex(getIndex(quadTreeMn->d_intg, r), NSAMPLE);
+        if(false == quadTreeMn->root->isInBounds(p))
+        {
+            //broken = SPECIAL_VALUE_BOOLEAN;
+            SPECIAL_ACTION;
+        }
+        square = quadTreeMn->root->drawBiggestSquareAtPoint(p);
         isCollison = quadTreeMn->root->checkCollisons(p, rectOutput);
         ++output[blockIdx.x];
     }

@@ -5,9 +5,8 @@
 
 #include "helper_cuda.h"
 #include "mainkernels.h"
-//#include "params.h"
-#include "Logger.h"
-#include "Timer.h"
+#include "utils/Logger.h"
+#include "utils/Timer.h"
 
 __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* d_params,int lvlMul);
 bool checkQuadTree(const d_QuadTree *nodes,int idx,d_Rect *rects, int& count);
