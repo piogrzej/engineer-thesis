@@ -1,5 +1,5 @@
 #include "quadTree.h"
-#include "Logger.h"
+#include "../utils/Logger.h"
 #include "mainFunctions.h"
 
 #include <string>

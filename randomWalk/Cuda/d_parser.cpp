@@ -1,9 +1,9 @@
-#include "Parser.h"
-#include "Logger.h"
+#include "d_parser.h"
+#include "../utils/Logger.h"
 
 #include <sstream>
 
-Parser::Parser(char * fileName, char * delimiter, int layerNum)
+d_Parser::d_Parser(char * fileName, char * delimiter, int layerNum)
 {
 	if (nullptr == fileName && nullptr == delimiter)
 		ErrorLogger::getInstance() >> "Podaj sciezke i separator!";
@@ -13,7 +13,7 @@ Parser::Parser(char * fileName, char * delimiter, int layerNum)
 	{
 		char line[MAX_LINE_SIZE];
 		int layerIt = 0;
-		Layer layer;
+		d_Layer layer;
 		bool isFirst = true;
 		if (layerNum == 0)
 			layerNum--; // w while nie ma znaczenia
@@ -28,7 +28,7 @@ Parser::Parser(char * fileName, char * delimiter, int layerNum)
 					continue;
 				}
 				layerNum--;
-				layers.push_back(Layer(layer));
+				layers.push_back(d_Layer(layer));
 				layer.clear();
 				continue;
 			}
@@ -43,21 +43,21 @@ Parser::Parser(char * fileName, char * delimiter, int layerNum)
 	}
 }
 
-Parser::~Parser()
+d_Parser::~d_Parser()
 {
 }
 
-RectHost Parser::getLayerSize(int layerIt)
+d_Rect d_Parser::getLayerSize(int layerIt)
 {
     if (layerIt >= layers.size())
     {
         ErrorLogger::getInstance() >> "Nie ma takiej warstwy!\n";
-        return RectHost();
+        return d_Rect();
     }
 	floatingPoint leftX, rightX, topY, bottomY;
-	Layer layer = layers[layerIt];
+	d_Layer layer = layers[layerIt];
 	bool start = true;
-	for (const RectHost& rect : layer)
+	for (const d_Rect& rect : layer)
 	{
 		if (start)
 		{
@@ -81,16 +81,20 @@ RectHost Parser::getLayerSize(int layerIt)
     int add_space_w = floatingPoint(rightX - leftX) * BOUNDS_MUL_FACTOR;
     int add_space_h = floatingPoint(bottomY - topY) * BOUNDS_MUL_FACTOR;
 
-	return RectHost(point(leftX  - add_space_w, topY    - add_space_w),
-                point(rightX + add_space_w, bottomY + add_space_w));
+    point2 topLeft,bottomRight;
+    topLeft.x = leftX - add_space_w;
+    topLeft.y = topY - add_space_w;
+    bottomRight.x = rightX + add_space_w;
+    bottomRight.y = bottomY + add_space_w;
+	return d_Rect(topLeft,bottomRight);
 }
 
-RectHost Parser::loadRectFromLine(char * line)
+d_Rect d_Parser::loadRectFromLine(char * line)
 {
 	if (nullptr == line)
-		return RectHost();
+		return d_Rect();
 
-	RectHost rect;
+	d_Rect rect;
 	std::string lineStr(line);
 	std::stringstream stream(lineStr); // it is much more safe than atoi, thers exceptions
 	floatingPoint cord[4];
@@ -110,7 +114,7 @@ RectHost Parser::loadRectFromLine(char * line)
 		ErrorLogger::getInstance() << e.what();
 	}
 
-	point topLeft, rightBottom;
+	point2 topLeft, rightBottom;
 
 	topLeft.x = cord[0];
 	topLeft.y = cord[1];

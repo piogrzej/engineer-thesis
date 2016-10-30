@@ -1,4 +1,5 @@
-#pragma once
+#ifndef D_VECTOR_H
+#define D_VECTOR_H
 
 #include <cuda.h>
 #include <cuda_runtime.h>
@@ -82,3 +83,5 @@ public:
 		return *(this->size);
 	}
 };
+
+#endif

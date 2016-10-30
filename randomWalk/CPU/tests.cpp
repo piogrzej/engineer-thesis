@@ -1,8 +1,8 @@
-#include "Logger.h"
+#include "../utils/Logger.h"
 #include "tests.h"
-#include "green.h"
+#include "../green/green.h"
 #include "mainFunctions.h"
-#include "Timer.h"
+#include "../utils/Timer.h"
 
 #include <math.h>
 

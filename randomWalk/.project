@@ -23,11 +23,10 @@
 		<nature>org.eclipse.cdt.core.ccnature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
-		<nature>org.eclipse.ptp.rdt.sync.core.remoteSyncNature</nature>
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1473713742445</id>
+			<id>1477861066615</id>
 			<name></name>
 			<type>26</type>
 			<matcher>
@@ -36,7 +35,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1473713742447</id>
+			<id>1477861066616</id>
 			<name></name>
 			<type>26</type>
 			<matcher>
@@ -45,7 +44,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1473713742449</id>
+			<id>1477861066620</id>
 			<name></name>
 			<type>6</type>
 			<matcher>
@@ -54,7 +53,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1473713742450</id>
+			<id>1477861066626</id>
 			<name></name>
 			<type>26</type>
 			<matcher>
@@ -63,7 +62,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1473713742456</id>
+			<id>1477861066628</id>
 			<name></name>
 			<type>6</type>
 			<matcher>
@@ -72,7 +71,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1473713742458</id>
+			<id>1477861066634</id>
 			<name></name>
 			<type>6</type>
 			<matcher>
@@ -81,7 +80,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1473713742462</id>
+			<id>1477861066636</id>
 			<name></name>
 			<type>6</type>
 			<matcher>

@@ -1,16 +1,16 @@
 #include <fstream>
 #include "mainFunctions.h"
-#include "Logger.h"
-#include "Timer.h"
+#include "../utils/Logger.h"
+#include "../utils/Timer.h"
 #include "tests.h"
-#include "parallelFunc.h"
+#include "../parallelFunc.h"
 
 #define MEASURE_MODE
 
 void runRandomWalk(char* path, int ITER_NUM, int RECT_ID)
 {
 	if(GPU_FLAG)
-		randomWalkCUDA(path,ITER_NUM,RECT_ID);
+		getAvgPathLen(path,ITER_NUM,RECT_ID);
 	else
 		randomWalkTest(path,ITER_NUM,RECT_ID);
 

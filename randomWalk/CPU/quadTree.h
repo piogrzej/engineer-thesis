@@ -8,7 +8,7 @@
 #define BOUNDS_MUL_FACTOR 0.01 // percent of whole space size that the space will be increased
 
 #include <list>
-#include "Rect.h"
+#include "rectHost.h"
 
 /*definicja klasy QuadTree*/
 /*NODES

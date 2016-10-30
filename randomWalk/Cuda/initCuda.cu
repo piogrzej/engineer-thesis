@@ -1,11 +1,10 @@
-#include <cuda.h>
-#include <device_functions.h>
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
-#include "helper_cuda.h"
+#include <cuda.h>
+#include <device_functions.h>
+#include <helper_cuda.h>
 
-
-#include "utils/Logger.h"
+#include "../utils/Logger.h"
 
 bool initCuda(int argc, char **argv)
 {

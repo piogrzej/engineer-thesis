@@ -1,4 +1,5 @@
-#pragma once
+#ifndef D_RECT_H
+#define D_RECT_H
 
 #include <cuda.h>
 #include <cuda_runtime.h>
@@ -43,3 +44,5 @@ public:
 	__host__ __device__ bool operator==(const d_Rect& r2) const;
 	__host__ __device__ bool operator!=(const d_Rect& r2) const { return !(*this == r2); }
 };
+
+#endif

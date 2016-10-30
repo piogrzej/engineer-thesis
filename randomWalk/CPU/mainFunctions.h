@@ -15,7 +15,7 @@
 #include<iostream>
 
 #include "quadTree.h"
-#include "green.h"
+#include "../green/green.h"
 #include "Parser.h"
 
 #define _CRT_SECURE_NO_WARNINGS

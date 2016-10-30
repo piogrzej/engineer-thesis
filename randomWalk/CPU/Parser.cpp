@@ -1,5 +1,5 @@
 #include "Parser.h"
-#include "utils/Logger.h"
+#include "../utils/Logger.h"
 
 #include <sstream>
 
@@ -47,17 +47,17 @@ Parser::~Parser()
 {
 }
 
-d_Rect Parser::getLayerSize(int layerIt)
+RectHost Parser::getLayerSize(int layerIt)
 {
     if (layerIt >= layers.size())
     {
         ErrorLogger::getInstance() >> "Nie ma takiej warstwy!\n";
-        return d_Rect();
+        return RectHost();
     }
 	floatingPoint leftX, rightX, topY, bottomY;
 	Layer layer = layers[layerIt];
 	bool start = true;
-	for (const d_Rect& rect : layer)
+	for (const RectHost& rect : layer)
 	{
 		if (start)
 		{
@@ -81,20 +81,16 @@ d_Rect Parser::getLayerSize(int layerIt)
     int add_space_w = floatingPoint(rightX - leftX) * BOUNDS_MUL_FACTOR;
     int add_space_h = floatingPoint(bottomY - topY) * BOUNDS_MUL_FACTOR;
 
-    point2 topLeft,bottomRight;
-    topLeft.x = leftX - add_space_w;
-    topLeft.y = topY - add_space_w;
-    bottomRight.x = rightX + add_space_w;
-    bottomRight.y = bottomY + add_space_w;
-	return d_Rect(topLeft,bottomRight);
+	return RectHost(point(leftX  - add_space_w, topY    - add_space_w),
+                point(rightX + add_space_w, bottomY + add_space_w));
 }
 
-d_Rect Parser::loadRectFromLine(char * line)
+RectHost Parser::loadRectFromLine(char * line)
 {
 	if (nullptr == line)
-		return d_Rect();
+		return RectHost();
 
-	d_Rect rect;
+	RectHost rect;
 	std::string lineStr(line);
 	std::stringstream stream(lineStr); // it is much more safe than atoi, thers exceptions
 	floatingPoint cord[4];
@@ -114,7 +110,7 @@ d_Rect Parser::loadRectFromLine(char * line)
 		ErrorLogger::getInstance() << e.what();
 	}
 
-	point2 topLeft, rightBottom;
+	point topLeft, rightBottom;
 
 	topLeft.x = cord[0];
 	topLeft.y = cord[1];

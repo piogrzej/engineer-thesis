@@ -11,22 +11,22 @@
 #define LINE_HEADER "rect"
 #define BOUNDS_MUL_FACTOR 0.01
 
-typedef std::vector<d_Rect> Layer;
-typedef std::vector<Layer> Layers;
+typedef std::vector<d_Rect> d_Layer;
+typedef std::vector<d_Layer> d_Layers;
 
-class Parser
+class d_Parser
 {
 public:
 	// if 0 , all layers will be loaded.
-	Parser(char * fileName, char * delimiter, int layerNum = 0); 
-	~Parser();
+	d_Parser(char * fileName, char * delimiter, int layerNum = 0);
+	~d_Parser();
 
 	d_Rect			getLayerSize(int layerIt);
-	Layer			getLayerAt(int i) { return layers[i]; }
-	Layers			getAllLayers() { return layers; }
+	d_Layer			getLayerAt(int i) { return layers[i]; }
+	d_Layers		getAllLayers() { return layers; }
 
 private:
-	Layers			layers;
+	d_Layers		layers;
 
 	d_Rect			loadRectFromLine(char * linek);
 

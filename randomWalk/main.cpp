@@ -1,7 +1,7 @@
-#include "mainFunctions.h"
-#include "Parser.h"
-#include "Logger.h"
-#include "Timer.h"
+#include "CPU/mainFunctions.h"
+#include "CPU/Parser.h"
+#include "utils/Logger.h"
+#include "utils/Timer.h"
 #include "parallelFunc.h"
 
 #include <iostream>

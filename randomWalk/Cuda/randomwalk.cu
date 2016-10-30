@@ -12,12 +12,11 @@
 #include <curand_kernel.h>
 
 #include "mainkernels.h"
-#include "Parser.h"
-#include "utils/Logger.h"
-#include "utils/Timer.h"
+#include "d_parser.h"
+#include "../utils/Logger.h"
+#include "../utils/Timer.h"
 
 #define NSAMPLE 200
-
 
 // TO DO: brzydkie kopiowanie, trzeba poprawić
 // TO DO: wykrywanie ilosci threadow, thread/block, (cudaDeviceProp)
@@ -25,7 +24,7 @@ QuadTreeManager* randomWalkCudaInit(char* path)
 {
     ErrorLogger::getInstance() >> "Random Walk CUDA\n";
     Timer::getInstance().start("Parser");
-    Parser parser(path, "<<");
+    d_Parser parser(path, "<<");
     const std::vector<d_Rect>& layer = parser.getLayerAt(0); // na razie 0 warstwa hardcode
     d_Rect const& spaceSize = parser.getLayerSize(0);
     Timer::getInstance().stop("Parser");
@@ -43,7 +42,7 @@ QuadTreeManager* randomWalkCudaInit(char* path)
     return treeMng;
 }
 
-__device__ int getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand){
+__device__ int d_getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand){
     for (int i = 0; i <= NSAMPLE; ++i)
     {
         if (intg[i] <= rand && intg[i + 1] > rand)
@@ -74,11 +73,11 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
     do
     {
         r = curand_uniform(&state);
-        p = square.getPointFromNindex(getIndex(quadTreeMn->d_intg, r), NSAMPLE);
+        p = square.getPointFromNindex(d_getIndex(quadTreeMn->d_intg, r), NSAMPLE);
         if(false == quadTreeMn->root->isInBounds(p))
         {
-            //broken = SPECIAL_VALUE_BOOLEAN;
-            SPECIAL_ACTION;
+            //broken = true;
+            break;
         }
         square = quadTreeMn->root->drawBiggestSquareAtPoint(p);
         isCollison = quadTreeMn->root->checkCollisons(p, rectOutput);
@@ -87,8 +86,7 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
     while (false == isCollison);
 }
 
-void randomWalkCudaWrapper(int dimBlck,int dimThread,QuadTreeManager* quadTree, int RECT_ID,floatingPoint *output,unsigned int randomSeed=time(NULL))
+void randomWalkCudaWrapper(int dimBlck,int dimThread,QuadTreeManager* quadTree, int RECT_ID,unsigned int *output,unsigned int randomSeed)
 {
-    randomWalkCuda<<<dimBlck,dimThread>>>(quadTree,RECT_ID,output,time(NULL));
+    randomWalkCuda<<<dimBlck,dimThread>>>(quadTree,RECT_ID,output,randomSeed);
 }
-

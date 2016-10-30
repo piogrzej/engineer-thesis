@@ -29,15 +29,15 @@ public:
     point   bottomRight;
 
     void    changeDirection();
- floatingPoint     getWidth() const;
- floatingPoint     getHeigth() const;
+    floatingPoint     getWidth() const;
+ 	floatingPoint     getHeigth() const;
     bool    cmpRect(RectHost const& r2) const;
     bool    rectsCollision(RectHost const& r2) const;
     bool    rectContains(point p) const;
     bool    rectContains(RectHost r) const;
-   RectHost createGaussianSurface(floatingPoint factorX, floatingPoint factorY) const;
-   RectHost createGaussianSurfaceX(floatingPoint factorX) const;
-   RectHost createGaussianSurfaceY(floatingPoint factorY) const;
+    RectHost createGaussianSurface(floatingPoint factorX, floatingPoint factorY) const;
+    RectHost createGaussianSurfaceX(floatingPoint factorX) const;
+    RectHost createGaussianSurfaceY(floatingPoint factorY) const;
     int     getPerimeter() const;
     point   getPointFromNindex(int index, int Nsample);
     friend  std::ostream& operator<< (std::ostream&, RectHost const&);

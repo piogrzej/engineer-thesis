@@ -10,7 +10,7 @@
 
 #include "d_Rect.h"
 #include "params.h"
-#include "green/green.h"
+#include "../green/green.h"
 #include <stdio.h>
 
 #define NODES_NUMBER 4
