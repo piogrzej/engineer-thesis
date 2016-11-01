@@ -10,7 +10,7 @@
 void runRandomWalk(char* path, int ITER_NUM, int RECT_ID)
 {
 	if(GPU_FLAG)
-		getAvgPathLen(path,ITER_NUM,RECT_ID);
+		printf("%f\n",getAvgPathLen(path,ITER_NUM,RECT_ID));
 	else
 		randomWalkTest(path,ITER_NUM,RECT_ID);
 

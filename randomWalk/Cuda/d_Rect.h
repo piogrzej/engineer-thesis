@@ -18,7 +18,7 @@ public:
 	__host__ __device__ d_Rect(floatingPoint xTL, floatingPoint yTL, floatingPoint xBR, floatingPoint yBR);
 	__host__ __device__ d_Rect(){};
 	__host__ __device__ ~d_Rect(){};
-	__host__ __device__ __forceinline__ bool contains(point2 p) const
+	__device__ __forceinline__ bool contains(point2 p) const
 	{
 	    if ((p.x >= topLeft.x) && (p.y >= topLeft.y) && (p.x <= bottomRight.x) && (p.y <= bottomRight.y))
 	    {
@@ -33,16 +33,16 @@ public:
         bottomRight.x >= rect.bottomRight.x &&
         bottomRight.y >= rect.bottomRight.y;
 	};
-	__host__ __device__ floatingPoint getWidth() const;
-	__host__ __device__ floatingPoint getHeigth() const;
-	__host__ __device__ floatingPoint getPerimeter() const;
-	__host__ __device__ point2 getPointFromNindex(int index, int Nsample);
-	__host__ __device__ d_Rect createGaussianSurfaceX(floatingPoint factorX) const {return createGaussianSurface(factorX, 1);}
-	__host__ __device__ d_Rect createGaussianSurfaceY(floatingPoint factorY) const {return createGaussianSurface(1, factorY);}
-	__host__ __device__ d_Rect createGaussianSurface(floatingPoint factorX, floatingPoint factorY) const;
-	__host__ __device__ bool rectsCollision(d_Rect const& r2) const;
-	__host__ __device__ bool operator==(const d_Rect& r2) const;
-	__host__ __device__ bool operator!=(const d_Rect& r2) const { return !(*this == r2); }
+	__device__ floatingPoint getWidth() const;
+	__device__ floatingPoint getHeigth() const;
+	__device__ floatingPoint getPerimeter() const;
+	__device__ point2 getPointFromNindex(int index, int Nsample);
+	__device__ d_Rect createGaussianSurfaceX(floatingPoint factorX) const {return createGaussianSurface(factorX, 1);}
+	__device__ d_Rect createGaussianSurfaceY(floatingPoint factorY) const {return createGaussianSurface(1, factorY);}
+	__device__ d_Rect createGaussianSurface(floatingPoint factorX, floatingPoint factorY) const;
+	__device__ bool rectsCollision(d_Rect const& r2) const;
+	__device__ bool operator==(const d_Rect& r2) const;
+	__device__ bool operator!=(const d_Rect& r2) const { return !(*this == r2); }
 };
 
 #endif

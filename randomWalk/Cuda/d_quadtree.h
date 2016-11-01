@@ -53,10 +53,10 @@ class d_QuadTree
 {
 public:
     __host__ __device__ d_QuadTree()
-    : id(0), startOff(0), endOff(0),level(0), startOwnOff(0){}
+    : id(0), startOff(0), endOff(0),level(0), startOwnOff(0),treeManager(NULL){}
 
     __host__ __device__ d_QuadTree(int idP, int start, int end)
-    : id(idP), startOff(start), endOff(end), level(0),startOwnOff(0) {}
+    : id(idP), startOff(start), endOff(end), level(0),startOwnOff(0),treeManager(NULL) {}
 
     __host__ __device__ int   getId() const { return id;}
     __host__ __device__ void  setId(int newId)  { id = newId;}
@@ -81,16 +81,16 @@ public:
         float centerY =  bounds.topLeft.y + (bounds.bottomRight.y - bounds.topLeft.y) / 2;
         return make_float2(centerX,centerY);
     }
-    __host__ __device__ bool isInBounds(point2 const& p);
-    __host__ __device__ bool isInBounds(d_Rect const& r);
-    __host__ __device__ bool checkCollisions(d_Rect const& r, const d_Rect &ignore = d_Rect());
-    __host__ __device__ bool checkCollisionsWithObjs(d_Rect const& r, const d_Rect &ignore);
-    __host__ __device__ bool checkCollisons(point2 p, d_Rect& r);
-    __host__ __device__ d_Rect drawBiggestSquareAtPoint(point2 p);
-    __host__ __device__ d_Rect createGaussianSurfFrom(d_Rect const & r, floatingPoint const factor);
-    __host__ __device__ floatingPoint getAdjustedGaussianFactor(d_Rect const& r, floatingPoint const factor, FACTOR_TYPE type);
-    __host__ __device__ bool isSplited() const {return (this->rectCount()>0); }
-    __host__ __device__ int getChlidren(ushort i) {return chlildren[i];};
+    __device__ bool isInBounds(point2 const& p);
+    __device__ bool isInBounds(d_Rect const& r);
+    __device__ bool checkCollisions(d_Rect const& r, const d_Rect &ignore = d_Rect());
+    __device__ bool checkCollisionsWithObjs(d_Rect const& r, const d_Rect &ignore);
+    __device__ bool checkCollisons(point2 p, d_Rect& r);
+    __device__ d_Rect drawBiggestSquareAtPoint(point2 p);
+    __device__ d_Rect createGaussianSurfFrom(d_Rect const & r, floatingPoint const factor);
+    __device__ floatingPoint getAdjustedGaussianFactor(d_Rect const& r, floatingPoint const factor, FACTOR_TYPE type);
+    __device__ bool isSplited() const {return (this->rectCount()>0); }
+    __device__ int getChlidren(ushort i) {return chlildren[i];};
 
 private:
     int                 id; // indeks to globalnej tablicy węzłów
@@ -102,9 +102,9 @@ private:
     d_Rect            bounds;
     QuadTreeManager*    treeManager;
 
-    __host__ __device__ bool checkCollisionObjs(point2 p, d_Rect &r);
-    __host__ __device__ void addNodesToStack(TreePtr* stackPtr,d_QuadTree* except, bool collisions[]);
-    __host__ __device__ bool checkIsAnyCollision(bool collisions[]);
+    __device__ bool checkCollisionObjs(point2 p, d_Rect &r);
+    __device__ void addNodesToStack(TreePtr* stackPtr,d_QuadTree* except, bool collisions[]);
+    __device__ bool checkIsAnyCollision(bool collisions[]);
 
 };
 

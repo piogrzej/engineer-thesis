@@ -1,6 +1,6 @@
 #include "d_quadtree.h"
 
-__host__ __device__ bool d_QuadTree::isInBounds(point2 const&  p)
+__device__ bool d_QuadTree::isInBounds(point2 const&  p)
 {
     if (p.x > this->bounds.topLeft.x &&
         p.y > this->bounds.topLeft.y &&
@@ -12,7 +12,7 @@ __host__ __device__ bool d_QuadTree::isInBounds(point2 const&  p)
         return false;
 }
 
-__host__ __device__ bool d_QuadTree::isInBounds(d_Rect const&  r)
+__device__ bool d_QuadTree::isInBounds(d_Rect const&  r)
 {
     if (r.topLeft.y     >= this->bounds.topLeft.y     &&
         r.topLeft.x     >= this->bounds.topLeft.x     &&
@@ -36,7 +36,7 @@ __host__ __device__ bool d_QuadTree::isInBounds(d_Rect const&  r)
 // // more ...
 //  }
 
-__host__ __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
+__device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
 {
     d_QuadTree* current=this,*next;
     while(true)
@@ -62,7 +62,7 @@ __host__ __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
     }
 }
 
-__host__ __device__ bool d_QuadTree::checkCollisionObjs(point2 p, d_Rect &r)
+__device__ bool d_QuadTree::checkCollisionObjs(point2 p, d_Rect &r)
 {
     for(ushort i = this->startRectOff(); i < this->endRectOff(); ++i)
     {
@@ -76,7 +76,7 @@ __host__ __device__ bool d_QuadTree::checkCollisionObjs(point2 p, d_Rect &r)
     return false;
 }
 
-__host__ __device__ d_Rect d_QuadTree::drawBiggestSquareAtPoint(point2 p)
+__device__ d_Rect d_QuadTree::drawBiggestSquareAtPoint(point2 p)
 {
     bool isCollision = false;
     bool maxReached = false;
@@ -126,7 +126,7 @@ __host__ __device__ d_Rect d_QuadTree::drawBiggestSquareAtPoint(point2 p)
     return output;
 }
 
-__device__ __host__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignore)//FUNKCJA DO PRZEPISANIA OD NOWA
+__device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignore)//FUNKCJA DO PRZEPISANIA OD NOWA
 {
     if (false == isInBounds(r))
         return true;
@@ -177,7 +177,7 @@ __device__ __host__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Re
     return false;
 }
 
-__host__ __device__ bool d_QuadTree::checkIsAnyCollision(bool collisions[])//FUNKCJA DO PRZEPISANIA OD NOWA
+__device__ bool d_QuadTree::checkIsAnyCollision(bool collisions[])//FUNKCJA DO PRZEPISANIA OD NOWA
 {
     for (int i = 0; i < NODES_NUMBER; ++i)
     {
@@ -187,7 +187,7 @@ __host__ __device__ bool d_QuadTree::checkIsAnyCollision(bool collisions[])//FUN
     return false;
 }
 
-__host__ __device__ void d_QuadTree::addNodesToStack(TreePtr* stackPtr,d_QuadTree* except, bool collisions[])//FUNKCJA DO PRZEPISANIA OD NOWA
+__device__ void d_QuadTree::addNodesToStack(TreePtr* stackPtr,d_QuadTree* except, bool collisions[])//FUNKCJA DO PRZEPISANIA OD NOWA
 {
     for (int i = 0; i < NODES_NUMBER; ++i)
     {
@@ -196,7 +196,7 @@ __host__ __device__ void d_QuadTree::addNodesToStack(TreePtr* stackPtr,d_QuadTre
     }
 }
 
-__host__ __device__ bool d_QuadTree::checkCollisionsWithObjs(d_Rect const& r, const d_Rect &ignore)
+__device__ bool d_QuadTree::checkCollisionsWithObjs(d_Rect const& r, const d_Rect &ignore)
 {
     for (int i =this->startOff; i< this->endOff; ++i)
             if (this->getTreeManager()->rects[i] != ignore && this->getTreeManager()->rects[i].rectsCollision(r))
@@ -205,7 +205,7 @@ __host__ __device__ bool d_QuadTree::checkCollisionsWithObjs(d_Rect const& r, co
         return false;
 }
 
-__host__ __device__ d_Rect d_QuadTree::createGaussianSurfFrom(d_Rect const & r, floatingPoint const factor) // bez kolizji
+__device__ d_Rect d_QuadTree::createGaussianSurfFrom(d_Rect const & r, floatingPoint const factor) // bez kolizji
 {
     if (factor < 1)
     {
@@ -220,7 +220,7 @@ __host__ __device__ d_Rect d_QuadTree::createGaussianSurfFrom(d_Rect const & r, 
     return r.createGaussianSurface(factorX, factorY);
 }
 
-__host__ __device__ floatingPoint d_QuadTree::getAdjustedGaussianFactor(d_Rect const& r, floatingPoint const factor, FACTOR_TYPE type)
+__device__ floatingPoint d_QuadTree::getAdjustedGaussianFactor(d_Rect const& r, floatingPoint const factor, FACTOR_TYPE type)
 {
     bool isCollision = false;
     bool isDividing = true;

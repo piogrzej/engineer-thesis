@@ -7,7 +7,7 @@ __host__ __device__ d_Rect::d_Rect(floatingPoint xTL, floatingPoint yTL, floatin
 	bottomRight.x =xBR;
 	bottomRight.y=yBR;
 }
-__host__ __device__ bool d_Rect::rectsCollision(d_Rect const& r2) const{
+__device__ bool d_Rect::rectsCollision(d_Rect const& r2) const{
     if (bottomRight.x >= r2.topLeft.x &&
             r2.bottomRight.x >= topLeft.x    &&
             bottomRight.y >= r2.topLeft.y &&
@@ -17,21 +17,21 @@ __host__ __device__ bool d_Rect::rectsCollision(d_Rect const& r2) const{
         return false;
 }
 
-__host__ __device__ floatingPoint d_Rect::getWidth() const
+__device__ floatingPoint d_Rect::getWidth() const
 {
 	return (bottomRight.x - topLeft.x);
 }
-__host__ __device__ floatingPoint d_Rect::getHeigth() const
+__device__ floatingPoint d_Rect::getHeigth() const
 {
 	return (bottomRight.y - topLeft.y);
 }
 
-__host__ __device__ floatingPoint d_Rect::getPerimeter() const
+__device__ floatingPoint d_Rect::getPerimeter() const
 {
 	return (2 * (this->bottomRight.x - this->topLeft.x) + 2 * (this->bottomRight.y - this->topLeft.y));
 }
 
-__host__ __device__ point2 d_Rect::getPointFromNindex(int index, int Nsample)
+__device__ point2 d_Rect::getPointFromNindex(int index, int Nsample)
 {
 	int perimeter = this->getPerimeter();
 	floatingPoint vector = (floatingPoint)perimeter / (floatingPoint)Nsample;
@@ -100,7 +100,7 @@ __host__ __device__ point2 d_Rect::getPointFromNindex(int index, int Nsample)
 	}
 }
 
-__host__ __device__ d_Rect d_Rect::createGaussianSurface(floatingPoint factorX, floatingPoint factorY) const
+__device__ d_Rect d_Rect::createGaussianSurface(floatingPoint factorX, floatingPoint factorY) const
 {
     floatingPoint middleX = floatingPoint(topLeft.x + bottomRight.x) / 2.;
     floatingPoint middleY = floatingPoint(topLeft.y + bottomRight.y) / 2.;
@@ -118,7 +118,7 @@ __host__ __device__ d_Rect d_Rect::createGaussianSurface(floatingPoint factorX, 
     return gaussSurface;
 }
 
-__host__ __device__ bool d_Rect::operator==(const d_Rect & r2) const
+__device__ bool d_Rect::operator==(const d_Rect & r2) const
 {
     if (r2.topLeft.x == topLeft.x &&
         r2.topLeft.y == topLeft.y &&
