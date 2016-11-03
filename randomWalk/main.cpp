@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-#define DEFAULT_PATH "../generatedtests/test1000.txt"
+#define DEFAULT_PATH "../generatedtests/test1000000.txt"
 #define DEFAULT_RECT 10
 #define DEFAULT_ITERATION 1000
 
@@ -27,7 +27,7 @@ inline bool checkFile(char* name)
 
 int main(int argc, char *argv[])
 {
-    Tree *mainTree;
+    /*Tree *mainTree;
     char* path;
     char inputPath[300];//E:\\programowanie\\quadtree\\sigfill_chunk_x.mag
                         //C:\Users\Marcin\Documents\inzynierka\sigfill_chunk_x.gk
@@ -65,8 +65,9 @@ int main(int argc, char *argv[])
     else
     {
     	runRandomWalk(DEFAULT_PATH, DEFAULT_ITERATION, DEFAULT_RECT);
-    }
+    }*/
 
 	//generateTestFile(RectHost(point(0.,0.),point(10000000.,10000000. )),300000);
+	generateTestFile(RectHost(point(0,0),point(100000000,100000000)),1000000);
     return 0;
 }
