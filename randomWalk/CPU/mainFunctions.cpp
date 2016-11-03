@@ -171,19 +171,18 @@ void generateTestFile(RectHost maxSpace, unsigned long long numOfRects)
             random.topLeft.y = MIN_Y + myrand()%H;
             if(random.topLeft.y>MAX_H) random.topLeft.y - MAX_H;
 
-            unsigned int toaddX=0,toaddY=0;
             do
             {
-            	toaddX = myrand()%MAX_L;
-            	toaddY = myrand()%MAX_H;
+            	random.bottomRight.x = random.topLeft.x + myrand()%MAX_L;
+            	random.bottomRight.y = random.topLeft.y + myrand()%MAX_H;
             }
-            while(0==toaddX && 0==toaddY);
+            while((int)(random.bottomRight.x)==(int)(random.topLeft.x) || (int)(random.bottomRight.y)==(int)(random.topLeft.y));
 
-            random.bottomRight.x = random.topLeft.x + toaddX;
-            random.bottomRight.y = random.topLeft.y+ toaddY;
-        }while(true==mainTree->checkCollisions(random));
+        }
+        while(true==mainTree->checkCollisions(random) && 0!=(int)random.getHeigth() && 0!=(int)random.getHeigth());
         mainTree->insert(random);
-        output<<"rect "<<(int)random.topLeft.x<<" "<<(int)random.topLeft.y<<" "<<(int)random.bottomRight.x<<" "<<(int)random.bottomRight.y<<"\n";
+        output<<"rect "<<(int)random.topLeft.x<<" "<<(int)random.topLeft.y<<" "<<
+        		(int)random.bottomRight.x<<" "<<(int)random.bottomRight.y<<"\n";
       
     }
     output << "<< metal3 >>";
