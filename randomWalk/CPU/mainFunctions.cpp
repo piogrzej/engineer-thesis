@@ -179,7 +179,7 @@ void generateTestFile(RectHost maxSpace, unsigned long long numOfRects)
             while((int)(random.bottomRight.x)==(int)(random.topLeft.x) || (int)(random.bottomRight.y)==(int)(random.topLeft.y));
 
         }
-        while(true==mainTree->checkCollisions(random) && 0!=(int)random.getHeigth() && 0!=(int)random.getHeigth());
+        while(true==mainTree->checkCollisions(random));
         mainTree->insert(random);
         output<<"rect "<<(int)random.topLeft.x<<" "<<(int)random.topLeft.y<<" "<<
         		(int)random.bottomRight.x<<" "<<(int)random.bottomRight.y<<"\n";
