@@ -31,9 +31,7 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
   size_t nodesTableSize= sizeof(d_QuadTree) * params.MAX_NUM_NODES;
   d_QuadTree root(0,0,params.TOTAL_RECT);
   nodes = (d_QuadTree*)malloc(nodesTableSize);
-  printf("bounds %d %d %d %d\n",(int)spaceSize.topLeft.x,(int)spaceSize.topLeft.y,(int)spaceSize.bottomRight.x,(int)spaceSize.bottomRight.y);
   root.setBounds(spaceSize);
-  printf("space: %d %d %d %d\n",(int)root.getBounds().topLeft.x,(int)root.getBounds().topLeft.y,(int)root.getBounds().bottomRight.x,(int)root.getBounds().bottomRight.y);
   checkCudaErrors(cudaMalloc((void**)&d_rects,rectTableSize * 2)); // potrzebujemy bufora dlatego 2
   checkCudaErrors(cudaMalloc((void**)&d_nodes,nodesTableSize));
   checkCudaErrors(cudaMalloc((void**)&d_params,sizeof(Params)));
@@ -51,16 +49,16 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
 
   if(doCheck)
   {
+      ErrorLogger::getInstance() >> "Sprawdzanie drzewa. \n";// Max nodes: " >> params.MAX_NUM_NODES >> "\n";
+
       d_Rect* rects = (d_Rect*)malloc(sizeof(d_Rect)*params.TOTAL_RECT);
       checkCudaErrors(cudaMemcpy(nodes,d_nodes,nodesTableSize, cudaMemcpyDeviceToHost));
       checkCudaErrors(cudaMemcpy(&params,d_params,sizeof(Params), cudaMemcpyDeviceToHost));
       checkCudaErrors(cudaMemcpy(rects,d_rects,rectTableSize, cudaMemcpyDeviceToHost));
-      ErrorLogger::getInstance() >> "Sprawdzanie drzewa. \n Max nodes: " >> params.MAX_NUM_NODES << "\n";
-
       int count;
       bool result = checkQuadTree(nodes,0,rects,count);
-      result ? ErrorLogger::getInstance() << "stworzono pomyslnie\n":
-	       ErrorLogger::getInstance() <<"Blad tworzenia drzewa\n";
+      result ? ErrorLogger::getInstance() >> "Stworzono pomyślnie\n":
+               ErrorLogger::getInstance() >> "Błąd tworzenia drzewa\n";
   }
 
   QuadTreeManager* d_tree;
@@ -95,9 +93,9 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
   const d_Rect* roRects = buffer[0]; // read only rects
   d_Rect* sortedRects = buffer[1];
 
-  if(threadIdx.x == 0)
-  printf("block %d id: %d node: %d %d %d %d lvl: %d count %d\n", nodeId,node.getId(),(int)node.getBounds().topLeft.x,(int)node.getBounds().topLeft.y,
-					  (int)node.getBounds().bottomRight.x,(int)node.getBounds().bottomRight.y,node.getLevel(),node.rectCount());
+  //if(threadIdx.x == 0)
+  //printf("block %d id: %d node: %d %d %d %d lvl: %d count %d\n", nodeId,node.getId(),(int)node.getBounds().topLeft.x,(int)node.getBounds().topLeft.y,
+		//			  (int)node.getBounds().bottomRight.x,(int)node.getBounds().bottomRight.y,node.getLevel(),node.rectCount());
 
 
   if(node.getLevel() >= params->MAX_LEVEL || rectCount <= params->MIN_RECT_IN_NODE) // dwa warunki zakonczenia albo okreslona ilosc poziomow albo satysfakcjonujace nas rozdrobnienie
@@ -113,8 +111,8 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
                    rects[it] = rects[total + it];
              }
     	}
-      if(threadIdx.x == 0)
-            printf("koniec id %d    s  %d e  %d\n",node.getId(),node.startRectOff(),node.endRectOff());
+      //if(threadIdx.x == 0)
+        //    printf("koniec id %d    s  %d e  %d\n",node.getId(),node.startRectOff(),node.endRectOff());
       return;
     }
 
@@ -319,8 +317,8 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
       if(laneId == 0)
 	rectsCountNode[4][warpId] += __popc(threadsResult);
     }
-    if(threadIdx.x == 0)
-	printf("center %d %d \n",(int)center.x,(int)center.y);
+   // if(threadIdx.x == 0)
+	//printf("center %d %d \n",(int)center.x,(int)center.y);
 
  /* __syncthreads();
   if(threadIdx.x == 0)
