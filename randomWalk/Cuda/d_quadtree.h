@@ -63,9 +63,9 @@ public:
     __host__ __device__ int   getLevel() const { return level;}
     __host__ __device__ void  setLevel(int lvl)  { level = lvl;}
     __host__ __device__ void  setChild(int child, int index)  { chlildren[index] = child; }
-    __host__ __device__ void  setLBounds(d_Rect rect)  { bounds = rect;}
+    __host__ __device__ void  setBounds(d_Rect const& rect)  { bounds = rect;}
     __host__ __device__ void  setOwnRectOff(int ownOff)  {  startOwnOff = ownOff; }
-    __host__ __device__ d_Rect  getBounds() const { return bounds; }
+    __host__ __device__ d_Rect getBounds() const { return bounds; }
     __host__ __device__ int   rectCount() const{  return endOff - startOff;}
     __host__ __device__ void  setOff(int start, int end) { startOff = start;endOff = end;}
     __host__ __device__ int   startRectOff() const{  return startOff; }
@@ -99,7 +99,7 @@ private:
     int                 startOwnOff; // tu zaczynaja sie recty tego obiektu
     int	                endOff;
     int	                level;
-    d_Rect            bounds;
+    d_Rect              bounds;
     QuadTreeManager*    treeManager;
 
     __device__ bool checkCollisionObjs(point2 p, d_Rect &r);

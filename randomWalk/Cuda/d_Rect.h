@@ -14,7 +14,7 @@ class d_Rect
 public:
 	point2 topLeft;
 	point2 bottomRight;
-	__host__ __device__ d_Rect(point2 topLeft, point2 bottmRight) : topLeft(topLeft),bottomRight(bottomRight){};
+	__host__ __device__ d_Rect(point2 tL, point2 bR) : topLeft(tL),bottomRight(bR){};
 	__host__ __device__ d_Rect(floatingPoint xTL, floatingPoint yTL, floatingPoint xBR, floatingPoint yBR);
 	__host__ __device__ d_Rect(){};
 	__host__ __device__ ~d_Rect(){};

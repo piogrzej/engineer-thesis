@@ -80,7 +80,6 @@ d_Rect d_Parser::getLayerSize(int layerIt)
 	}
     int add_space_w = floatingPoint(rightX - leftX) * BOUNDS_MUL_FACTOR;
     int add_space_h = floatingPoint(bottomY - topY) * BOUNDS_MUL_FACTOR;
-
     point2 topLeft,bottomRight;
     topLeft.x = leftX - add_space_w;
     topLeft.y = topY - add_space_w;
