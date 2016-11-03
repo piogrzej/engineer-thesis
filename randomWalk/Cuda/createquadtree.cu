@@ -47,6 +47,7 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
   cudaDeviceSynchronize();
   checkCudaErrors(cudaGetLastError());
   Timer::getInstance().stop("Create Tree CUDA");
+  ErrorLogger::getInstance() >> "Tworzenie drzewa zakończone pomyślnie\n";
 
   if(doCheck)
   {
@@ -54,9 +55,9 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
       checkCudaErrors(cudaMemcpy(nodes,d_nodes,nodesTableSize, cudaMemcpyDeviceToHost));
       checkCudaErrors(cudaMemcpy(&params,d_params,sizeof(Params), cudaMemcpyDeviceToHost));
       checkCudaErrors(cudaMemcpy(rects,d_rects,rectTableSize, cudaMemcpyDeviceToHost));
+      ErrorLogger::getInstance() >> "Sprawdzanie drzewa. \n Max nodes: " >> params.MAX_NUM_NODES << "\n";
 
       int count;
-      ErrorLogger::getInstance() << "Sprawdzanie drzewa. \n Max nodes: " << params.MAX_NUM_NODES << "\n";
       bool result = checkQuadTree(nodes,0,rects,count);
       result ? ErrorLogger::getInstance() << "stworzono pomyslnie\n":
 	       ErrorLogger::getInstance() <<"Blad tworzenia drzewa\n";
@@ -94,9 +95,9 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
   const d_Rect* roRects = buffer[0]; // read only rects
   d_Rect* sortedRects = buffer[1];
 
- // if(threadIdx.x == 0)
- // printf("block %d id: %d node: %d %d %d %d lvl: %d count %d\n", nodeId,node.getId(),(int)node.getBounds().topLeft.x,(int)node.getBounds().topLeft.y,
-//					  (int)node.getBounds().bottomRight.x,(int)node.getBounds().bottomRight.y,node.getLevel(),node.rectCount());
+  if(threadIdx.x == 0)
+  printf("block %d id: %d node: %d %d %d %d lvl: %d count %d\n", nodeId,node.getId(),(int)node.getBounds().topLeft.x,(int)node.getBounds().topLeft.y,
+					  (int)node.getBounds().bottomRight.x,(int)node.getBounds().bottomRight.y,node.getLevel(),node.rectCount());
 
 
   if(node.getLevel() >= params->MAX_LEVEL || rectCount <= params->MIN_RECT_IN_NODE) // dwa warunki zakonczenia albo okreslona ilosc poziomow albo satysfakcjonujace nas rozdrobnienie
@@ -112,8 +113,8 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
                    rects[it] = rects[total + it];
              }
     	}
-     // if(threadIdx.x == 0)
-     //       printf("koniec id %d    s  %d e  %d\n",node.getId(),node.startRectOff(),node.endRectOff());
+      if(threadIdx.x == 0)
+            printf("koniec id %d    s  %d e  %d\n",node.getId(),node.startRectOff(),node.endRectOff());
       return;
     }
 
@@ -371,10 +372,10 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
 
 	startNodeAtLevel[childIndex + NODE_ID::UP_LEFT].setBounds(d_Rect(bounds.topLeft,center));
 	startNodeAtLevel[childIndex + NODE_ID::DOWN_RIGHT].setBounds(d_Rect(center,bounds.bottomRight));
-	startNodeAtLevel[childIndex + NODE_ID::UP_RIGHT].setBounds(d_Rect(center.x,bounds.bottomRight.x,
-	                                                                     bounds.topLeft.y,center.y));
-	startNodeAtLevel[childIndex + NODE_ID::DOWN_LEFT].setBounds(d_Rect(bounds.topLeft.x,center.x,
-	                                                                      center.y,bounds.bottomRight.y));
+	startNodeAtLevel[childIndex + NODE_ID::UP_RIGHT].setBounds(d_Rect(center.x,bounds.topLeft.y,
+	                                                                bounds.bottomRight.x,center.y));
+	startNodeAtLevel[childIndex + NODE_ID::DOWN_LEFT].setBounds(d_Rect(bounds.topLeft.x,center.y,
+	                                                                   center.x,bounds.bottomRight.y));
 
 	startNodeAtLevel[childIndex + NODE_ID::UP_LEFT].setOff(node.startRectOff(),rectsCountNode[0][warpId]);
 	startNodeAtLevel[childIndex + NODE_ID::UP_RIGHT].setOff(rectsCountNode[0][warpId],rectsCountNode[1][warpId]);

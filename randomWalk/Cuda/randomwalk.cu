@@ -30,7 +30,6 @@ QuadTreeManager* randomWalkCudaInit(char* path)
     Timer::getInstance().stop("Parser");
     QuadTreeManager* treeMng = createQuadTree(layer,spaceSize,false);
 
-
     Timer::getInstance().printResults();
     //tworzenie i kopiowanie intg do pamieci device
     REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];

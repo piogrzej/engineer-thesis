@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     char inputPath[300];//E:\\programowanie\\quadtree\\sigfill_chunk_x.mag
                         //C:\Users\Marcin\Documents\inzynierka\sigfill_chunk_x.gk
 
-    if(GPU_FLAG &&       !initCuda(argc,argv))
+    if(GPU_FLAG && !initCuda(argc,argv))
     	return 0;
 
     if (argc == PARAMS_COUNT)
