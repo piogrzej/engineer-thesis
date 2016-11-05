@@ -3,6 +3,9 @@
 #include "utils/Logger.h"
 #include "utils/Timer.h"
 #include "parallelFunc.h"
+#include "utils/TestGenerator.h"
+#include "utils/PerformanceComparer.h"
+
 
 #include <iostream>
 
@@ -28,7 +31,7 @@ inline bool checkFile(char* name)
 
 int main(int argc, char *argv[])
 {
-    Tree *mainTree;
+   Tree *mainTree;
     char* path;
     char inputPath[300];//E:\\programowanie\\quadtree\\sigfill_chunk_x.mag
                         //C:\Users\Marcin\Documents\inzynierka\sigfill_chunk_x.gk
@@ -68,7 +71,25 @@ int main(int argc, char *argv[])
     	runRandomWalk(DEFAULT_PATH, DEFAULT_ITERATION, DEFAULT_RECT);
     }
 
-	//generateTestFile(RectHost(point(0.,0.),point(10000000.,10000000. )),300000);
-	//generateTestFile(RectHost(point(0,0),point(100000000,100000000)),1000000);
+    //std::vector<unsigned int> testsSizes =
+    //{
+       //100,1000,10000,100000,200000,300000,/*400000,500000,
+       //600000,700000,800000,900000,1000000*/
+    //};
+
+    /*TestGenerator gen(testsSizes);
+    if(gen.generate())
+    {
+        ErrorLogger::getInstance() >> "Stworzono testy pomyslnie\n";
+        PerformanceComparer comparer(gen.getTestsPaths());
+        comparer.compareCreatingTree();
+        comparer.printResults();
+    }
+    else
+    {
+        ErrorLogger::getInstance() >> "Błąd przy tworzeniu testów\n";
+
+    }*/
+
     return 0;
 }

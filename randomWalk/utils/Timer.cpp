@@ -19,15 +19,17 @@ void Timer::start(std::string const& name)
     }
 }
 
-void Timer::stop(std::string const& name)
+long long Timer::stop(std::string const& name)
 {
     ResultMapIt it = resultMap.find(name);
-
+    long long dur = 0;
     if (it != resultMap.end())
     {
-        resultMap[name].resultsSum += duration(timeNow() - resultMap[name].startPoint);
+        dur = duration(timeNow() - resultMap[name].startPoint);
+        resultMap[name].resultsSum += dur;
         resultMap[name].count++;
     }
+    return dur;
 }
 
 long long Timer::stop()
@@ -58,5 +60,17 @@ void Timer::updateMap(std::string const name, long long value)
     {
         resultMap[name].count++;
         resultMap[name].resultsSum += value;
+    }
+}
+
+long long Timer::getAvgResult(std::string const& name)
+{
+    ResultMapIt it = resultMap.find(name);
+    if (it == resultMap.end())
+           return 0;
+    else
+    {
+        long long avarage = it->second.resultsSum / it->second.count;
+        return avarage;
     }
 }

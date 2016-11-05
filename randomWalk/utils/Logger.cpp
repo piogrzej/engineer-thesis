@@ -37,3 +37,14 @@ TimeLogger::TimeLogger() : AbstractLogger(TIME_LOG_NAME, std::ios::app)
 {
     std::cout << INITIAL_TEXT_CONSOLE(TIME_LOG_NAME) << std::endl;
 }
+
+CompareLogger &CompareLogger::getInstance()
+{
+    static CompareLogger instance;
+    return instance;
+}
+
+CompareLogger::CompareLogger() : AbstractLogger(COMPARER, std::ios::app)
+{
+    std::cout << INITIAL_TEXT_CONSOLE(COMPARER) << std::endl;
+}

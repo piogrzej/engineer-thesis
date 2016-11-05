@@ -29,9 +29,12 @@ class Timer
 public:
     static Timer&      getInstance();
     void               start(std::string const& title);
-    void               stop(std::string const& title);
+    long long               stop(std::string const& title);
     long long          stop();
     void               printResults();
+    ResultMap          getResultMap() { return resultMap; }
+    long long          getAvgResult(std::string const& name);
+    void               clear() { resultMap.clear(); }
     
     template<typename RetType>
     RetType    measure(std::string name, RetType(*method)(void));

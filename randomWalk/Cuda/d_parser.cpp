@@ -3,48 +3,50 @@
 
 #include <sstream>
 
-d_Parser::d_Parser(char * fileName, char * delimiter, int layerNum)
+d_Parser::d_Parser(char * delimiter)
+: delimiter(delimiter)
 {
-	if (nullptr == fileName && nullptr == delimiter)
-		ErrorLogger::getInstance() >> "Podaj sciezke i separator!";
-
-	std::ifstream file(fileName, std::ios::in);
-	if (file.is_open())
-	{
-		char line[MAX_LINE_SIZE];
-		int layerIt = 0;
-		d_Layer layer;
-		bool isFirst = true;
-		if (layerNum == 0)
-			layerNum--; // w while nie ma znaczenia
-
-		while (file.getline(line, MAX_LINE_SIZE) && layerNum)
-		{
-			if (nullptr != strstr(line, delimiter))
-			{
-				if (isFirst)
-				{
-					isFirst = false;
-					continue;
-				}
-				layerNum--;
-				layers.push_back(d_Layer(layer));
-				layer.clear();
-				continue;
-			}
-			if(nullptr != strstr(line, LINE_HEADER))
-				layer.push_back(loadRectFromLine(line));
-		}
-	}
-	else
-	{
-		ErrorLogger::getInstance() >> "Nie mozna otworzyc pliku!\n";
-		exit(0);
-	}
 }
 
 d_Parser::~d_Parser()
 {
+}
+
+void d_Parser::parse(std::string const&  fileName)
+{
+    if (fileName.empty() || nullptr == delimiter)
+        ErrorLogger::getInstance() >> "Podaj sciezke i separator!";
+
+    std::ifstream file(fileName, std::ios::in);
+    if (file.is_open())
+    {
+        char line[MAX_LINE_SIZE];
+        int layerIt = 0;
+        d_Layer layer;
+        bool isFirst = true;
+
+        while (file.getline(line, MAX_LINE_SIZE))
+        {
+            if (nullptr != strstr(line, delimiter))
+            {
+                if (isFirst)
+                {
+                    isFirst = false;
+                    continue;
+                }
+                layers.push_back(d_Layer(layer));
+                layer.clear();
+                continue;
+            }
+            if(nullptr != strstr(line, LINE_HEADER))
+                layer.push_back(loadRectFromLine(line));
+        }
+    }
+    else
+    {
+        ErrorLogger::getInstance() >> "Nie mozna otworzyc pliku!\n";
+        exit(0);
+    }
 }
 
 d_Rect d_Parser::getLayerSize(int layerIt)
@@ -88,7 +90,7 @@ d_Rect d_Parser::getLayerSize(int layerIt)
 	return d_Rect(topLeft,bottomRight);
 }
 
-d_Rect d_Parser::loadRectFromLine(char * line)
+d_Rect d_Parser::loadRectFromLine(char*  line)
 {
 	if (nullptr == line)
 		return d_Rect();

@@ -30,10 +30,12 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID)
     TimeLogger::getInstance() << "RandomWalk \nTest: " << path << "\n";
     Timer::getInstance().start("TotalTime");
     Timer::getInstance().start("_Parser");
-    Parser parser(path, "<<");
+    Parser parser("<<");
+    parser.parse(path);
     Timer::getInstance().stop("_Parser");
 #else
-    Parser parser(path, "<<");
+    Parser parser("<<");
+    parser.parse(path);
 #endif
     ErrorLogger::getInstance() >> "RandomWalk \nTest: " >> path >> "\n";
 
