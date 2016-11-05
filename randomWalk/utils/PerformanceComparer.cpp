@@ -10,6 +10,7 @@
 #include "Timer.h"
 #include "../CPU/mainFunctions.h"
 #include "../Cuda/mainkernels.h"
+#include <stdio.h>
 
 #include <string>
 
@@ -72,14 +73,15 @@ void PerformanceComparer::runCreateTreeGpu(int layerId,std::string const& name)
 {
     d_Layer const& layer = dParser.getLayerAt(layerId);
     ErrorLogger::getInstance() >> name >> "  " >> layer.size() >> "\n";
-
+    QuadTreeManager* qtm;
     for(int i = 0; i < EXEC_PER_TEST; i++)
       {
+          cudaDeviceSynchronize();
           Timer::getInstance().start(name);
-          QuadTreeManager* qtm = createQuadTree(layer,dParser.getLayerSize(layerId),false);
+          qtm = createQuadTree(layer,dParser.getLayerSize(layerId),false);
           Timer::getInstance().stop(name);
+          cudaDeviceReset();
           // tu nie iwem o co chodzi ...
-        //  freeQuadTreeManager(qtm);
       }
     resultsGpu[layer.size()] = Timer::getInstance().getAvgResult(name);
     Timer::getInstance().clear();
@@ -103,5 +105,10 @@ void PerformanceComparer::printResults()
         CompareLogger::getInstance() << pair.first << " "  <<
                                         pair.second << " " <<
                                         resultsGpu[pair.first] << "\n";
+    }
+    for(auto const& file : testsPaths)
+    {
+        if(0 == remove(file.c_str()))
+            ErrorLogger::getInstance() >> "Usunieto " >> file >> "\n";
     }
 }
