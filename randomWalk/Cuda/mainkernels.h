@@ -11,6 +11,6 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
 QuadTreeManager* randomWalkCudaInit(char* path);
 bool initCuda(int argc, char **argv);
 void freeQuadTreeManager(QuadTreeManager* qtm);
-floatingPoint getAvgPathLen(char* path, int ITER_NUM,int RECT_ID);
+floatingPoint getAvgPathLenCUDA(char* path, int ITER_NUM,int RECT_ID);
 
 #endif

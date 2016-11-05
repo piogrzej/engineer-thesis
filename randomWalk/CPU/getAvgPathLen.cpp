@@ -1,5 +1,5 @@
 #include "../utils/Logger.h"
-#include "tests.h"
+#include "getAvgPathLen.h"
 #include "../green/green.h"
 #include "mainFunctions.h"
 #include "../utils/Timer.h"
@@ -10,29 +10,6 @@
 #define ITER 50
 
 #define MEASURE_MODE
-
-void randomIndexTest()
-{
-    REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
-    UINT32_t Nsample = NSAMPLE;
-
-    precompute_unit_square_green(g, dgdx, dgdy, intg, Nsample);//wyliczanie funkcji greena
-
-    rng_init(3);//inicjalizacja genaeratora
-
-    floatingPoint s = 0;
-    int index;
-    for (int i = 0; i < ITER; i++)
-    {
-        floatingPoint randNum = myrand() / (floatingPoint)(MY_RAND_MAX);
-        index = getIndex(intg, randNum);
-        s += index;
-        std::cout << index << " ";
-    }
-    s = s / ITER;
-    std::cout << "\n";
-    std::cout << "srednia=" << s << "\n";
-}
 
 int getRectIt(Layer const& layer, RectHost const& rect)
 {
@@ -47,7 +24,7 @@ int getRectIt(Layer const& layer, RectHost const& rect)
     return -1;
 }
 
-void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
+floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID)
 {
 #ifdef MEASURE_MODE
     TimeLogger::getInstance() << "RandomWalk \nTest: " << path << "\n";
@@ -136,4 +113,5 @@ void randomWalkTest(char* path, int ITER_NUM, int RECT_ID)
 #endif
     delete foundedRectCount;
     ErrorLogger::getInstance() >> "END OF TEST!\n";
+    return (floatingPoint)sumPointCount / (floatingPoint)ITER_NUM;
 }
