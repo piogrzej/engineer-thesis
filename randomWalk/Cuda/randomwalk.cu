@@ -22,7 +22,8 @@ QuadTreeManager* randomWalkCudaInit(char* path)
 {
     ErrorLogger::getInstance() >> "Random Walk CUDA\n";
     Timer::getInstance().start("Parser");
-    d_Parser parser(path, "<<");
+    d_Parser parser("<<");
+    parser.parse(path);
     const std::vector<d_Rect>& layer = parser.getLayerAt(0); // na razie 0 warstwa hardcode
     d_Rect const& spaceSize = parser.getLayerSize(0);
     Timer::getInstance().stop("Parser");

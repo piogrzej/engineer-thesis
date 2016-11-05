@@ -3,50 +3,51 @@
 
 #include <sstream>
 
-Parser::Parser(char * fileName, char * delimiter, int layerNum)
+Parser::Parser(char * delimiter)
+: delimiter(delimiter)
 {
-	if (nullptr == fileName && nullptr == delimiter)
-		ErrorLogger::getInstance() >> "Podaj sciezke i separator!";
-
-	std::ifstream file(fileName, std::ios::in);
-	if (file.is_open())
-	{
-		char line[MAX_LINE_SIZE];
-		int layerIt = 0;
-		Layer layer;
-		bool isFirst = true;
-		if (layerNum == 0)
-			layerNum--; // w while nie ma znaczenia
-
-		while (file.getline(line, MAX_LINE_SIZE) && layerNum)
-		{
-			if (nullptr != strstr(line, delimiter))
-			{
-				if (isFirst)
-				{
-					isFirst = false;
-					continue;
-				}
-				layerNum--;
-				layers.push_back(Layer(layer));
-				layer.clear();
-				continue;
-			}
-			if(nullptr != strstr(line, LINE_HEADER))
-				layer.push_back(loadRectFromLine(line));
-		}
-	}
-	else
-	{
-		ErrorLogger::getInstance() >> "Nie mozna otworzyc pliku!\n";
-		exit(0);
-	}
 }
 
 Parser::~Parser()
 {
 }
 
+void Parser::parse(std::string const&  fileName)
+{
+    if (fileName.empty())
+        ErrorLogger::getInstance() >> "Podaj sciezke i separator!";
+
+    std::ifstream file(fileName, std::ios::in);
+    if (file.is_open())
+    {
+        char line[MAX_LINE_SIZE];
+        int layerIt = 0;
+        Layer layer;
+        bool isFirst = true;
+
+        while (file.getline(line, MAX_LINE_SIZE))
+        {
+            if (nullptr != strstr(line, delimiter))
+            {
+                if (isFirst)
+                {
+                    isFirst = false;
+                    continue;
+                }
+                layers.push_back(Layer(layer));
+                layer.clear();
+                continue;
+            }
+            if(nullptr != strstr(line, LINE_HEADER))
+                layer.push_back(loadRectFromLine(line));
+        }
+    }
+    else
+    {
+        ErrorLogger::getInstance() >> "Nie mozna otworzyc pliku!\n";
+        exit(0);
+    }
+}
 RectHost Parser::getLayerSize(int layerIt)
 {
     if (layerIt >= layers.size())
@@ -85,7 +86,7 @@ RectHost Parser::getLayerSize(int layerIt)
                 point(rightX + add_space_w, bottomY + add_space_w));
 }
 
-RectHost Parser::loadRectFromLine(char * line)
+RectHost Parser::loadRectFromLine(char* line)
 {
 	if (nullptr == line)
 		return RectHost();

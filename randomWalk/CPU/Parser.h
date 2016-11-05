@@ -15,18 +15,19 @@ typedef std::vector<Layer> Layers;
 class Parser
 {
 public:
-	// if 0 , all layers will be loaded.
-	Parser(char * fileName, char * delimiter, int layerNum = 0); 
+	Parser(char * delimiter);
 	~Parser();
-
-	RectHost			getLayerSize(int layerIt);
+	     void       parse(std::string const&  fileName);
+	RectHost		getLayerSize(int layerIt);
 	Layer			getLayerAt(int i) { return layers[i]; }
 	Layers			getAllLayers() { return layers; }
+    int             getLayerCount() { return layers.size(); }
 
 private:
 	Layers			layers;
+	char*           delimiter;
 
-	RectHost			loadRectFromLine(char * linek);
+	RectHost	    loadRectFromLine(char* linek);
 
 };
 

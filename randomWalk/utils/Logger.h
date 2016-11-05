@@ -5,6 +5,7 @@
 
 #define LOG_FILE_NAME        "errorLog.txt"
 #define TIME_LOG_NAME        "timeLog.txt"
+#define COMPARER             "compareLog.txt"
 #define INITIAL_TEXT_CONSOLE(NAME) "Log zostal zapisany do " NAME
 #define INITIAL_TEXT_LOG "Praca Inzynierska \nRandom Walk\nAutorzy: Piotr Grzejszczyk, Marcin Knap \n\n"
 
@@ -44,9 +45,6 @@ class ErrorLogger : public AbstractLogger
 public:
     static ErrorLogger& getInstance();
 
-private:
-    std::fstream logFile;
-
     ErrorLogger();
 };
 
@@ -55,8 +53,13 @@ class TimeLogger : public AbstractLogger
 public:
     static TimeLogger& getInstance();
 
-private:
-    std::fstream logFile;
-
     TimeLogger();
+};
+
+class CompareLogger : public AbstractLogger
+{
+public:
+    static CompareLogger& getInstance();
+
+    CompareLogger();
 };

@@ -9,6 +9,7 @@
 #include "../utils/Timer.h"
 #include "../green/green.h"
 
+
 __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* d_params,int lvlMul);
 bool checkQuadTree(const d_QuadTree *nodes,int idx,d_Rect *rects, int& count);
 
@@ -43,10 +44,10 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
 
   Timer::getInstance().start("Create Tree CUDA");
   createQuadTreeKernel<<<1,params.THREAD_PER_BLOCK,params.SHARED_MEM_SIZE>>>(d_nodes,d_rects,d_params,0);
-  cudaDeviceSynchronize();
   checkCudaErrors(cudaGetLastError());
+  cudaDeviceSynchronize();
   Timer::getInstance().stop("Create Tree CUDA");
-  ErrorLogger::getInstance() >> "Tworzenie drzewa zakończone pomyślnie\n";
+ // ErrorLogger::getInstance() >> "Tworzenie drzewa zakończone pomyślnie\n";
 
   if(doCheck)
   {
@@ -61,11 +62,8 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
       result ? ErrorLogger::getInstance() >> "Stworzono pomyślnie\n":
                ErrorLogger::getInstance() >> "Błąd tworzenia drzewa\n";
   }
-
   QuadTreeManager* qm = new QuadTreeManager();
-  QuadTreeManager* d_tree;
-  unsigned int size=sizeof(QuadTreeManager);
-  cudaMalloc((void **)&d_tree,size);
+
   qm->nodes = d_nodes;
   qm->root = d_nodes;
   qm->rects = d_rects;

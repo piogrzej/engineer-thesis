@@ -132,8 +132,8 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
         return true;
 
     d_QuadTree* oldNode, *node = this;
-    TreePtr* stack = new TreePtr[this->getTreeManager()->nodes[0].rectCount() + 1];//UWAGA MOZE NIE DZIALAC!!!
-    TreePtr* stackPtr = stack;
+    dTreePtr* stack = new dTreePtr[this->getTreeManager()->nodes[0].rectCount() + 1];//UWAGA MOZE NIE DZIALAC!!!
+    dTreePtr* stackPtr = stack;
     bool collisions[NODES_NUMBER];
     *stackPtr++ = nullptr; // koniec petli gdy tu trafimy
 
@@ -187,7 +187,7 @@ __device__ bool d_QuadTree::checkIsAnyCollision(bool collisions[])//FUNKCJA DO P
     return false;
 }
 
-__device__ void d_QuadTree::addNodesToStack(TreePtr* stackPtr,d_QuadTree* except, bool collisions[])//FUNKCJA DO PRZEPISANIA OD NOWA
+__device__ void d_QuadTree::addNodesToStack(dTreePtr* stackPtr,d_QuadTree* except, bool collisions[])//FUNKCJA DO PRZEPISANIA OD NOWA
 {
     for (int i = 0; i < NODES_NUMBER; ++i)
     {
@@ -214,13 +214,13 @@ __device__ d_Rect d_QuadTree::createGaussianSurfFrom(d_Rect const & r, floatingP
         return r;
     }
 
-    floatingPoint factorX = getAdjustedGaussianFactor(r, factor, FACTOR_X);
-    floatingPoint factorY = getAdjustedGaussianFactor(r, factor, FACTOR_Y);
+    floatingPoint factorX = getAdjustedGaussianFactor(r, factor, D_FACTOR_X);
+    floatingPoint factorY = getAdjustedGaussianFactor(r, factor, D_FACTOR_Y);
 
     return r.createGaussianSurface(factorX, factorY);
 }
 
-__device__ floatingPoint d_QuadTree::getAdjustedGaussianFactor(d_Rect const& r, floatingPoint const factor, FACTOR_TYPE type)
+__device__ floatingPoint d_QuadTree::getAdjustedGaussianFactor(d_Rect const& r, floatingPoint const factor, D_FACTOR_TYPE type)
 {
     bool isCollision = false;
     bool isDividing = true;
@@ -232,7 +232,7 @@ __device__ floatingPoint d_QuadTree::getAdjustedGaussianFactor(d_Rect const& r, 
 
     for (int i = 0; i < GAUSSIAN_ACCURACY; i++)
     {
-        surface = (type == FACTOR_X) ?
+        surface = (type == D_FACTOR_X) ?
                 r.createGaussianSurfaceX(adjustedFactor) :
                 r.createGaussianSurfaceY(adjustedFactor);
 

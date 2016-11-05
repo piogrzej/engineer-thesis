@@ -18,7 +18,7 @@
 #define BIGGEST_SQUARE_INIT_FACTOR 0.05
 #define GAUSSIAN_ACCURACY 10
 class d_QuadTree;
-typedef d_QuadTree* TreePtr;
+typedef d_QuadTree* dTreePtr;
 typedef unsigned short int ushort;
 
 enum NODE_ID
@@ -29,10 +29,10 @@ enum NODE_ID
     DOWN_RIGHT=3
 };
 
-enum FACTOR_TYPE
+enum D_FACTOR_TYPE
 {
-    FACTOR_X,
-    FACTOR_Y
+    D_FACTOR_X,
+    D_FACTOR_Y
 };
 
 
@@ -88,7 +88,7 @@ public:
     __device__ bool checkCollisons(point2 p, d_Rect& r);
     __device__ d_Rect drawBiggestSquareAtPoint(point2 p);
     __device__ d_Rect createGaussianSurfFrom(d_Rect const & r, floatingPoint const factor);
-    __device__ floatingPoint getAdjustedGaussianFactor(d_Rect const& r, floatingPoint const factor, FACTOR_TYPE type);
+    __device__ floatingPoint getAdjustedGaussianFactor(d_Rect const& r, floatingPoint const factor, D_FACTOR_TYPE type);
     __device__ bool isSplited() const {return (this->rectCount()>0); }
     __device__ int getChlidren(ushort i) {return chlildren[i];};
 
@@ -103,7 +103,7 @@ private:
     QuadTreeManager*    treeManager;
 
     __device__ bool checkCollisionObjs(point2 p, d_Rect &r);
-    __device__ void addNodesToStack(TreePtr* stackPtr,d_QuadTree* except, bool collisions[]);
+    __device__ void addNodesToStack(dTreePtr* stackPtr,d_QuadTree* except, bool collisions[]);
     __device__ bool checkIsAnyCollision(bool collisions[]);
 
 };
