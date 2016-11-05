@@ -7,7 +7,7 @@ floatingPoint countAvg(unsigned int output[],int ITER_NUM)
     for(unsigned int i=0; i<ITER_NUM;++i)
     {
         out += output[i];
-        printf("%lu\n",output[i]);
+        //printf("%lu\n",output[i]);
     }
 
     return out/ITER_NUM;
@@ -22,7 +22,7 @@ floatingPoint getAvgPathLenCUDA(char* path, int ITER_NUM,int RECT_ID)
     unsigned int* d_output;
     unsigned int outputSize = ITER_NUM * sizeof(unsigned int);
     cudaMalloc((void **)&d_output,outputSize);
-    randomWalkCudaWrapper(ITER_NUM,1,qtm,RECT_ID,d_output,time(NULL));
+    randomWalkCudaWrapper(1,ITER_NUM,qtm,RECT_ID,d_output,time(NULL));
     cudaMemcpy(output,d_output,outputSize,cudaMemcpyDeviceToHost);
     freeQuadTreeManager(qtm);
     cudaFree(d_output);

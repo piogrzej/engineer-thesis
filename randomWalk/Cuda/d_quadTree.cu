@@ -132,7 +132,8 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
         return true;
 
     d_QuadTree* oldNode, *node = this;
-    dTreePtr* stack = new dTreePtr[this->getTreeManager()->nodes[0].rectCount() + 1];//UWAGA MOZE NIE DZIALAC!!!
+    this->getTreeManager()->root->rectCount();//WYPIERDZIELA SIE NA DOSTEPIE DO QUADTREEMN
+    dTreePtr* stack = new dTreePtr[nodesCount+1];//UWAGA MOZE NIE DZIALAC!!!
     dTreePtr* stackPtr = stack;
     bool collisions[NODES_NUMBER];
     *stackPtr++ = nullptr; // koniec petli gdy tu trafimy

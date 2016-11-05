@@ -62,14 +62,15 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
       result ? ErrorLogger::getInstance() >> "Stworzono pomyślnie\n":
                ErrorLogger::getInstance() >> "Błąd tworzenia drzewa\n";
   }
-  QuadTreeManager* qm = new QuadTreeManager();
-  QuadTreeManager* d_tree;
 
-  qm->nodes = d_nodes;
-  qm->root = d_nodes;
-  qm->rects = d_rects;
+  QuadTreeManager* qm = new QuadTreeManager();
   qm->rectsCount = layer.size();
-/*
+  QuadTreeManager* d_tree;
+  cudaMalloc((void**)&d_tree,sizeof(QuadTreeManager));
+  cudaMemcpy(d_tree,qm,sizeof(QuadTreeManager),cudaMemcpyHostToDevice);
+  cudaMemcpy(&(d_tree->rects), &d_rects, sizeof(d_Rect *), cudaMemcpyHostToDevice);
+  cudaMemcpy(&(d_tree->nodes), &d_nodes, sizeof(d_Rect *), cudaMemcpyHostToDevice);
+  cudaMemcpy(&(d_tree->root), &d_nodes, sizeof(d_Rect *), cudaMemcpyHostToDevice);
   //tworzenie i kopiowanie intg do pamieci device
   REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
   precompute_unit_square_green(g,dgdx,dgdy,intg,NSAMPLE);
@@ -77,10 +78,8 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
   REAL64_t *d_intg;
   cudaMalloc((void **)&d_intg,sizeOfIntg);
   cudaMemcpy(d_intg,intg,sizeOfIntg,cudaMemcpyHostToDevice);
-  qm->d_intg = d_intg;
-  cudaMalloc((void**)d_tree,sizeof(QuadTreeManager));
-  cudaMemcpy(d_tree,qm,sizeof(QuadTreeManager),cudaMemcpyHostToDevice);
-  delete qm;*/
+  cudaMemcpy(&(d_tree->d_intg), &d_intg, sizeof(REAL64_t *), cudaMemcpyHostToDevice);
+  delete qm;
 
   return d_tree;
 }

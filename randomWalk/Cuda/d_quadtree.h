@@ -44,6 +44,7 @@ struct QuadTreeManager
     REAL64_t* d_intg;
 
     int rectsCount;
+    int nodesCount;
 };
 
 //czyli od rect[startOff] do rect[endOff] sa rect dla danego noda

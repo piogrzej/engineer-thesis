@@ -12,7 +12,7 @@
 //#define DEFAULT_PATH "../generatedtests/test1000.txt"
 #define DEFAULT_PATH "../tests/test"
 #define DEFAULT_RECT 10
-#define DEFAULT_ITERATION 1000
+#define DEFAULT_ITERATION 10
 
 enum PARAMS
 {

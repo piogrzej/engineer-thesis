@@ -44,6 +44,8 @@ __device__ int d_getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand){
 
 __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned int *output, unsigned int randomSeed=time(NULL))
 {
+	//printf("\t%d \n",threadIdx.x);
+	printf("printf w randomWalkCuda id watku:%d \n",threadIdx.x);
     /*inicjalizacja silnika random*/
     curandState_t state;
     curand_init(randomSeed, /* the seed controls the sequence of random values that are produced */
@@ -51,14 +53,18 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
             0, /* the offset is how much extra we advance in the sequence for each call, can be 0 */
             &state);
     //przyklad uzycia: printf("%f\n",curand_uniform (&state));, genruje float w zakresie od 0-1
-
     d_Rect rectOutput;
     point2 p;
     floatingPoint r;
     bool isCollison;
-    d_Rect square = quadTreeMn->root->createGaussianSurfFrom(quadTreeMn->rects[RECT_ID], 1.5);
-    output[blockIdx.x]=0;
-
+    output[threadIdx.x]=0;
+    printf("\t%d thread output: %d \n",threadIdx.x,output[threadIdx.x]);
+    printf("\t%d rects count: %d \n",threadIdx.x,quadTreeMn->rectsCount);
+    d_Rect startRect = quadTreeMn->rects[RECT_ID];
+    printf("\t\t%d createGuassianSquere: %f,%f %f,%f\n",threadIdx.x,startRect.topLeft.x,startRect.topLeft.y,startRect.bottomRight.x,startRect.bottomRight.y);
+    d_Rect square = quadTreeMn->nodes[0].createGaussianSurfFrom(startRect, 1.5);
+    printf("\t\t%d createGuassianSquere: %f,%f %f,%f\n",threadIdx.x,square.topLeft.x,square.topLeft.y,square.bottomRight.x,square.bottomRight.y);
+    /*
     do
     {
         r = curand_uniform(&state);
@@ -70,9 +76,9 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
         }
         square = quadTreeMn->root->drawBiggestSquareAtPoint(p);
         isCollison = quadTreeMn->root->checkCollisons(p, rectOutput);
-        ++output[blockIdx.x];
+        ++output[threadIdx.x];
     }
-    while (false == isCollison);
+    while (false == isCollison);*/
 }
 
 void randomWalkCudaWrapper(int dimBlck,int dimThread,QuadTreeManager* quadTree, int RECT_ID,unsigned int *output,unsigned int randomSeed)

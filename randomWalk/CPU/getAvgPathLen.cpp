@@ -89,6 +89,7 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID)
             else
                 errors++;
         }
+        //printf("%d\n",counter);
         sumPointCount += counter;
     }
 
