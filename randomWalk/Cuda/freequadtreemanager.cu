@@ -2,9 +2,11 @@
 
 void freeQuadTreeManager(QuadTreeManager* qtm)
 {
-    cudaFree(qtm->d_intg);
-    cudaFree(qtm->nodes);
-    cudaFree(qtm->rects);
-    cudaFree(qtm->root);
+	QuadTreeManager *hostQTM= new QuadTreeManager();
+	cudaMemcpy(hostQTM,qtm,sizeof(QuadTreeManager),cudaMemcpyDeviceToHost);
+    cudaFree(hostQTM->d_intg);
+    cudaFree(hostQTM->nodes);
+    cudaFree(hostQTM->rects);
+    cudaFree(hostQTM->root);
     cudaFree(qtm);
 }

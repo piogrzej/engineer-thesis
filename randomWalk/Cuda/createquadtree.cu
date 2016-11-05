@@ -7,6 +7,7 @@
 #include "mainkernels.h"
 #include "../utils/Logger.h"
 #include "../utils/Timer.h"
+#include "../green/green.h"
 
 __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* d_params,int lvlMul);
 bool checkQuadTree(const d_QuadTree *nodes,int idx,d_Rect *rects, int& count);
@@ -61,13 +62,26 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
                ErrorLogger::getInstance() >> "Błąd tworzenia drzewa\n";
   }
 
+  QuadTreeManager* qm = new QuadTreeManager();
   QuadTreeManager* d_tree;
   unsigned int size=sizeof(QuadTreeManager);
   cudaMalloc((void **)&d_tree,size);
-  d_tree->nodes = d_nodes;
-  d_tree->root = d_nodes;
-  d_tree->rects = d_rects;
-  d_tree->rectsCount = layer.size();
+  qm->nodes = d_nodes;
+  qm->root = d_nodes;
+  qm->rects = d_rects;
+  qm->rectsCount = layer.size();
+
+  //tworzenie i kopiowanie intg do pamieci device
+  REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
+  precompute_unit_square_green(g,dgdx,dgdy,intg,NSAMPLE);
+  int sizeOfIntg = (NSAMPLE + 1)*sizeof(REAL64_t);
+  REAL64_t *d_intg;
+  cudaMalloc((void **)&d_intg,sizeOfIntg);
+  cudaMemcpy(d_intg,intg,sizeOfIntg,cudaMemcpyHostToDevice);
+  qm->d_intg = d_intg;
+  //--------------------------------------------
+
+  cudaMemcpy(d_tree,qm,size,cudaMemcpyHostToDevice);
   return d_tree;
 }
 

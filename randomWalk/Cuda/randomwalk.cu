@@ -16,8 +16,6 @@
 #include "../utils/Logger.h"
 #include "../utils/Timer.h"
 
-#define NSAMPLE 200
-
 // TO DO: brzydkie kopiowanie, trzeba poprawić
 // TO DO: wykrywanie ilosci threadow, thread/block, (cudaDeviceProp)
 QuadTreeManager* randomWalkCudaInit(char* path)
@@ -31,13 +29,6 @@ QuadTreeManager* randomWalkCudaInit(char* path)
     QuadTreeManager* treeMng = createQuadTree(layer,spaceSize,false);
 
     Timer::getInstance().printResults();
-    //tworzenie i kopiowanie intg do pamieci device
-    REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
-    precompute_unit_square_green(g,dgdx,dgdy,intg,NSAMPLE);
-    int sizeOfIntg = (NSAMPLE + 1)*sizeof(REAL64_t);
-    cudaMalloc((void **)&(treeMng->d_intg),sizeOfIntg);
-    cudaMemcpy((treeMng->d_intg),intg,sizeOfIntg,cudaMemcpyHostToDevice);
-    //--------------------------------------------
     return treeMng;
 }
 
@@ -66,8 +57,6 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
     bool isCollison;
     d_Rect square = quadTreeMn->root->createGaussianSurfFrom(quadTreeMn->rects[RECT_ID], 1.5);
     output[blockIdx.x]=0;
-
-    //bool broken = false;
 
     do
     {

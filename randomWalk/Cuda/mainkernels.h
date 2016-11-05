@@ -4,6 +4,8 @@
 #include "d_quadtree.h"
 #include <vector>
 
+#define NSAMPLE 200
+
 void randomWalkCudaWrapper(int dimBlck,int dimThread,QuadTreeManager* quadTree, int RECT_ID,unsigned int *output,unsigned int randomSeed);
 QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& spaceSize,bool doCheck);
 QuadTreeManager* randomWalkCudaInit(char* path);
