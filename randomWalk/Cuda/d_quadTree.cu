@@ -143,7 +143,7 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
         if (true==node->isSplited())
         {
             for (int i = 0; i < NODES_NUMBER; ++i)
-                collisions[i - node->startRectOff()] = node->getTreeManager()->nodes[node->getChlidren(i)].getBounds().rectsCollision(r);
+                collisions[i] = node->getTreeManager()->nodes[node->getChlidren(i)].getBounds().rectsCollision(r);
         }
         else
             for (int i = 0; i < NODES_NUMBER; ++i)
