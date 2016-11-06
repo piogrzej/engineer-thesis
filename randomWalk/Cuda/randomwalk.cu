@@ -59,10 +59,6 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
     bool isCollison;
     output[threadIdx.x]=0;
     printf("\t%d rects count: %d \n",threadIdx.x,quadTreeMn->root->rectCount());
-    d_Rect temp;
-    p.x=10;
-    p.y=10;
-    quadTreeMn->root->checkCollisons(p,temp);
     //printf("\t%d rects count: %d \n",threadIdx.x,quadTreeMn->rectsCount);
     //d_Rect startRect = quadTreeMn->rects[RECT_ID];
     //printf("\t\t%d createGuassianSquere: %f,%f %f,%f\n",threadIdx.x,startRect.topLeft.x,startRect.topLeft.y,startRect.bottomRight.x,startRect.bottomRight.y);

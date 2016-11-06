@@ -42,6 +42,7 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
 
   QuadTreeManager* qm = new QuadTreeManager();
   qm->rectsCount = layer.size();
+  qm->nodesCount = 0;
   QuadTreeManager* d_tree;
   cudaMalloc((void**)&d_tree,sizeof(QuadTreeManager));
   cudaMemcpy(d_tree,qm,sizeof(QuadTreeManager),cudaMemcpyHostToDevice);
@@ -111,7 +112,13 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
   d_Rect* buffer[2]; buffer[node.getLevel() % 2] = rects; buffer[(node.getLevel() + 1) % 2] = &rects[params->TOTAL_RECT];
   const d_Rect* roRects = buffer[0]; // read only rects
   d_Rect* sortedRects = buffer[1];
-  node.setTreeManager(params->QTM);
+
+  if(threadIdx.x == 0)
+  {
+      params->QTM->nodesCount++;
+      node.setTreeManager(params->QTM);
+  }
+
   //if(threadIdx.x == 0)
   //printf("block %d id: %d node: %d %d %d %d lvl: %d count %d\n", nodeId,node.getId(),(int)node.getBounds().topLeft.x,(int)node.getBounds().topLeft.y,
 		//			  (int)node.getBounds().bottomRight.x,(int)node.getBounds().bottomRight.y,node.getLevel(),node.rectCount());

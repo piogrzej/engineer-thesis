@@ -131,8 +131,9 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
     if (false == isInBounds(r))
         return true;
 
+    d_QuadTree* nodes = treeManager->nodes;
     d_QuadTree* oldNode, *node = this;
-    dTreePtr* stack = new dTreePtr[treeManager->root->rectCount()+1];//UWAGA MOZE NIE DZIALAC!!!
+    dTreePtr* stack = new dTreePtr[treeManager->nodesCount];
     dTreePtr* stackPtr = stack;
     bool collisions[NODES_NUMBER];
     *stackPtr++ = nullptr; // koniec petli gdy tu trafimy
@@ -142,7 +143,7 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
         if (true==node->isSplited())
         {
             for (int i = 0; i < NODES_NUMBER; ++i)
-                collisions[i] = node->getTreeManager()->nodes[node->getChlidren(i)].getBounds().rectsCollision(r);
+                collisions[i] = nodes[node->getChlidren(i)].getBounds().rectsCollision(r);
         }
         else
             for (int i = 0; i < NODES_NUMBER; ++i)
@@ -153,6 +154,7 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
             if (node->checkCollisionsWithObjs(r, ignore))
             {
                 delete stack;
+                printf("jest kolizja\n");
                 return true;
             }
             node = *--stackPtr;
@@ -160,12 +162,12 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
         else
         {
             oldNode = node;
-
+#pragma unroll
             for (int i = 0; i < NODES_NUMBER; ++i)
             {
                 if (collisions[i])
                 {
-                    node = &(node->getTreeManager()->nodes[node->getChlidren(i)]);
+                    node = &(nodes[node->getChlidren(i)]);
                     break;
                 }
             }
@@ -173,12 +175,14 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
             oldNode->addNodesToStack(stackPtr, node, collisions);
         }
     }
+    printf("brak kolizji\n");
     delete stack;
     return false;
 }
 
 __device__ bool d_QuadTree::checkIsAnyCollision(bool collisions[])//FUNKCJA DO PRZEPISANIA OD NOWA
 {
+#pragma unroll
     for (int i = 0; i < NODES_NUMBER; ++i)
     {
         if (collisions[i])
@@ -189,17 +193,21 @@ __device__ bool d_QuadTree::checkIsAnyCollision(bool collisions[])//FUNKCJA DO P
 
 __device__ void d_QuadTree::addNodesToStack(dTreePtr* stackPtr,d_QuadTree* except, bool collisions[])//FUNKCJA DO PRZEPISANIA OD NOWA
 {
+    d_QuadTree* nodes = treeManager->nodes;
+
+#pragma unroll
     for (int i = 0; i < NODES_NUMBER; ++i)
     {
-        if (collisions[i] && except != &(this->getTreeManager()->nodes[this->getChlidren(i)]))
-            *stackPtr++ = &(this->getTreeManager()->nodes[this->getChlidren(i)]);
+        if (collisions[i] && except != &(nodes[chlildren[i]]))
+            *stackPtr++ = &(nodes[chlildren[i]]);
     }
 }
 
 __device__ bool d_QuadTree::checkCollisionsWithObjs(d_Rect const& r, const d_Rect &ignore)
 {
+    d_Rect* rects = treeManager->rects;
     for (int i =this->startOff; i< this->endOff; ++i)
-            if (this->getTreeManager()->rects[i] != ignore && this->getTreeManager()->rects[i].rectsCollision(r))
+            if (rects[i] != ignore && rects[i].rectsCollision(r))
                 return true;
 
         return false;
