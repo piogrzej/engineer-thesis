@@ -34,6 +34,7 @@ QuadTreeManager* randomWalkCudaInit(char* path)
 }
 
 __device__ int d_getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand){
+#pragma unroll
     for (int i = 0; i <= NSAMPLE; ++i)
     {
         if (intg[i] <= rand && intg[i + 1] > rand)
