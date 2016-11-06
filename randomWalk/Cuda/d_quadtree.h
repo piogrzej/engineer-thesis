@@ -75,8 +75,7 @@ public:
     __host__ __device__ QuadTreeManager* getTreeManager() const{ return treeManager; };
     __host__ __device__ void setTreeManager(QuadTreeManager* manager) {this->treeManager = manager;};
     __host__ __device__ int   child(const int index) const { return chlildren[index]; }
-    __host__ __device__ __forceinline__
-              float2    getCenter()
+    __host__ __device__ __forceinline__ float2 getCenter()
     {
         float centerX =  bounds.topLeft.x + (bounds.bottomRight.x - bounds.topLeft.x) / 2;
         float centerY =  bounds.topLeft.y + (bounds.bottomRight.y - bounds.topLeft.y) / 2;
