@@ -154,7 +154,7 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
             if (node->checkCollisionsWithObjs(r, ignore))
             {
                 delete stack;
-                printf("jest kolizja\n");
+                //printf("jest kolizja\n");
                 return true;
             }
             node = *--stackPtr;
@@ -175,7 +175,7 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
             oldNode->addNodesToStack(stackPtr, node, collisions);
         }
     }
-    printf("brak kolizji\n");
+    //printf("brak kolizji\n");
     delete stack;
     return false;
 }

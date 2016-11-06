@@ -7,7 +7,6 @@ floatingPoint countAvg(unsigned int output[],int ITER_NUM)
     for(unsigned int i=0; i<ITER_NUM;++i)
     {
         out += output[i];
-        //printf("%lu\n",output[i]);
     }
 
     return out/ITER_NUM;

@@ -45,10 +45,9 @@ __device__ int d_getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand){
 __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned int *output, unsigned int randomSeed=time(NULL))
 {
 	//printf("\t%d \n",threadIdx.x);
-	printf("printf w randomWalkCuda id watku:%d \n",threadIdx.x);
     /*inicjalizacja silnika random*/
     curandState_t state;
-    curand_init(randomSeed, /* the seed controls the sequence of random values that are produced */
+    curand_init(randomSeed*(threadIdx.x+1), /* the seed controls the sequence of random values that are produced */
             blockIdx.x, /* the sequence number is only important with multiple cores */
             0, /* the offset is how much extra we advance in the sequence for each call, can be 0 */
             &state);
@@ -58,13 +57,8 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
     floatingPoint r;
     bool isCollison;
     output[threadIdx.x]=0;
-    printf("\t%d rects count: %d \n",threadIdx.x,quadTreeMn->root->rectCount());
-    //printf("\t%d rects count: %d \n",threadIdx.x,quadTreeMn->rectsCount);
-    //d_Rect startRect = quadTreeMn->rects[RECT_ID];
-    //printf("\t\t%d createGuassianSquere: %f,%f %f,%f\n",threadIdx.x,startRect.topLeft.x,startRect.topLeft.y,startRect.bottomRight.x,startRect.bottomRight.y);
     d_Rect square = quadTreeMn->root->createGaussianSurfFrom(quadTreeMn->rects[RECT_ID], 1.5);
-    printf("\t\t%d createGuassianSquere: %f,%f %f,%f\n",threadIdx.x,square.topLeft.x,square.topLeft.y,square.bottomRight.x,square.bottomRight.y);
-    /*
+
     do
     {
         r = curand_uniform(&state);
@@ -78,7 +72,7 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
         isCollison = quadTreeMn->root->checkCollisons(p, rectOutput);
         ++output[threadIdx.x];
     }
-    while (false == isCollison);*/
+    while (false == isCollison);
 }
 
 void randomWalkCudaWrapper(int dimBlck,int dimThread,QuadTreeManager* quadTree, int RECT_ID,unsigned int *output,unsigned int randomSeed)
