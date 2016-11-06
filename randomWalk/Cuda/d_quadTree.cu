@@ -43,6 +43,7 @@ __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
     {
         if (true==current->isSplited())
         {
+#pragma unroll
             for(ushort i=0; i<NODES_NUMBER; ++i)
             {
                 d_QuadTree node = current->getTreeManager()->nodes[current->getChlidren(i)];
@@ -192,8 +193,8 @@ __device__ void d_QuadTree::addNodesToStack(dTreePtr* stackPtr,d_QuadTree* excep
 {
     for (int i = 0; i < NODES_NUMBER; ++i)
     {
-        if (collisions[i] && except != &(this->getTreeManager()->nodes[this->getChlidren(i)]))
-            *stackPtr++ = &(this->getTreeManager()->nodes[this->getChlidren(i)]);
+        if (collisions[i] && except != &(nodes[chlildren[i]]))
+            *stackPtr++ = &(nodes[chlildren[i]]);
     }
 }
 
@@ -231,6 +232,7 @@ __device__ floatingPoint d_QuadTree::getAdjustedGaussianFactor(d_Rect const& r, 
 
     d_Rect surface;
 
+#pragma unroll
     for (int i = 0; i < GAUSSIAN_ACCURACY; i++)
     {
         surface = (type == D_FACTOR_X) ?
