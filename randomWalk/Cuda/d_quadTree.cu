@@ -45,9 +45,9 @@ __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
         {
             for(ushort i=0; i<NODES_NUMBER; ++i)
             {
-                if (true==current->getTreeManager()->nodes[current->getChlidren(i)].bounds.contains(p))
+                d_QuadTree node = current->getTreeManager()->nodes[current->getChlidren(i)];
                 {
-                    next = &(current->getTreeManager()->nodes[current->getChlidren(i)]);
+                    next = &node;
                     break;
                 }
             }
@@ -132,8 +132,8 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
         return true;
 
     d_QuadTree* oldNode, *node = this;
-    this->getTreeManager()->root->rectCount();//WYPIERDZIELA SIE NA DOSTEPIE DO QUADTREEMN -> WARP ILLEGAL ADDRESS; ExceptionPC=0x1011370
-    dTreePtr* stack = new dTreePtr[this->getTreeManager()->root->rectCount()+1];//UWAGA MOZE NIE DZIALAC!!!
+    d_QuadTree* tmpRoot = treeManager->root;//WYPIERDZIELA SIE NA DOSTEPIE DO QUADTREEMN -> WARP ILLEGAL ADDRESS; ExceptionPC=0x1011370
+    dTreePtr* stack = new dTreePtr[tmpRoot->rectCount()+1];//UWAGA MOZE NIE DZIALAC!!!
     dTreePtr* stackPtr = stack;
     bool collisions[NODES_NUMBER];
     *stackPtr++ = nullptr; // koniec petli gdy tu trafimy
@@ -143,7 +143,7 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
         if (true==node->isSplited())
         {
             for (int i = 0; i < NODES_NUMBER; ++i)
-                collisions[i-node->startRectOff()] = node->getTreeManager()->nodes[node->getChlidren(i)].getBounds().rectsCollision(r);
+                collisions[i - node->startRectOff()] = node->getTreeManager()->nodes[node->getChlidren(i)].getBounds().rectsCollision(r);
         }
         else
             for (int i = 0; i < NODES_NUMBER; ++i)

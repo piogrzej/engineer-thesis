@@ -39,7 +39,21 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
   checkCudaErrors(cudaMalloc((void**)&d_params,sizeof(Params)));
   checkCudaErrors(cudaMemcpy(d_rects,&layer.front(),rectTableSize, cudaMemcpyHostToDevice));
   checkCudaErrors(cudaMemcpy(d_nodes,&root,sizeof(d_QuadTree), cudaMemcpyHostToDevice));
+
+  QuadTreeManager* qm = new QuadTreeManager();
+  qm->rectsCount = layer.size();
+  QuadTreeManager* d_tree;
+  cudaMalloc((void**)&d_tree,sizeof(QuadTreeManager));
+  cudaMemcpy(d_tree,qm,sizeof(QuadTreeManager),cudaMemcpyHostToDevice);
+  cudaMemcpy(&(d_tree->rects), &d_rects, sizeof(d_QuadTree *), cudaMemcpyHostToDevice);
+  cudaMemcpy(&(d_tree->nodes), &d_nodes, sizeof(d_QuadTree *), cudaMemcpyHostToDevice);
+  cudaMemcpy(&(d_tree->root), &d_nodes, sizeof(d_Rect *), cudaMemcpyHostToDevice);
+
+  params.QTM = d_tree;
+
   checkCudaErrors(cudaMemcpy(d_params,&params,sizeof(Params), cudaMemcpyHostToDevice));
+
+
   Timer::getInstance().stop("Kopiowanie zasobów do CUDA");
 
   Timer::getInstance().start("Create Tree CUDA");
@@ -63,14 +77,6 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
                ErrorLogger::getInstance() >> "Błąd tworzenia drzewa\n";
   }
 
-  QuadTreeManager* qm = new QuadTreeManager();
-  qm->rectsCount = layer.size();
-  QuadTreeManager* d_tree;
-  cudaMalloc((void**)&d_tree,sizeof(QuadTreeManager));
-  cudaMemcpy(d_tree,qm,sizeof(QuadTreeManager),cudaMemcpyHostToDevice);
-  cudaMemcpy(&(d_tree->rects), &d_rects, sizeof(d_Rect *), cudaMemcpyHostToDevice);
-  cudaMemcpy(&(d_tree->nodes), &d_nodes, sizeof(d_Rect *), cudaMemcpyHostToDevice);
-  cudaMemcpy(&(d_tree->root), &d_nodes, sizeof(d_Rect *), cudaMemcpyHostToDevice);
   //tworzenie i kopiowanie intg do pamieci device
   REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
   precompute_unit_square_green(g,dgdx,dgdy,intg,NSAMPLE);
@@ -105,7 +111,7 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
   d_Rect* buffer[2]; buffer[node.getLevel() % 2] = rects; buffer[(node.getLevel() + 1) % 2] = &rects[params->TOTAL_RECT];
   const d_Rect* roRects = buffer[0]; // read only rects
   d_Rect* sortedRects = buffer[1];
-
+  node.setTreeManager(params->QTM);
   //if(threadIdx.x == 0)
   //printf("block %d id: %d node: %d %d %d %d lvl: %d count %d\n", nodeId,node.getId(),(int)node.getBounds().topLeft.x,(int)node.getBounds().topLeft.y,
 		//			  (int)node.getBounds().bottomRight.x,(int)node.getBounds().bottomRight.y,node.getLevel(),node.rectCount());

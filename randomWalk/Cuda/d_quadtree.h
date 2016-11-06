@@ -89,7 +89,7 @@ public:
     __device__ d_Rect drawBiggestSquareAtPoint(point2 p);
     __device__ d_Rect createGaussianSurfFrom(d_Rect const & r, floatingPoint const factor);
     __device__ floatingPoint getAdjustedGaussianFactor(d_Rect const& r, floatingPoint const factor, D_FACTOR_TYPE type);
-    __device__ bool isSplited() const {return (this->rectCount()>0); }
+    __device__ bool isSplited() const {return (startOff != startOwnOff); }
     __device__ int getChlidren(ushort i) {return chlildren[i];};
 
 private:

@@ -8,9 +8,12 @@
 #ifndef PARAMS_H_
 #define PARAMS_H_
 
-#include "cuda_runtime.h"
+#include "d_quadtree.h"
 
+#include "cuda_runtime.h"
 #include <math.h>
+
+struct QuadTreeManager;
 
 struct Params
 {
@@ -21,7 +24,7 @@ struct Params
 	      int SHARED_MEM_SIZE;
 
  // RANDOM WALK params
-
+ QuadTreeManager* QTM;
     	const int QUAD_TREE_CHILD_NUM = 4;
     	const int MAX_LEVEL = 10;
     	const int MIN_RECT_IN_NODE = 16;
