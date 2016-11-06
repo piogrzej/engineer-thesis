@@ -58,17 +58,10 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
     floatingPoint r;
     bool isCollison;
     output[threadIdx.x]=0;
-    printf("\t%d rects count: %d \n",threadIdx.x,quadTreeMn->root->rectCount());
-    d_Rect temp;
-    p.x=10;
-    p.y=10;
-    quadTreeMn->root->checkCollisons(p,temp);
-    //printf("\t%d rects count: %d \n",threadIdx.x,quadTreeMn->rectsCount);
-    //d_Rect startRect = quadTreeMn->rects[RECT_ID];
-    //printf("\t\t%d createGuassianSquere: %f,%f %f,%f\n",threadIdx.x,startRect.topLeft.x,startRect.topLeft.y,startRect.bottomRight.x,startRect.bottomRight.y);
+    printf("\t%d rects count: %d \n",threadIdx.x,quadTreeMn->root->rectCount());//debug
     d_Rect square = quadTreeMn->root->createGaussianSurfFrom(quadTreeMn->rects[RECT_ID], 1.5);
-    printf("\t\t%d createGuassianSquere: %f,%f %f,%f\n",threadIdx.x,square.topLeft.x,square.topLeft.y,square.bottomRight.x,square.bottomRight.y);
-    /*
+    printf("\t\t%d createGuassianSquere: %f,%f %f,%f\n",threadIdx.x,square.topLeft.x,square.topLeft.y,square.bottomRight.x,square.bottomRight.y);//debug
+
     do
     {
         r = curand_uniform(&state);
@@ -82,7 +75,7 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
         isCollison = quadTreeMn->root->checkCollisons(p, rectOutput);
         ++output[threadIdx.x];
     }
-    while (false == isCollison);*/
+    while (false == isCollison);
 }
 
 void randomWalkCudaWrapper(int dimBlck,int dimThread,QuadTreeManager* quadTree, int RECT_ID,unsigned int *output,unsigned int randomSeed)

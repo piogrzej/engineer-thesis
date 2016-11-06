@@ -132,8 +132,7 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
         return true;
 
     d_QuadTree* oldNode, *node = this;
-    d_QuadTree* tmpRoot = treeManager->root;//WYPIERDZIELA SIE NA DOSTEPIE DO QUADTREEMN -> WARP ILLEGAL ADDRESS; ExceptionPC=0x1011370
-    dTreePtr* stack = new dTreePtr[tmpRoot->rectCount()+1];//UWAGA MOZE NIE DZIALAC!!!
+    dTreePtr* stack = new dTreePtr[treeManager->root->rectCount()+1];//UWAGA MOZE NIE DZIALAC!!!
     dTreePtr* stackPtr = stack;
     bool collisions[NODES_NUMBER];
     *stackPtr++ = nullptr; // koniec petli gdy tu trafimy
