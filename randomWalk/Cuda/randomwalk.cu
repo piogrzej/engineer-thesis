@@ -47,7 +47,8 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
 	//printf("\t%d \n",threadIdx.x);
     /*inicjalizacja silnika random*/
     curandState_t state;
-    curand_init(randomSeed*(threadIdx.x+1), /* the seed controls the sequence of random values that are produced */
+    unsigned int seed = randomSeed*(threadIdx.x+1)/10000;
+    curand_init(seed, /* the seed controls the sequence of random values that are produced */
             blockIdx.x, /* the sequence number is only important with multiple cores */
             0, /* the offset is how much extra we advance in the sequence for each call, can be 0 */
             &state);
