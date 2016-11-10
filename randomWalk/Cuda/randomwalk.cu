@@ -42,12 +42,12 @@ __device__ int d_getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand){
     return -1;
 }
 
-__global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned int *output, unsigned int randomSeed=time(NULL))
+__global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned int *output, unsigned long long randomSeed=time(NULL))
 {
 	//printf("\t%d \n",threadIdx.x);
     /*inicjalizacja silnika random*/
     curandState_t state;
-    unsigned int seed = randomSeed*(threadIdx.x+1)/10000;
+    unsigned long long seed = randomSeed*(threadIdx.x+1);
     curand_init(seed, /* the seed controls the sequence of random values that are produced */
             blockIdx.x, /* the sequence number is only important with multiple cores */
             0, /* the offset is how much extra we advance in the sequence for each call, can be 0 */
@@ -76,7 +76,7 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
     while (false == isCollison);
 }
 
-void randomWalkCudaWrapper(int dimBlck,int dimThread,QuadTreeManager* quadTree, int RECT_ID,unsigned int *output,unsigned int randomSeed)
+void randomWalkCudaWrapper(int dimBlck,int dimThread,QuadTreeManager* quadTree, int RECT_ID,unsigned int *output,unsigned long long randomSeed)
 {
     randomWalkCuda<<<dimBlck,dimThread>>>(quadTree,RECT_ID,output,randomSeed);
 }
