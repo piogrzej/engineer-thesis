@@ -143,10 +143,12 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
     {
         if (true==node->isSplited())
         {
+#pragma unroll
             for (int i = 0; i < NODES_NUMBER; ++i)
                 collisions[i] = this->treeManager->nodes[node->getChlidren(i)].getBounds().rectsCollision(r);//czy istnieje nodes[node->getChlidren(i)]?
         }
         else
+#pragma unroll
             for (int i = 0; i < NODES_NUMBER; ++i)
                 collisions[i] = false;
 
@@ -238,7 +240,7 @@ __device__ floatingPoint d_QuadTree::getAdjustedGaussianFactor(d_Rect const& r, 
     floatingPoint leftBound = 1., righBound = factor;
 
     d_Rect surface;
-
+#pragma unroll
     for (int i = 0; i < GAUSSIAN_ACCURACY; i++)
     {
         surface = (type == D_FACTOR_X) ?
