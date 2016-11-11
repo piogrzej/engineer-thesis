@@ -62,7 +62,7 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
   cudaDeviceSynchronize();
   checkCudaErrors(cudaGetLastError());
   Timer::getInstance().stop("Create Tree CUDA");
- // ErrorLogger::getInstance() >> "Tworzenie drzewa zakończone pomyślnie\n";
+  ErrorLogger::getInstance() >> "Tworzenie drzewa zakończone pomyślnie\n";
 
   if(doCheck)
   {
