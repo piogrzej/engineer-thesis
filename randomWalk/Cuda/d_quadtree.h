@@ -11,8 +11,8 @@
 #include "d_Rect.h"
 #include "params.h"
 #include "../green/green.h"
-#include <stdio.h>
 #include "../defines.h"
+#include <stdio.h>
 
 class d_QuadTree;
 typedef d_QuadTree* dTreePtr;

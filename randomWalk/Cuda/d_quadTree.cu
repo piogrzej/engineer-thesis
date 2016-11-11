@@ -151,9 +151,11 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
                 collisions[i] = nodes[node->getChlidren(i)].getBounds().rectsCollision(r);//czy istnieje nodes[node->getChlidren(i)]?
         }
         else
+        {
 #pragma unroll
             for (int i = 0; i < NODES_NUMBER; ++i)
                 collisions[i] = false;
+        }
 
         if (false == checkIsAnyCollision(collisions))
         {

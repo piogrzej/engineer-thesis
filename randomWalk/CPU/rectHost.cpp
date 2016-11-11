@@ -1,6 +1,6 @@
 #include "rectHost.h"
 
-#include <math.h>
+#include <math.h> //round
 
 RectHost::RectHost(point tLeft, point bRight)
 {
