@@ -117,11 +117,12 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
   {
       params->QTM->nodesCount++;
       node.setTreeManager(params->QTM);
+      node.setOwnRectOff(node.startRectOff());
   }
 
-//  if(threadIdx.x == 0)
+ // if(threadIdx.x == 0)
  // printf("block %d id: %d node: %d %d %d %d lvl: %d count %d\n", nodeId,node.getId(),(int)node.getBounds().topLeft.x,(int)node.getBounds().topLeft.y,
-		//			  (int)node.getBounds().bottomRight.x,(int)node.getBounds().bottomRight.y,node.getLevel(),node.rectCount());
+//					  (int)node.getBounds().bottomRight.x,(int)node.getBounds().bottomRight.y,node.getLevel(),node.rectCount());
 
 
   if(node.getLevel() >= params->MAX_LEVEL || rectCount <= params->MIN_RECT_IN_NODE) // dwa warunki zakonczenia albo okreslona ilosc poziomow albo satysfakcjonujace nas rozdrobnienie
@@ -137,8 +138,8 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
                    rects[it] = rects[total + it];
              }
     	}
-     // if(threadIdx.x == 0)
-    //        printf("koniec id %d    s  %d e  %d\n",node.getId(),node.startRectOff(),node.endRectOff());
+ //     if(threadIdx.x == 0)
+//           printf("koniec id %d    s  %d o: %d e:  %d\n",node.getId(),node.startRectOff(),node.ownRectOff(),node.endRectOff());
       return;
     }
 
@@ -408,7 +409,7 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
 	startNodeAtLevel[childIndex + NODE_ID::DOWN_RIGHT].setOff(rectsCountNode[2][warpId],rectsCountNode[3][warpId]);
 	node.setOwnRectOff(rectsCountNode[3][warpId]);
 
-	/* printf("at %d node: %d %d %d %d lvl: %d count %d\n", nodesAtLevel ,(int)node.getBounds().topLeft.x,(int)node.getBounds().topLeft.y,
+/*	 printf("at %d node: %d %d %d %d lvl: %d count %d\n", nodesAtLevel ,(int)node.getBounds().topLeft.x,(int)node.getBounds().topLeft.y,
 							(int)node.getBounds().bottomRight.x,(int)node.getBounds().bottomRight.y,node.getLevel(),rectCount);
 	     printf("ch lvl %d i: 0 id %d  start %d end %d\n",startNodeAtLevel[childIndex + 0].getLevel(),startNodeAtLevel[childIndex + 0].getId(),node.startRectOff(), rectsCountNode[0][warpId]);
 	     printf("ch lvl %d i: 1 id %d  start %d end %d\n",startNodeAtLevel[childIndex + 1].getLevel(),startNodeAtLevel[childIndex + 1].getId(),rectsCountNode[0][warpId], rectsCountNode[1][warpId]);
@@ -425,7 +426,7 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
 	{
 	  printf("   rect: %d %d\n",(int)sortedRects[i].topLeft.x,(int)sortedRects[i].topLeft.y);
 	}*/
-	//printf("wywolanie %d %d nodeid %d\n",node.ownRectOff(),node.endRectOff(),nodeId);
+//	printf("wywolanie %d %d nodeid %d\n",node.ownRectOff(),node.endRectOff(),nodeId);
 	createQuadTreeKernel<<<childCount,params->THREAD_PER_BLOCK ,
 	(childCount + 1) * params->THREAD_PER_BLOCK * sizeof(int)>>>(startNodeAtLevel,rects,params,nodeId);
     }
@@ -453,8 +454,8 @@ bool checkQuadTree(const d_QuadTree *nodes,int idx,d_Rect *rects, int& count)
    // printf("%d \n",node->endRectOff() - node->ownRectOff());
 
   //  printf("node: %d %d %d %d lvl: %d count %d\n", (int)node->getBounds().topLeft.x,(int)node->getBounds().topLeft.y,
-	//							  (int)node->getBounds().bottomRight.x,(int)node->getBounds().bottomRight.y,node->getLevel(),rectCount);
-    if (node->getLevel() < params.MAX_LEVEL && node->rectCount() > params.MIN_RECT_IN_NODE)
+//								  (int)node->getBounds().bottomRight.x,(int)node->getBounds().bottomRight.y,node->getLevel(),rectCount);
+    if (node->isSplited())
     {
 	int rectInNode = 0;
 	for(int i = 0; i < params.QUAD_TREE_CHILD_NUM; i++)
@@ -490,7 +491,7 @@ bool checkQuadTree(const d_QuadTree *nodes,int idx,d_Rect *rects, int& count)
             ErrorLogger::getInstance() >> "CreateTree: blad w" >>error>>"\n";
             return false;
           }
-	 // printf("it %d rect %d %d %d %d \n",it,(int)rects[it].topLeft.x,(int)rects[it].topLeft.y,
+	//  printf("it %d rect %d %d %d %d \n",it,(int)rects[it].topLeft.x,(int)rects[it].topLeft.y,
 	//			    (int)rects[it].bottomRight.x,(int)rects[it].bottomRight.y);
         if (!node->getBounds().contains(rects[it]))
           {
