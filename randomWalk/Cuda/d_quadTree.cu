@@ -45,7 +45,6 @@ __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
     {
         if (current->isSplited())
         {
-#pragma unroll
             for(ushort i=0; i<NODES_NUMBER; ++i)
             {
                 d_QuadTree node = nodes[current->getChlidren(i)];
