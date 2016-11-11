@@ -6,7 +6,7 @@
 #include "../parallelFunc.h"
 #include <iostream>
 
-#define MEASURE_MODE
+//#define MEASURE_MODE
 
 #include <chrono>
 typedef std::chrono::high_resolution_clock Clock;
@@ -44,25 +44,15 @@ int getDistanceRomTwoPoints(point p1, point p2)
     return (int)sqrt((p1.x-p2.x)*(p1.x-p2.x)+(p1.y-p2.y)*(p1.y-p2.y));
 }
 
-RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount)
+RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,REAL64_t intg[NSAMPLE + 1])
 {   
     RectHost output;
     point p;
     floatingPoint r;
     int index;
     bool isCollison;
-    REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
     UINT32_t Nsample = NSAMPLE;
     pointCount = 0;
-    
-    // EXAMPLE: Timer::getInstance().measure("rand",&rand);
-#ifdef MEASURE_MODE
-    Timer::getInstance().start("precompute");
-    precompute_unit_square_green(g, dgdx, dgdy, intg, NSAMPLE);
-    Timer::getInstance().stop("precompute");
-#else
-    precompute_unit_square_green(g,dgdx,dgdy,intg,NSAMPLE);
-#endif
 
 #ifdef _WIN32
     rng_init(3);//inicjalizacja genaeratora

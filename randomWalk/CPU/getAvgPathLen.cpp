@@ -6,7 +6,7 @@
 
 #include <math.h>
 
-#define MEASURE_MODE
+//#define MEASURE_MODE
 
 int getRectIt(Layer const& layer, RectHost const& rect)
 {
@@ -68,11 +68,22 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID)
     Timer::getInstance().start("_RandomWalk Total");
 #endif
 
+    REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
+
+    // EXAMPLE: Timer::getInstance().measure("rand",&rand);
+#ifdef MEASURE_MODE
+	Timer::getInstance().start("precompute");
+	precompute_unit_square_green(g, dgdx, dgdy, intg, NSAMPLE);
+	Timer::getInstance().stop("precompute");
+#else
+	precompute_unit_square_green(g,dgdx,dgdy,intg,NSAMPLE);
+#endif
+
     int errors = 0;
     for (int i = 0; i < ITER_NUM; i++)
     {
         int counter;
-        RectHost founded = RandomWalk(start, mainTree, counter);
+        RectHost founded = RandomWalk(start, mainTree, counter,intg);
         if(-1 == founded.topLeft.x &&
            -1 == founded.topLeft.y &&
            -1 == founded.bottomRight.x &&
