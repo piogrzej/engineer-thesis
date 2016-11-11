@@ -11,7 +11,7 @@
 #include "Parser.h"
 
 void createTree(Tree * mainTree,Layer const& layer);
-RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount);
+RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,REAL64_t intg[NSAMPLE + 1]);
 int getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand);
 void runRandomWalk(char* path, int ITER_NUM, int RECT_ID);
 void printList(std::list<RectHost> input);
