@@ -1,5 +1,5 @@
 #include "mainkernels.h"
-
+#include "helper_cuda.h"
 floatingPoint countAvg(unsigned int output[],int ITER_NUM)
 {
     floatingPoint out=0;
@@ -20,9 +20,9 @@ floatingPoint getAvgPathLenCUDA(char* path, int ITER_NUM,int RECT_ID)
     unsigned int output[ITER_NUM];
     unsigned int* d_output;
     unsigned int outputSize = ITER_NUM * sizeof(unsigned int);
-    cudaMalloc((void **)&d_output,outputSize);
+    checkCudaErrors(cudaMalloc((void **)&d_output,outputSize));
     randomWalkCudaWrapper(1,ITER_NUM,qtm,RECT_ID,d_output,time(NULL));
-    cudaMemcpy(output,d_output,outputSize,cudaMemcpyDeviceToHost);
+    checkCudaErrors(cudaMemcpy(output,d_output,outputSize,cudaMemcpyDeviceToHost));
     freeQuadTreeManager(qtm);
     cudaFree(d_output);
     cudaDeviceReset();
