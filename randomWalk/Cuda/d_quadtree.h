@@ -12,11 +12,8 @@
 #include "params.h"
 #include "../green/green.h"
 #include <stdio.h>
+#include "../defines.h"
 
-#define NODES_NUMBER 4
-#define MAX_LEVELS 20
-#define BIGGEST_SQUARE_INIT_FACTOR 0.05
-#define GAUSSIAN_ACCURACY 10
 class d_QuadTree;
 typedef d_QuadTree* dTreePtr;
 typedef unsigned short int ushort;

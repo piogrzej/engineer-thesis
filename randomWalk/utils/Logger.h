@@ -3,12 +3,6 @@
 #include <iostream>
 #include <fstream>
 
-#define LOG_FILE_NAME        "errorLog.txt"
-#define TIME_LOG_NAME        "timeLog.txt"
-#define COMPARER             "compareLog.txt"
-#define INITIAL_TEXT_CONSOLE(NAME) "Log zostal zapisany do " NAME
-#define INITIAL_TEXT_LOG "Praca Inzynierska \nRandom Walk\nAutorzy: Piotr Grzejszczyk, Marcin Knap \n\n"
-
 class AbstractLogger
 {
 public:

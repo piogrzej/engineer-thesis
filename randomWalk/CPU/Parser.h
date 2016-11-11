@@ -6,8 +6,6 @@
 #include <cstring>
 #include <iostream>
 #include <vector>
-#define MAX_LINE_SIZE 50
-#define LINE_HEADER "rect"
 
 typedef std::vector<RectHost> Layer;
 typedef std::vector<Layer> Layers;

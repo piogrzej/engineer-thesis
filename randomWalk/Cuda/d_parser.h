@@ -7,10 +7,6 @@
 
 #include "d_Rect.h"
 
-#define MAX_LINE_SIZE 50
-#define LINE_HEADER "rect"
-#define BOUNDS_MUL_FACTOR 0.01
-
 typedef std::vector<d_Rect> d_Layer;
 typedef std::vector<d_Layer> d_Layers;
 

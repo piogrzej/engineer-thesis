@@ -1,5 +1,6 @@
 #include "d_parser.h"
 #include "../utils/Logger.h"
+#include "../defines.h"
 
 #include <sstream>
 

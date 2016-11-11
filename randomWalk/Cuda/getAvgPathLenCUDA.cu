@@ -25,6 +25,7 @@ floatingPoint getAvgPathLenCUDA(char* path, int ITER_NUM,int RECT_ID)
     cudaMemcpy(output,d_output,outputSize,cudaMemcpyDeviceToHost);
     freeQuadTreeManager(qtm);
     cudaFree(d_output);
+    cudaDeviceReset();
 
     return countAvg(output,ITER_NUM);
 }

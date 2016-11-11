@@ -1,14 +1,9 @@
 #ifndef QUADTREE_H
 #define QUADTREE_H
 
-#define NUMBER_OF_NODES 4
-#define MAX_OBJECTS 4
-#define MAX_LEVELS 10
-#define GAUSS_SURFACE_MULTIPLIER 1.1
-#define BOUNDS_MUL_FACTOR 0.01 // percent of whole space size that the space will be increased
-
 #include <list>
 #include "rectHost.h"
+#include "../defines.h"
 
 /*definicja klasy QuadTree*/
 /*NODES
@@ -40,7 +35,7 @@ private:
     int             level;
     std::list<RectHost> objects;
     RectHost            bounds;
-    TreePtr         nodes[NUMBER_OF_NODES];
+    TreePtr         nodes[NODES_NUMBER];
     bool            isSplited;
     int             nodeCount;
     void            split();

@@ -6,9 +6,6 @@
 
 #include <math.h>
 
-#define NSAMPLE 200
-#define ITER 50
-
 #define MEASURE_MODE
 
 int getRectIt(Layer const& layer, RectHost const& rect)
