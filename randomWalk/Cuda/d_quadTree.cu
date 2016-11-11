@@ -38,16 +38,18 @@ __device__ bool d_QuadTree::isInBounds(d_Rect const&  r)
 
 __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
 {
-    d_QuadTree* current=this,*next=NULL;
+	d_QuadTree* nodes = treeManager->nodes;
+    d_QuadTree* current = this, *next = nullptr;
+
     while(true)
     {
-        if (true==current->isSplited())
+        if (current->isSplited())
         {
 #pragma unroll
             for(ushort i=0; i<NODES_NUMBER; ++i)
             {
-                d_QuadTree node = current->getTreeManager()->nodes[current->getChlidren(i)];
-                if (true== node.bounds.contains(p))
+                d_QuadTree node = nodes[current->getChlidren(i)];
+                if (node.bounds.contains(p))
                 {
                     next = &node;
                     break;
@@ -55,9 +57,9 @@ __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
             }
         }
         //tutaj dla kazdego sprawdzenie bisectory lines
-        if (true==current->checkCollisionObjs(p, r))//KOLIZJA
+        if (current->checkCollisionObjs(p, r))//KOLIZJA
             return true;
-        else if(true==current->isSplited() || next==NULL)
+        else if(false == current->isSplited() || next == nullptr)
             return false;
         else
             current=next;
@@ -66,12 +68,13 @@ __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
 
 __device__ bool d_QuadTree::checkCollisionObjs(point2 p, d_Rect &r)
 {
-    for(ushort i = this->startRectOff(); i < this->endRectOff(); ++i)
+	d_Rect* rects = treeManager->rects;
+    for(ushort i = startOwnOff; i < endOff; ++i)
     {
-        if(true == this->getTreeManager()->rects[i].contains(p))
+        if(true == rects[i].contains(p))
         {
-            r = d_Rect(this->getTreeManager()->rects[i].topLeft,
-                    this->getTreeManager()->rects[i].bottomRight);
+            r = d_Rect(rects[i].topLeft,
+                       rects[i].bottomRight);
             return true;
         }
     }
@@ -133,6 +136,7 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
     if (false == isInBounds(r))
         return true;
 
+    d_QuadTree*	nodes = treeManager->nodes;
     d_QuadTree* oldNode, *node = this;
     dTreePtr* stack = new dTreePtr[treeManager->nodesCount];
     dTreePtr* stackPtr = stack;
@@ -141,11 +145,11 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
 
     while (node != nullptr)
     {
-        if (true==node->isSplited())
+        if (node->isSplited())
         {
 #pragma unroll
             for (int i = 0; i < NODES_NUMBER; ++i)
-                collisions[i] = this->treeManager->nodes[node->getChlidren(i)].getBounds().rectsCollision(r);//czy istnieje nodes[node->getChlidren(i)]?
+                collisions[i] = nodes[node->getChlidren(i)].getBounds().rectsCollision(r);//czy istnieje nodes[node->getChlidren(i)]?
         }
         else
 #pragma unroll
@@ -165,12 +169,11 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
         else
         {
             oldNode = node;
-#pragma unroll
             for (int i = 0; i < NODES_NUMBER; ++i)
             {
                 if (collisions[i])
                 {
-                    node = &(this->treeManager->nodes[node->getChlidren(i)]);
+                    node = &(nodes[node->getChlidren(i)]);
                     break;
                 }
             }
@@ -178,7 +181,7 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
             oldNode->addNodesToStack(stackPtr, node, collisions);
         }
     }
-    //printf("brak kolizji\n");
+
     delete stack;
     return false;
 }
@@ -209,7 +212,7 @@ __device__ void d_QuadTree::addNodesToStack(dTreePtr* stackPtr,d_QuadTree* excep
 __device__ bool d_QuadTree::checkCollisionsWithObjs(d_Rect const& r, const d_Rect &ignore)
 {
     d_Rect* rects = treeManager->rects;
-    for (int i =this->startOff; i< this->endOff; ++i)
+    for (int i = startOwnOff; i< endOff; ++i)
             if (rects[i] != ignore && rects[i].rectsCollision(r))
                 return true;
 
@@ -240,7 +243,7 @@ __device__ floatingPoint d_QuadTree::getAdjustedGaussianFactor(d_Rect const& r, 
     floatingPoint leftBound = 1., righBound = factor;
 
     d_Rect surface;
-#pragma unroll
+
     for (int i = 0; i < GAUSSIAN_ACCURACY; i++)
     {
         surface = (type == D_FACTOR_X) ?
@@ -251,6 +254,7 @@ __device__ floatingPoint d_QuadTree::getAdjustedGaussianFactor(d_Rect const& r, 
 
         if (isFirstIt && !isCollision)
             break;
+
         if ((isCollision && !isDividing) ||
             !isCollision &&  isDividing)
         {
