@@ -131,7 +131,6 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
     if (false == isInBounds(r))
         return true;
 
-    d_QuadTree* nodes = treeManager->nodes;
     d_QuadTree* oldNode, *node = this;
     dTreePtr* stack = new dTreePtr[treeManager->nodesCount];
     dTreePtr* stackPtr = stack;
@@ -143,7 +142,7 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
         if (true==node->isSplited())
         {
             for (int i = 0; i < NODES_NUMBER; ++i)
-                collisions[i] = nodes[node->getChlidren(i)].getBounds().rectsCollision(r);
+                collisions[i] = this->treeManager->nodes[node->getChlidren(i)].getBounds().rectsCollision(r);//czy istnieje nodes[node->getChlidren(i)]?
         }
         else
             for (int i = 0; i < NODES_NUMBER; ++i)
@@ -167,7 +166,7 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
             {
                 if (collisions[i])
                 {
-                    node = &(nodes[node->getChlidren(i)]);
+                    node = &(this->treeManager->nodes[node->getChlidren(i)]);
                     break;
                 }
             }

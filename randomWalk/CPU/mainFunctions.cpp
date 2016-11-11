@@ -4,16 +4,24 @@
 #include "../utils/Timer.h"
 #include "getAvgPathLen.h"
 #include "../parallelFunc.h"
+#include <iostream>
 
 #define MEASURE_MODE
 
+#include <chrono>
+typedef std::chrono::high_resolution_clock Clock;
+
 void runRandomWalk(char* path, int ITER_NUM, int RECT_ID)
 {
+	auto t1 = Clock::now();
 	if(GPU_FLAG)
 		printf("%f\n",getAvgPathLenCUDA(path,ITER_NUM,RECT_ID));
 	else
 		printf("%f\n",getAvgPathLen(path,ITER_NUM,RECT_ID));
-
+	auto t2 = Clock::now();
+	std::cout << "Execution time: "
+	        << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count()
+	        << " ms" << std::endl;
 }
 
 void createTree(Tree * mainTree, Layer const& layer){
@@ -91,8 +99,8 @@ RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount)
 #endif
         if(false == mainTree->isInBounds(p))
         {
-            broken = SPECIAL_VALUE_BOOLEAN;
-            SPECIAL_ACTION;
+            broken = true;
+            break;
         }
 #ifdef DEBUG_MODE
         ErrorLogger::getInstance() << p.x << "," << p.y << "\n";

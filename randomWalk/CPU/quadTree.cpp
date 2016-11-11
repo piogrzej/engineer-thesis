@@ -12,7 +12,7 @@ bounds(bounds),
 nodeCount(nodeSCount),
 isSplited(false)
 {
-    for(ushort i=0; i<NUMBER_OF_NODES; ++i)
+    for(ushort i=0; i<NODES_NUMBER; ++i)
         this->nodes[i] = nullptr;
 }
 
@@ -68,7 +68,7 @@ void Tree::clear()
     if (this != nullptr)
     {
         this->objects.clear();
-        for(ushort i=0; i<NUMBER_OF_NODES; ++i){
+        for(ushort i=0; i<NODES_NUMBER; ++i){
             this->nodes[i]->clear();
             this->nodes[i] = nullptr;
         }
@@ -129,7 +129,7 @@ bool Tree::insert(RectHost const&  r)
         {
             tmp = objects.front();
             this->objects.pop_front();
-            for(ushort i=0; i<NUMBER_OF_NODES; ++i)
+            for(ushort i=0; i<NODES_NUMBER; ++i)
                 if(true==this->nodes[i]->insert(tmp)){
                     counter--;
                     break;
@@ -141,7 +141,7 @@ bool Tree::insert(RectHost const&  r)
     }
     if (this->level < MAX_LEVELS && true==isSplited)
     {
-        for(ushort i=0 ;i<NUMBER_OF_NODES; ++i)
+        for(ushort i=0 ;i<NODES_NUMBER; ++i)
             if (true==this->nodes[i]->insert(r))
                 return true;
         this->addToObjects(r);//jezeli powyzsze nie spelnione to musi byc na bisectory lines, czyli dodajemy do listy rodzica
@@ -158,18 +158,18 @@ bool Tree::checkCollisions(RectHost const& r, const RectHost &ignore)
     Tree* oldNode, *node = this;
     TreePtr* stack = new TreePtr[nodeCount + 1];
     TreePtr* stackPtr = stack;
-    bool collisions[NUMBER_OF_NODES];
+    bool collisions[NODES_NUMBER];
     *stackPtr++ = nullptr; // koniec petli gdy tu trafimy
 
     while (node != nullptr)
     {
         if (node->isSplited)
         {
-            for (int i = 0; i < NUMBER_OF_NODES; i++)
+            for (int i = 0; i < NODES_NUMBER; i++)
                 collisions[i] = node->nodes[i]->bounds.rectsCollision(r);
         }
         else
-            for (int i = 0; i < NUMBER_OF_NODES; i++)
+            for (int i = 0; i < NODES_NUMBER; i++)
                 collisions[i] = false;
 
         if (false == checkIsAnyCollision(collisions))
@@ -185,7 +185,7 @@ bool Tree::checkCollisions(RectHost const& r, const RectHost &ignore)
         {
             oldNode = node;
 
-            for (int i = 0; i < NUMBER_OF_NODES; i++)
+            for (int i = 0; i < NODES_NUMBER; i++)
             {
                 if (collisions[i])
                 {
@@ -203,7 +203,7 @@ bool Tree::checkCollisions(RectHost const& r, const RectHost &ignore)
 
 bool Tree::checkIsAnyCollision(bool collisions[])
 {
-    for (int i = 0; i < NUMBER_OF_NODES; i++)
+    for (int i = 0; i < NODES_NUMBER; i++)
     {
         if (collisions[i])
             return true;
@@ -213,7 +213,7 @@ bool Tree::checkIsAnyCollision(bool collisions[])
 
 void Tree::addNodesToStack(TreePtr* stackPtr,Tree* except, bool collisions[])
 {
-    for (int i = 0; i < NUMBER_OF_NODES; i++)
+    for (int i = 0; i < NODES_NUMBER; i++)
     {
         if (collisions[i] && except != nodes[i])
             *stackPtr++ = nodes[i];
@@ -247,7 +247,7 @@ bool Tree::checkCollisons(point p, RectHost& r)
     while(true){
         if (true==current->isSplited)
         {
-            for(ushort i=0; i<NUMBER_OF_NODES; ++i)
+            for(ushort i=0; i<NODES_NUMBER; ++i)
                 if (true==current->nodes[i]->bounds.rectContains(p))
                 {
                     next = current->nodes[i];
@@ -386,7 +386,7 @@ void Tree::printTree(std::string const& name)
 
     if (isSplited)
     {
-        for(ushort i=0; i < NUMBER_OF_NODES;++i)
+        for(ushort i=0; i < NODES_NUMBER;++i)
             this->nodes[i]->printTree("Node");
     }
 }
