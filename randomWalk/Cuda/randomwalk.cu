@@ -27,7 +27,7 @@ QuadTreeManager* randomWalkCudaInit(char* path)
     const std::vector<d_Rect>& layer = parser.getLayerAt(0); // na razie 0 warstwa hardcode
     d_Rect const& spaceSize = parser.getLayerSize(0);
     Timer::getInstance().stop("Parser");
-    QuadTreeManager* treeMng = createQuadTree(layer,spaceSize,false);
+    QuadTreeManager* treeMng = createQuadTree(layer,spaceSize,true);
 
     Timer::getInstance().printResults();
     return treeMng;

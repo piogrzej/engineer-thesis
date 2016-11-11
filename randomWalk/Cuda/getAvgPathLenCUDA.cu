@@ -30,7 +30,6 @@ floatingPoint getAvgPathLenCUDA(char* path, int ITER_NUM,int RECT_ID)
 		cudaMalloc((void **)&d_output,outputSize);
 		randomWalkCudaWrapper(1,ITER_NUM,qtm,RECT_ID,d_output,time(NULL));
 		cudaMemcpy(output,d_output,outputSize,cudaMemcpyDeviceToHost);
-		freeQuadTreeManager(qtm);
 		cudaFree(d_output);
 
 		printf("%d: %f\n",i,countAvg(output,ITER_NUM));
