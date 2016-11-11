@@ -47,6 +47,7 @@ __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
             for(ushort i=0; i<NODES_NUMBER; ++i)
             {
                 d_QuadTree node = current->getTreeManager()->nodes[current->getChlidren(i)];
+                if (true== node.bounds.contains(p))
                 {
                     next = &node;
                     break;

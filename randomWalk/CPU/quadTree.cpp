@@ -243,7 +243,7 @@ bool Tree::checkCollisionObjs(point p, RectHost& r)
 
 bool Tree::checkCollisons(point p, RectHost& r)
 {
-    Tree* current=this,*next;
+    Tree* current=this,*next=NULL;
     while(true){
         if (true==current->isSplited)
         {
@@ -257,7 +257,7 @@ bool Tree::checkCollisons(point p, RectHost& r)
         //tutaj dla kazdego sprawdzenie bisectory lines
         if (true==current->checkCollisionObjs(p, r))//KOLIZJA
             return true;
-        else if(false==current->isSplited)
+        else if(false==current->isSplited || NULL==next)
             return false;
         else
             current=next;

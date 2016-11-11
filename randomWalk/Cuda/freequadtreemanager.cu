@@ -7,6 +7,5 @@ void freeQuadTreeManager(QuadTreeManager* qtm)
     cudaFree(hostQTM.d_intg);
     cudaFree(hostQTM.nodes);
     cudaFree(hostQTM.rects);
-    cudaFree(hostQTM.root);
     cudaFree(qtm);
 }
