@@ -38,11 +38,12 @@ __device__ bool d_QuadTree::isInBounds(d_Rect const&  r)
 
 __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
 {
-    d_QuadTree* current=this,*next;
+    d_QuadTree* current=this,*next=NULL;
     while(true)
     {
         if (true==current->isSplited())
         {
+#pragma unroll
             for(ushort i=0; i<NODES_NUMBER; ++i)
             {
                 d_QuadTree node = current->getTreeManager()->nodes[current->getChlidren(i)];
@@ -55,7 +56,7 @@ __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
         //tutaj dla kazdego sprawdzenie bisectory lines
         if (true==current->checkCollisionObjs(p, r))//KOLIZJA
             return true;
-        else if(true==current->isSplited())
+        else if(true==current->isSplited() || next==NULL)
             return false;
         else
             current=next;
