@@ -115,7 +115,8 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
 
   if(threadIdx.x == 0)
   {
-      params->QTM->nodesCount++;
+	  //printf("nodeId: %d\n",nodeId);
+	  atomicAdd(&params->QTM->nodesCount,1);
       node.setTreeManager(params->QTM);
       node.setNotSplited();
       node.setOwnRectOff(node.startRectOff());
