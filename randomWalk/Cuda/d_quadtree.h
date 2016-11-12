@@ -41,7 +41,7 @@ struct QuadTreeManager
     REAL64_t* d_intg;
 
     int rectsCount;
-    int nodesCount;
+    int maxlevel;
 };
 
 //czyli od rect[startOff] do rect[endOff] sa rect dla danego noda
@@ -56,6 +56,7 @@ public:
     __host__ __device__ d_QuadTree(int idP, int start, int end)
     : id(idP), startOff(start), endOff(end), level(0),startOwnOff(0),treeManager(NULL) {}
 
+    __host__ __device__ void  setStack(dTreePtr** stck)  { stack = stck;  }
     __host__ __device__ void  setNotSplited()  { splitFlag = false;}
     __host__ __device__ void  setSplited()  { splitFlag = true;}
     __host__ __device__ int   getId() const { return id;}
@@ -81,6 +82,8 @@ public:
         float centerY =  bounds.topLeft.y + (bounds.bottomRight.y - bounds.topLeft.y) / 2;
         return make_float2(centerX,centerY);
     }
+    __device__ void createStack(int id,int size) { stack[id] = new dTreePtr[size]; } // lazy fetch
+    __device__ void freeStack(int id) { delete stack[id]; }
     __device__ bool isInBounds(point2 const& p);
     __device__ bool isInBounds(d_Rect const& r);
     __device__ bool checkCollisions(d_Rect const& r, const d_Rect &ignore = d_Rect());
@@ -101,7 +104,7 @@ private:
     bool				splitFlag;
     d_Rect              bounds;
     QuadTreeManager*    treeManager;
-
+    dTreePtr**			stack;
     __device__ bool checkCollisionObjs(point2 p, d_Rect &r);
     __device__ void addNodesToStack(dTreePtr* stackPtr,d_QuadTree* except, bool collisions[]);
     __device__ bool checkIsAnyCollision(bool collisions[]);

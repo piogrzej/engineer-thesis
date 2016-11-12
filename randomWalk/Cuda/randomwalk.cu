@@ -42,8 +42,13 @@ __device__ int d_getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand){
     return -1;
 }
 
-__global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned int *output, unsigned long long randomSeed=time(NULL))
+__global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned int *output,dTreePtr** stack, unsigned long long randomSeed=time(NULL))
 {
+    d_QuadTree* root = quadTreeMn->root;
+
+	if(threadIdx.x == 0)
+		root->setStack(stack);
+
 	//printf("\t%d \n",threadIdx.x);
     /*inicjalizacja silnika random*/
     curandState_t state;
@@ -57,8 +62,7 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
     floatingPoint r;
     bool isCollison;
     output[threadIdx.x]=0;
-    d_QuadTree* root = quadTreeMn->root;
-
+    root->createStack(threadIdx.x,quadTreeMn->maxlevel * 3 + 1); // tyle wystarczy do trawersowania po drzewie
     d_Rect start = quadTreeMn->rects[RECT_ID];
     printf("Start: %f %f %f %f\n",start.topLeft.x,start.topLeft.y,start.bottomRight.x,start.bottomRight.y);
 
@@ -79,12 +83,15 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
         ++output[threadIdx.x];
     }
     while (false == isCollison);
-
+    root->freeStack(threadIdx.x);
     printf("Found: %f %f %f %f\n",rectOutput.topLeft.x,rectOutput.topLeft.y,rectOutput.bottomRight.x,rectOutput.bottomRight.y);
 }
 
 void randomWalkCudaWrapper(int dimBlck,int dimThread,QuadTreeManager* quadTree, int RECT_ID,unsigned int *output,unsigned long long randomSeed)
 {
-    randomWalkCuda<<<dimBlck,dimThread>>>(quadTree,RECT_ID,output,randomSeed);
-    checkCudaErrors(cudaGetLastError());
+	dTreePtr** stack;
+    checkCudaErrors(cudaMalloc((void **)&stack,sizeof(dTreePtr**) * dimThread));
+    randomWalkCuda<<<dimBlck,dimThread>>>(quadTree,RECT_ID,output,stack,randomSeed);
+    cudaDeviceSynchronize();
+    checkCudaErrors(cudaFree(stack));
 }

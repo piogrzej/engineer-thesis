@@ -1,4 +1,6 @@
 #include "d_quadtree.h"
+#include <device_functions.h>
+
 
 __device__ bool d_QuadTree::isInBounds(point2 const&  p)
 {
@@ -137,8 +139,7 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
 
     d_QuadTree*	nodes = treeManager->nodes;
     d_QuadTree* oldNode, *node = this;
-    dTreePtr* stack = new dTreePtr[treeManager->nodesCount +1];
-    dTreePtr* stackPtr = stack;
+    dTreePtr* stackPtr = stack[threadIdx.x];
     bool collisions[NODES_NUMBER];
     *stackPtr++ = nullptr; // koniec petli gdy tu trafimy
     //printf("Col: %f %f %f %f\n",r.topLeft.x,r.topLeft.y,r.bottomRight.x,r.bottomRight.y);
@@ -166,7 +167,6 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
         {
             if (node->checkCollisionsWithObjs(r, ignore))
             {
-                delete stack;
                 //printf("jest kolizja\n");
                 return true;
             }
@@ -192,8 +192,6 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
             }*/
         }
     }
-
-    delete stack;
     return false;
 }
 
