@@ -11,7 +11,6 @@
 #include "d_quadtree.h"
 
 #include "cuda_runtime.h"
-#include <math.h>
 
 struct QuadTreeManager;
 

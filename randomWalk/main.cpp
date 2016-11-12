@@ -1,13 +1,12 @@
-#include "CPU/mainFunctions.h"
-#include "CPU/Parser.h"
-#include "utils/Logger.h"
-#include "utils/Timer.h"
-#include "parallelFunc.h"
-#include "utils/TestGenerator.h"
-#include "utils/PerformanceComparer.h"
-
+#include "randomwalk.h"
 
 #include <iostream>
+
+#define HELP_TEXT "\t-S\t--source\t\tsource file path\
+\n\t-O\t--object\t\tobject ID from [0-(n-1)]\
+\n\t-I\t--iterations\tnumber of iterations\
+\n\t-G\t--GPU\t\t\trun CUDA verison of random walk\
+\n\t\t--help\t\t\tdisplay this information\n"
 
 enum PARAMS
 {
@@ -26,45 +25,91 @@ inline bool checkFile(char* name)
 
 int main(int argc, char *argv[])
 {
-   Tree *mainTree;
-    char* path;
-    char inputPath[300];//E:\\programowanie\\quadtree\\sigfill_chunk_x.mag
-                        //C:\Users\Marcin\Documents\inzynierka\sigfill_chunk_x.gk
+    Tree *mainTree;
+    char* path=DEFAULT_PATH;
+    bool GPU_FLAG=true; //set this true to use GPU by default
+    int rectNum = DEFAULT_RECT;
+    int iterNum = DEFAULT_ITERATION;
+
+    if(argc>0)
+    {
+    	for(int i=0; i < argc; ++i)
+    	{
+    		std::string option(argv[i]);
+    		if(option == "--help")
+    		{
+    			printf("%s",HELP_TEXT);
+    		}
+    		else if(option == "-G" || option == "--GPU")
+    		{
+    			GPU_FLAG = true;
+    		}
+    		else if(option == "-S" || option == "--source")
+    		{
+    			if(i+1 < argc)
+    			{
+    				path = argv[i++];
+    			}
+    			else
+    			{
+    				printf("--source option requires one argument.");
+    				return -1;
+    			}
+    		}
+    		else if(option == "-I" || option == "--iterations")
+			{
+				if(i+1 < argc)
+				{
+					try
+					{
+						iterNum = std::stoi(std::string(argv[i++]));
+					}
+					catch (const std::invalid_argument& ia)
+					{
+						ErrorLogger::getInstance() >> "Invalid argument: " >> ia.what() >> '\n';
+						return 0;
+					}
+				}
+				else
+				{
+					printf("--iterations option requires one argument.");
+					return -1;
+				}
+			}
+    		else if(option == "-O" || option == "--object")
+			{
+				if(i+1 < argc)
+				{
+					try
+					{
+						rectNum = std::stoi(std::string(argv[i++]));
+					}
+					catch (const std::invalid_argument& ia)
+					{
+						ErrorLogger::getInstance() >> "Invalid argument: " >> ia.what() >> '\n';
+						return 0;
+					}
+				}
+				else
+				{
+					printf("--object option requires one argument.");
+					return -1;
+				}
+			}
+    	}
+    }
 
     if(GPU_FLAG && !initCuda(argc,argv))
     	return 0;
 
-    if (argc == PARAMS_COUNT)
-    {
-        path = argv[PARAM_PATH];
 
-        if (false == checkFile(path))
-        {
-            ErrorLogger::getInstance() >> "No such file!";
-            return 0;
-        }
+	if (false == checkFile(path))
+	{
+		ErrorLogger::getInstance() >> "No such file!";
+		return 0;
+	}
 
-        try 
-        {
-            int rectNum = std::stoi(std::string(argv[PARAM_RECT]));
-            int iterNum = std::stoi(std::string(argv[PARAM_ITERATIONS]));
-
-            runRandomWalk(path, iterNum, rectNum);
-        }
-        catch (const std::invalid_argument& ia)
-        {
-            ErrorLogger::getInstance() >> "Invalid argument: " >> ia.what() >> '\n';
-            return 0;
-        }      
-    }
-    else if (argc > 1)
-    {
-        ErrorLogger::getInstance() >> "Incorrect number of args!\n";
-    }
-    else
-    {
-    	runRandomWalk(DEFAULT_PATH, DEFAULT_ITERATION, DEFAULT_RECT);
-    }
+    runRandomWalk(path, iterNum, rectNum,GPU_FLAG);
 
     //std::vector<unsigned int> testsSizes =
     //{

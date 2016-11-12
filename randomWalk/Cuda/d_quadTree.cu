@@ -45,10 +45,8 @@ __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
     {
         if (current->isSplited())
         {
-        	//printf("s: %d o: %d e: %d \n",current->startRectOff(),current->ownRectOff(),current->endRectOff());
             for(int i=0; i < NODES_NUMBER; ++i)
             {
-            	//printf("ch %d    %d\n",i,current->getChlidren(i));
                 d_QuadTree* node = &nodes[current->getChlidren(i)];
                 if (node->bounds.contains(p))
                 {
@@ -159,7 +157,6 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
         }
         else
         {
-           // printf("Nod: %d   \n",node->getId());
 #pragma unroll
             for (int i = 0; i < NODES_NUMBER; ++i)
                 collisions[i] = false;

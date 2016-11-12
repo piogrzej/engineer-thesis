@@ -3,7 +3,7 @@
 #include "../utils/Logger.h"
 #include "../utils/Timer.h"
 #include "getAvgPathLen.h"
-#include "../parallelFunc.h"
+#include "../Cuda/mainkernels.h"
 #include <iostream>
 
 //#define MEASURE_MODE
@@ -11,7 +11,7 @@
 #include <chrono>
 typedef std::chrono::high_resolution_clock Clock;
 
-void runRandomWalk(char* path, int ITER_NUM, int RECT_ID)
+void runRandomWalk(char* path, int ITER_NUM, int RECT_ID, bool GPU_FLAG)
 {
 	auto t1 = Clock::now();
 	if(GPU_FLAG)
@@ -37,11 +37,6 @@ int getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand){
         if (intg[i] <= rand && intg[i + 1] > rand) 
             return i;
     }
-}
-
-int getDistanceRomTwoPoints(point p1, point p2)
-{
-    return (int)sqrt((p1.x-p2.x)*(p1.x-p2.x)+(p1.y-p2.y)*(p1.y-p2.y));
 }
 
 RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,REAL64_t intg[NSAMPLE + 1])

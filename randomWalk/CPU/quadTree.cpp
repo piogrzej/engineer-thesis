@@ -1,10 +1,5 @@
 #include "quadTree.h"
 #include "../utils/Logger.h"
-#include "mainFunctions.h"
-
-#include <string>
-
-using namespace std;
 
 Tree::Tree(int level, int nodeSCount, RectHost const& bounds) :
 level(level), 
@@ -307,7 +302,7 @@ RectHost Tree::drawBiggestSquareAtPoint(point p)
         }
     }
      if (p.x == output.bottomRight.x)
-         cout << "erroe" << endl;
+         printf("drawBiggestSquareAtPoint: error\n");
     return output;
 }
 

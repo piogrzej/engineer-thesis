@@ -9,11 +9,12 @@
 #include "quadTree.h"
 #include "../green/green.h"
 #include "Parser.h"
+#include "../Cuda/mainkernels.h"
 
 void createTree(Tree * mainTree,Layer const& layer);
 RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,REAL64_t intg[NSAMPLE + 1]);
 int getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand);
-void runRandomWalk(char* path, int ITER_NUM, int RECT_ID);
+void runRandomWalk(char* path, int ITER_NUM, int RECT_ID, bool GPU_FLAG);
 void printList(std::list<RectHost> input);
 
 #endif

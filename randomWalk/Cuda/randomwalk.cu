@@ -34,7 +34,6 @@ QuadTreeManager* randomWalkCudaInit(char* path)
 }
 
 __device__ int d_getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand){
-#pragma unroll
     for (int i = 0; i <= NSAMPLE; ++i)
     {
         if (intg[i] <= rand && intg[i + 1] > rand)
@@ -48,8 +47,7 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
 	//printf("\t%d \n",threadIdx.x);
     /*inicjalizacja silnika random*/
     curandState_t state;
-    unsigned long long seed = randomSeed*(threadIdx.x+1);
-    curand_init(seed, /* the seed controls the sequence of random values that are produced */
+    curand_init(randomSeed*(threadIdx.x+1), /* the seed controls the sequence of random values that are produced */
             blockIdx.x, /* the sequence number is only important with multiple cores */
             0, /* the offset is how much extra we advance in the sequence for each call, can be 0 */
             &state);
