@@ -3,19 +3,11 @@
 #include <iostream>
 
 #define HELP_TEXT "\t-S\t--source\t\tsource file path\
+\n\t-M\t--measure\t\tturns on measure mode\
 \n\t-O\t--object\t\tobject ID from [0-(n-1)]\
-\n\t-I\t--iterations\tnumber of iterations\
+\n\t-I\t--iterations\t\tnumber of iterations\
 \n\t-G\t--GPU\t\t\trun CUDA verison of random walk\
 \n\t\t--help\t\t\tdisplay this information\n"
-
-enum PARAMS
-{
-    PARAM_NAME,
-    PARAM_PATH,
-    PARAM_RECT,
-    PARAM_ITERATIONS,
-    PARAMS_COUNT
-};
 
 inline bool checkFile(char* name) 
 {
@@ -26,10 +18,11 @@ inline bool checkFile(char* name)
 int main(int argc, char *argv[])
 {
     Tree *mainTree;
-    char* path=DEFAULT_PATH;
-    bool GPU_FLAG=true; //set this true to use GPU by default
-    int rectNum = DEFAULT_RECT;
-    int iterNum = DEFAULT_ITERATION;
+    char* path=		DEFAULT_PATH;
+    bool GPU_FLAG=	DEFAULT_GPU_USAGE;
+    int rectNum = 	DEFAULT_RECT;
+    int iterNum = 	DEFAULT_ITERATION;
+    bool measure =	DEFAULT_MEASURE;
 
     if(argc>0)
     {
@@ -39,6 +32,8 @@ int main(int argc, char *argv[])
     		if(option == "--help")
     		{
     			printf("%s",HELP_TEXT);
+    			if(argc==2)
+    				return 0;
     		}
     		else if(option == "-G" || option == "--GPU")
     		{
@@ -96,6 +91,10 @@ int main(int argc, char *argv[])
 					return -1;
 				}
 			}
+    		else if(option == "-M" || option == "--measure")
+    		{
+    			measure = true;
+    		}
     	}
     }
 
@@ -109,7 +108,7 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
-    runRandomWalk(path, iterNum, rectNum,GPU_FLAG);
+    runRandomWalk(path, iterNum, rectNum,GPU_FLAG,measure);
 
     //std::vector<unsigned int> testsSizes =
     //{

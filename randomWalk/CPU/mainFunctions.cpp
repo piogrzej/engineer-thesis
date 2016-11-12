@@ -11,13 +11,13 @@
 #include <chrono>
 typedef std::chrono::high_resolution_clock Clock;
 
-void runRandomWalk(char* path, int ITER_NUM, int RECT_ID, bool GPU_FLAG)
+void runRandomWalk(char* path, int ITER_NUM, int RECT_ID, bool GPU_FLAG,bool measure)
 {
 	auto t1 = Clock::now();
 	if(GPU_FLAG)
-		printf("%f\n",getAvgPathLenCUDA(path,ITER_NUM,RECT_ID));
+		printf("%f\n",getAvgPathLenCUDA(path,ITER_NUM,RECT_ID,measure));
 	else
-		printf("%f\n",getAvgPathLen(path,ITER_NUM,RECT_ID));
+		printf("%f\n",getAvgPathLen(path,ITER_NUM,RECT_ID,measure));
 	auto t2 = Clock::now();
 	std::cout << "Execution time: "
 	        << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count()
@@ -58,30 +58,30 @@ RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,REAL64_t 
     ErrorLogger::getInstance() << "Starting: " << R << "\n";
 
 
-#ifdef MEASURE_MODE
+/*#ifdef MEASURE_MODE
     RectHost square = Timer::getInstance().measure("createGaussianSurface", *mainTree, 
                                                &Tree::creatGaussianSurfFrom, R, floatingPoint(1.5));
-#else
+#else*/
     RectHost square = mainTree->creatGaussianSurfFrom(R, 1.5);
-#endif
+//#endif
 
     bool broken = false;
 
     do
     {
-#ifdef MEASURE_MODE
+/*#ifdef MEASURE_MODE
         r = ((floatingPoint)Timer::getInstance().measure("myrand",myrand))/(floatingPoint)(MY_RAND_MAX);
-#else
+#else*/
         r = myrand() / (floatingPoint)(MY_RAND_MAX);
-#endif
+//#endif
         
 
-#ifdef MEASURE_MODE
+/*#ifdef MEASURE_MODE
         p = Timer::getInstance().measure("getPointFromNindex",square,
                                          &RectHost::getPointFromNindex, getIndex(intg, r), NSAMPLE);
-#else
+#else*/
         p = square.getPointFromNindex(getIndex(intg, r), NSAMPLE);
-#endif
+//#endif
         if(false == mainTree->isInBounds(p))
         {
             broken = true;
@@ -91,15 +91,15 @@ RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,REAL64_t 
         ErrorLogger::getInstance() << p.x << "," << p.y << "\n";
 #endif
 
-#ifdef MEASURE_MODE
+/*#ifdef MEASURE_MODE
         square = Timer::getInstance().measure("drawBiggestSquareAtPoint", *mainTree, 
                                               &Tree::drawBiggestSquareAtPoint, point(p));
         isCollison = Timer::getInstance().measure("checkCollisons", *mainTree, 
                                               &Tree::checkCollisons, point(p), output);
-#else
+#else*/
         square = mainTree->drawBiggestSquareAtPoint(p);
         isCollison = mainTree->checkCollisons(p, output);
-#endif
+//#endif
 
         pointCount++;
     }

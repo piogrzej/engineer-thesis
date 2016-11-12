@@ -21,19 +21,21 @@ int getRectIt(Layer const& layer, RectHost const& rect)
     return -1;
 }
 
-floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID)
+floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure)
 {
-#ifdef MEASURE_MODE
-    TimeLogger::getInstance() << "RandomWalk \nTest: " << path << "\n";
-    Timer::getInstance().start("TotalTime");
-    Timer::getInstance().start("_Parser");
-    Parser parser("<<");
-    parser.parse(path);
-    Timer::getInstance().stop("_Parser");
-#else
-    Parser parser("<<");
-    parser.parse(path);
-#endif
+	Parser parser("<<");
+	if(true==measure)
+	{
+		TimeLogger::getInstance() << "RandomWalk \nTest: " << path << "\n";
+		Timer::getInstance().start("TotalTime");
+		Timer::getInstance().start("_Parser");
+		parser.parse(path);
+		Timer::getInstance().stop("_Parser");
+	}
+	else
+	{
+		parser.parse(path);
+	}
     ErrorLogger::getInstance() >> "RandomWalk \nTest: " >> path >> "\n";
 
     const Layer layer = parser.getLayerAt(0);
@@ -52,32 +54,40 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID)
     int* foundedRectCount = new int[layer.size()+1];
     std::fill(foundedRectCount, foundedRectCount + layer.size()+1, 0);
 
-#ifdef MEASURE_MODE
-    Timer::getInstance().start("Create Tree");
-    createTree(mainTree, layer);
-    Timer::getInstance().stop("Create Tree");
-#else
-    createTree(mainTree, layer);
-#endif
+    if(true==measure)
+	{
+		Timer::getInstance().start("Create Tree");
+		createTree(mainTree, layer);
+		Timer::getInstance().stop("Create Tree");
+	}
+    else
+    {
+    	createTree(mainTree, layer);
+    }
 
 #ifdef DEBUG_MODE 
     mainTree->printTree("ROOT");
 #endif
 
-#ifdef MEASURE_MODE
-    Timer::getInstance().start("_RandomWalk Total");
-#endif
-
     REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
 
     // EXAMPLE: Timer::getInstance().measure("rand",&rand);
-#ifdef MEASURE_MODE
-	Timer::getInstance().start("precompute");
-	precompute_unit_square_green(g, dgdx, dgdy, intg, NSAMPLE);
-	Timer::getInstance().stop("precompute");
-#else
-	precompute_unit_square_green(g,dgdx,dgdy,intg,NSAMPLE);
-#endif
+    if(true==measure)
+	{
+		Timer::getInstance().start("precompute");
+		precompute_unit_square_green(g, dgdx, dgdy, intg, NSAMPLE);
+		Timer::getInstance().stop("precompute");
+	}
+    else
+    {
+    	precompute_unit_square_green(g,dgdx,dgdy,intg,NSAMPLE);
+    }
+
+
+    if(true==measure)
+	{
+    	Timer::getInstance().start("_RandomWalk Total");
+	}
 
     int errors = 0;
     for (int i = 0; i < ITER_NUM; i++)
@@ -97,13 +107,13 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID)
             else
                 errors++;
         }
-        //printf("%d\n",counter);
         sumPointCount += counter;
     }
 
-#ifdef MEASURE_MODE
-    Timer::getInstance().stop("_RandomWalk Total");
-#endif
+    if(true==measure)
+    {
+    	Timer::getInstance().stop("_RandomWalk Total");
+    }
 
     int i = 0;
 
@@ -118,10 +128,11 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID)
     ErrorLogger::getInstance() << "Avarage number of path's points: " << sumPointCount / ITER_NUM << "\n";
 #endif
 
-#ifdef MEASURE_MODE
-    Timer::getInstance().stop("TotalTime");
-    Timer::getInstance().printResults();
-#endif
+    if(true==measure)
+    {
+    	Timer::getInstance().stop("TotalTime");
+    	Timer::getInstance().printResults();
+    }
     delete foundedRectCount;
     ErrorLogger::getInstance() >> "END OF TEST!\n";
     return (floatingPoint)sumPointCount / (floatingPoint)ITER_NUM;
