@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     		{
     			if(i+1 < argc)
     			{
-    				path = argv[i++];
+    				path = argv[++i];
     			}
     			else
     			{
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 				{
 					try
 					{
-						iterNum = std::stoi(std::string(argv[i++]));
+						iterNum = std::stoi(std::string(argv[++i]));
 					}
 					catch (const std::invalid_argument& ia)
 					{
@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
 				{
 					try
 					{
-						rectNum = std::stoi(std::string(argv[i++]));
+						rectNum = std::stoi(std::string(argv[++i]));
 					}
 					catch (const std::invalid_argument& ia)
 					{
