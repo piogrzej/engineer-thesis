@@ -36,7 +36,7 @@ public:
     void printResults();
 
 private:
-    int                  EXEC_PER_TEST = 2;
+    int                  EXEC_PER_TEST = 10;
     std::vector<std::string>
                          testsPaths;
     ResultsMap           resultsGpu;

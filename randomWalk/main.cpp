@@ -17,7 +17,7 @@ inline bool checkFile(char* name)
 
 int main(int argc, char *argv[])
 {
-    Tree *mainTree;
+/*    Tree *mainTree;
     char* path=		DEFAULT_PATH;
     bool GPU_FLAG=	DEFAULT_GPU_USAGE;
     int rectNum = 	DEFAULT_RECT;
@@ -109,14 +109,16 @@ int main(int argc, char *argv[])
 	}
 
     runRandomWalk(path, iterNum, rectNum,GPU_FLAG,measure);
+*/
+    std::vector<unsigned int> testsSizes;
+/*
+    for(int i = 1000; i <= 100000; i += 2000)
+    	testsSizes.push_back(i);*/
+ /*   for(int i = 100000; i < 1000000; i += 100000)
+      	testsSizes.push_back(i);*/
 
-    //std::vector<unsigned int> testsSizes =
-    //{
-       //100,1000,10000,100000,200000,300000,/*400000,500000,
-       //600000,700000,800000,900000,1000000*/
-    //};
 
-    /*TestGenerator gen(testsSizes);
+    TestGenerator gen(testsSizes);
     if(gen.generate())
     {
         ErrorLogger::getInstance() >> "Stworzono testy pomyslnie\n";
@@ -128,7 +130,7 @@ int main(int argc, char *argv[])
     {
         ErrorLogger::getInstance() >> "Błąd przy tworzeniu testów\n";
 
-    }*/
+    }
 
     return 0;
 }
