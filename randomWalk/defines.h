@@ -26,9 +26,4 @@
 #define DEFAULT_GPU_USAGE 1					//CZY DOMYSLNIE UZYWAMY GPU
 #define DEFAULT_MEASURE 0					//CZY DOMYSLNIE UZYWAMY MAUSRE MODE
 
-/* TODO: PORZADEK W TYCH DEFINACH
- * getAvgPathLen.cpp:9 #define MEASURE_MODE
- * mianFunctions.cpp:9 #define MEASURE_MODE
- */
-
 #endif //DEFINES_H

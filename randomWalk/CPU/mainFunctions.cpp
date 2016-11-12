@@ -6,8 +6,6 @@
 #include "../Cuda/mainkernels.h"
 #include <iostream>
 
-//#define MEASURE_MODE
-
 #include <chrono>
 typedef std::chrono::high_resolution_clock Clock;
 
@@ -56,32 +54,14 @@ RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,REAL64_t 
 #endif
 
     ErrorLogger::getInstance() << "Starting: " << R << "\n";
-
-
-/*#ifdef MEASURE_MODE
-    RectHost square = Timer::getInstance().measure("createGaussianSurface", *mainTree, 
-                                               &Tree::creatGaussianSurfFrom, R, floatingPoint(1.5));
-#else*/
     RectHost square = mainTree->creatGaussianSurfFrom(R, 1.5);
-//#endif
 
     bool broken = false;
 
     do
     {
-/*#ifdef MEASURE_MODE
-        r = ((floatingPoint)Timer::getInstance().measure("myrand",myrand))/(floatingPoint)(MY_RAND_MAX);
-#else*/
         r = myrand() / (floatingPoint)(MY_RAND_MAX);
-//#endif
-        
-
-/*#ifdef MEASURE_MODE
-        p = Timer::getInstance().measure("getPointFromNindex",square,
-                                         &RectHost::getPointFromNindex, getIndex(intg, r), NSAMPLE);
-#else*/
         p = square.getPointFromNindex(getIndex(intg, r), NSAMPLE);
-//#endif
         if(false == mainTree->isInBounds(p))
         {
             broken = true;
@@ -91,15 +71,8 @@ RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,REAL64_t 
         ErrorLogger::getInstance() << p.x << "," << p.y << "\n";
 #endif
 
-/*#ifdef MEASURE_MODE
-        square = Timer::getInstance().measure("drawBiggestSquareAtPoint", *mainTree, 
-                                              &Tree::drawBiggestSquareAtPoint, point(p));
-        isCollison = Timer::getInstance().measure("checkCollisons", *mainTree, 
-                                              &Tree::checkCollisons, point(p), output);
-#else*/
         square = mainTree->drawBiggestSquareAtPoint(p);
         isCollison = mainTree->checkCollisons(p, output);
-//#endif
 
         pointCount++;
     }
