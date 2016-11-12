@@ -59,22 +59,30 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
     floatingPoint r;
     bool isCollison;
     output[threadIdx.x]=0;
-    d_Rect square = quadTreeMn->root->createGaussianSurfFrom(quadTreeMn->rects[RECT_ID], 1.5);
+    d_QuadTree* root = quadTreeMn->root;
+
+    d_Rect start = quadTreeMn->rects[RECT_ID];
+    printf("Start: %f %f %f %f\n",start.topLeft.x,start.topLeft.y,start.bottomRight.x,start.bottomRight.y);
+
+    d_Rect square = root->createGaussianSurfFrom(quadTreeMn->rects[RECT_ID], 1.5);
 
     do
     {
         r = curand_uniform(&state);
         p = square.getPointFromNindex(d_getIndex(quadTreeMn->d_intg, r), NSAMPLE);
-        if(false == quadTreeMn->root->isInBounds(p))
+        if(false == root->isInBounds(p))
         {
             //broken = true;
             break;
         }
-        square = quadTreeMn->root->drawBiggestSquareAtPoint(p);
-        isCollison = quadTreeMn->root->checkCollisons(p, rectOutput);
+       // printf("square: %f %f %f %f\n",square.topLeft.x,square.topLeft.y,square.bottomRight.x,square.bottomRight.y);
+        square = root->drawBiggestSquareAtPoint(p);
+        isCollison = root->checkCollisons(p, rectOutput);
         ++output[threadIdx.x];
     }
     while (false == isCollison);
+
+    printf("Found: %f %f %f %f\n",rectOutput.topLeft.x,rectOutput.topLeft.y,rectOutput.bottomRight.x,rectOutput.bottomRight.y);
 }
 
 void randomWalkCudaWrapper(int dimBlck,int dimThread,QuadTreeManager* quadTree, int RECT_ID,unsigned int *output,unsigned long long randomSeed)

@@ -19,6 +19,7 @@ floatingPoint getAvgPathLenCUDA(char* path, int ITER_NUM,int RECT_ID)
     //alokowanie pamieci na wynik
     unsigned int output[ITER_NUM];
     unsigned int* d_output;
+    printf("Test: %s watkow: %d\n", path,ITER_NUM);
     unsigned int outputSize = ITER_NUM * sizeof(unsigned int);
     checkCudaErrors(cudaMalloc((void **)&d_output,outputSize));
     randomWalkCudaWrapper(1,ITER_NUM,qtm,RECT_ID,d_output,time(NULL));

@@ -45,13 +45,14 @@ __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
     {
         if (current->isSplited())
         {
-#pragma unroll
-            for(ushort i=0; i<NODES_NUMBER; ++i)
+        	//printf("s: %d o: %d e: %d \n",current->startRectOff(),current->ownRectOff(),current->endRectOff());
+            for(int i=0; i < NODES_NUMBER; ++i)
             {
-                d_QuadTree node = nodes[current->getChlidren(i)];
-                if (node.bounds.contains(p))
+            	//printf("ch %d    %d\n",i,current->getChlidren(i));
+                d_QuadTree* node = &nodes[current->getChlidren(i)];
+                if (node->bounds.contains(p))
                 {
-                    next = &node;
+                    next = node;
                     break;
                 }
             }
@@ -69,7 +70,7 @@ __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
 __device__ bool d_QuadTree::checkCollisionObjs(point2 p, d_Rect &r)
 {
 	d_Rect* rects = treeManager->rects;
-    for(ushort i = startOwnOff; i < endOff; ++i)
+    for(int i = startOwnOff; i < endOff; ++i)
     {
         if(true == rects[i].contains(p))
         {
@@ -138,23 +139,31 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
 
     d_QuadTree*	nodes = treeManager->nodes;
     d_QuadTree* oldNode, *node = this;
-    dTreePtr* stack = new dTreePtr[treeManager->nodesCount];
+    dTreePtr* stack = new dTreePtr[treeManager->nodesCount +1];
     dTreePtr* stackPtr = stack;
     bool collisions[NODES_NUMBER];
     *stackPtr++ = nullptr; // koniec petli gdy tu trafimy
+    //printf("Col: %f %f %f %f\n",r.topLeft.x,r.topLeft.y,r.bottomRight.x,r.bottomRight.y);
 
     while (node != nullptr)
     {
+
         if (node->isSplited())
         {
+          //  printf("Nod: %d      ch %d %d %d %d\n",node->getId(),node->chlildren[0],node->chlildren[1],node->chlildren[2],node->chlildren[3]);
 #pragma unroll
             for (int i = 0; i < NODES_NUMBER; ++i)
+            {
                 collisions[i] = nodes[node->getChlidren(i)].getBounds().rectsCollision(r);//czy istnieje nodes[node->getChlidren(i)]?
+            }
         }
         else
+        {
+           // printf("Nod: %d   \n",node->getId());
 #pragma unroll
             for (int i = 0; i < NODES_NUMBER; ++i)
                 collisions[i] = false;
+        }
 
         if (false == checkIsAnyCollision(collisions))
         {
@@ -178,7 +187,12 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
                 }
             }
 
-            oldNode->addNodesToStack(stackPtr, node, collisions);
+           oldNode->addNodesToStack(stackPtr, node, collisions);
+          /*  for (int i = 0; i < NODES_NUMBER; ++i)
+            {
+                if (collisions[i] && node != &(nodes[oldNode->getChlidren(i)]))
+                    *stackPtr++ = &(nodes[oldNode->getChlidren(i)]);
+            }*/
         }
     }
 
@@ -200,12 +214,17 @@ __device__ bool d_QuadTree::checkIsAnyCollision(bool collisions[])//FUNKCJA DO P
 __device__ void d_QuadTree::addNodesToStack(dTreePtr* stackPtr,d_QuadTree* except, bool collisions[])//FUNKCJA DO PRZEPISANIA OD NOWA
 {
     d_QuadTree* nodes = treeManager->nodes;
-
-#pragma unroll
+ //   printf("s %d o %d e %d\n",startOff,startOwnOff,endOff);
+//#pragma unroll
     for (int i = 0; i < NODES_NUMBER; ++i)
     {
+    //    printf("ch %d     %d",i,chlildren[i]);
+    //	int child = chlildren[i];
+   // 	child += 1;
         if (collisions[i] && except != &(nodes[chlildren[i]]))
             *stackPtr++ = &(nodes[chlildren[i]]);
+  //      printf("				TTTTTTTTT\n");
+
     }
 }
 
@@ -256,7 +275,7 @@ __device__ floatingPoint d_QuadTree::getAdjustedGaussianFactor(d_Rect const& r, 
             break;
 
         if ((isCollision && !isDividing) ||
-            !isCollision &&  isDividing)
+            (!isCollision &&  isDividing))
         {
             isDividing = !isDividing;
         }
