@@ -18,18 +18,36 @@
 
 // TO DO: brzydkie kopiowanie, trzeba poprawić
 // TO DO: wykrywanie ilosci threadow, thread/block, (cudaDeviceProp)
-QuadTreeManager* randomWalkCudaInit(char* path)
+QuadTreeManager* randomWalkCudaInit(char* path,bool measure)
 {
-    ErrorLogger::getInstance() >> "Random Walk CUDA\n";
-    Timer::getInstance().start("Parser");
-    d_Parser parser("<<");
-    parser.parse(path);
+	d_Parser parser("<<");
+	if(true==measure)
+	{
+		TimeLogger::getInstance() << "RandomWalkCuda \nTest: " << path << "\n";
+		Timer::getInstance().start("TotalTime");
+		Timer::getInstance().start("deviceParser");
+		parser.parse(path);
+		Timer::getInstance().stop("deviceParser");
+	}
+	else
+	{
+		parser.parse(path);
+	}
     const std::vector<d_Rect>& layer = parser.getLayerAt(0); // na razie 0 warstwa hardcode
     d_Rect const& spaceSize = parser.getLayerSize(0);
-    Timer::getInstance().stop("Parser");
-    QuadTreeManager* treeMng = createQuadTree(layer,spaceSize,true);
 
-    Timer::getInstance().printResults();
+    QuadTreeManager* treeMng;
+    if(true==measure)
+	{
+		Timer::getInstance().start("Create Tree");
+		treeMng = createQuadTree(layer,spaceSize,true);
+		Timer::getInstance().stop("Create Tree");
+	}
+    else
+    {
+    	treeMng = createQuadTree(layer,spaceSize,true);
+    }
+
     return treeMng;
 }
 

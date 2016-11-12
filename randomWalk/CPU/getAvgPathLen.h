@@ -2,6 +2,6 @@
 #define GETAVGPATHLEN_H
 #include "rectHost.h"
 
-floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID);
+floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID,bool measure);
 
 #endif //GETAVGPATHLEN_H
