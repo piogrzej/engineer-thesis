@@ -82,7 +82,6 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
     output[threadIdx.x]=0;
     root->createStack(threadIdx.x,quadTreeMn->maxlevel * 3 + 1); // tyle wystarczy do trawersowania po drzewie
     d_Rect start = quadTreeMn->rects[RECT_ID];
-    printf("Start: %f %f %f %f\n",start.topLeft.x,start.topLeft.y,start.bottomRight.x,start.bottomRight.y);
 
     d_Rect square = root->createGaussianSurfFrom(quadTreeMn->rects[RECT_ID], 1.5);
 
@@ -102,7 +101,6 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
     }
     while (false == isCollison);
     root->freeStack(threadIdx.x);
-    printf("Found: %f %f %f %f\n",rectOutput.topLeft.x,rectOutput.topLeft.y,rectOutput.bottomRight.x,rectOutput.bottomRight.y);
 }
 
 void randomWalkCudaWrapper(int dimBlck,int dimThread,QuadTreeManager* quadTree, int RECT_ID,unsigned int *output,unsigned long long randomSeed)

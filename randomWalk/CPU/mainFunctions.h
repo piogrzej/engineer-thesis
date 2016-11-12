@@ -16,5 +16,6 @@ RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,REAL64_t 
 int getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand);
 void runRandomWalk(char* path, int ITER_NUM, int RECT_ID, bool GPU_FLAG,bool measure);
 void printList(std::list<RectHost> input);
+int getRectIt(Layer const& layer, RectHost const& rect);
 
 #endif

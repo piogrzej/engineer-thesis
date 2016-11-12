@@ -22,9 +22,9 @@ std::map<Device,std::string> deviceMap =
 
 std::map<Component,std::string> componentMap =
 {
-        { Component::CreateTree, "CreateTree" }
+        { Component::CreateTree, "CreateTree" },
+        { Component::RandomWalk, "RandomWalk" }
 };
-
 
 PerformanceComparer::PerformanceComparer(std::vector<std::string> const& testsPaths)
 : testsPaths(testsPaths), parser("<<"), dParser("<<")
@@ -50,6 +50,19 @@ void PerformanceComparer::compareCreatingTree()
         runCreateTreeGpu(i,gpuName);
     }
 
+}
+
+void PerformanceComparer::compareRandomWalk(int numOfIteratins)
+{
+	initInfo(Component::RandomWalk);
+	std::string cpuName = deviceMap[Device::Cpu] + componentMap[Component::RandomWalk];
+	std::string gpuName = deviceMap[Device::Gpu] + componentMap[Component::RandomWalk];
+	for(int i=0; i<this->testsPaths.size(); ++i)
+	{
+		runRandomWalkCpu(i,cpuName,10,numOfIteratins);
+		runRandomWalkGpu(i,gpuName,10,numOfIteratins);
+
+	}
 }
 
 void PerformanceComparer::runCreateTreeCpu(int layerId,std::string const& name)
@@ -83,6 +96,77 @@ void PerformanceComparer::runCreateTreeGpu(int layerId,std::string const& name)
           cudaDeviceReset();
           // tu nie iwem o co chodzi ...
       }
+    resultsGpu[layer.size()] = Timer::getInstance().getAvgResult(name);
+    Timer::getInstance().clear();
+}
+
+void PerformanceComparer::runRandomWalkCpu(int layerId,std::string const& name, int RECT_ID, int ITER_NUM)
+{
+    Layer const& layer = parser.getLayerAt(layerId);
+    ErrorLogger::getInstance() >> name >> "  " >> layer.size()>> "\n";
+    for(int i = 0; i < EXEC_PER_TEST; i++)
+    {
+        Tree* root = new Tree(0,layer.size(),parser.getLayerSize(layerId));
+        createTree(root,layer);
+        RectHost start = layer.at(RECT_ID);
+        REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
+        precompute_unit_square_green(g,dgdx,dgdy,intg,NSAMPLE);
+        int pos, sumPointCount = 0;
+        int* foundedRectCount = new int[layer.size()+1];
+		std::fill(foundedRectCount, foundedRectCount + layer.size()+1, 0);
+        Timer::getInstance().start(name);
+        int errors = 0;
+		for (int i = 0; i < ITER_NUM; i++)
+		{
+			int counter;
+			RectHost founded = RandomWalk(start, root, counter,intg);
+			if(-1 == founded.topLeft.x &&
+			   -1 == founded.topLeft.y &&
+			   -1 == founded.bottomRight.x &&
+			   -1 == founded.bottomRight.y)
+				++foundedRectCount[layer.size()];
+			else
+			{
+				pos = getRectIt(layer,founded);
+				if (pos != -1)
+					foundedRectCount[pos] += 1;
+				else
+					errors++;
+			}
+			sumPointCount += counter;
+		}
+        Timer::getInstance().stop(name);
+        root->clear();
+        delete root;
+    }
+    resultsCpu[layer.size()] = Timer::getInstance().getAvgResult(name);
+    Timer::getInstance().clear();
+}
+
+void PerformanceComparer::runRandomWalkGpu(int layerId,std::string const& name, int RECT_ID, int ITER_NUM)
+{
+    d_Layer const& layer = dParser.getLayerAt(layerId);
+    ErrorLogger::getInstance() >> name >> "  " >> layer.size() >> "\n";
+    QuadTreeManager* qtm;
+    for(int i = 0; i < EXEC_PER_TEST; i++)
+	{
+		  cudaDeviceSynchronize();
+		  qtm = createQuadTree(layer,dParser.getLayerSize(layerId),false);
+		  Timer::getInstance().start(name);
+		  unsigned int output[ITER_NUM];
+		  unsigned int* d_output;
+		  unsigned int outputSize = ITER_NUM * sizeof(unsigned int);
+		  cudaMalloc((void **)&d_output,outputSize);
+		  randomWalkCudaWrapper(1,ITER_NUM,qtm,RECT_ID,d_output,time(NULL));
+		  cudaMemcpy(output,d_output,outputSize,cudaMemcpyDeviceToHost);
+		  freeQuadTreeManager(qtm);
+		  cudaFree(d_output);
+		  cudaDeviceReset();
+		  countAvg(output,ITER_NUM);
+		  Timer::getInstance().stop(name);
+		  cudaDeviceReset();
+		  // tu nie iwem o co chodzi ...
+	}
     resultsGpu[layer.size()] = Timer::getInstance().getAvgResult(name);
     Timer::getInstance().clear();
 }

@@ -21,7 +21,7 @@ floatingPoint getAvgPathLenCUDA(char* path, int ITER_NUM,int RECT_ID,bool measur
     //alokowanie pamieci na wynik
     unsigned int output[ITER_NUM];
     unsigned int* d_output;
-    printf("Test: %s watkow: %d\n", path,ITER_NUM);
+    //printf("Test: %s watkow: %d\n", path,ITER_NUM);
     unsigned int outputSize = ITER_NUM * sizeof(unsigned int);
     if(true==measure)
 	{

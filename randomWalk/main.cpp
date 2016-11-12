@@ -111,19 +111,19 @@ int main(int argc, char *argv[])
     runRandomWalk(path, iterNum, rectNum,GPU_FLAG,measure);
 */
     std::vector<unsigned int> testsSizes;
-/*
-    for(int i = 1000; i <= 100000; i += 2000)
-    	testsSizes.push_back(i);*/
+
+    for(int i = 5000; i <= 100000; i += 5000)
+    	testsSizes.push_back(i);
  /*   for(int i = 100000; i < 1000000; i += 100000)
       	testsSizes.push_back(i);*/
-
+    //testsSizes.push_back(99000);
 
     TestGenerator gen(testsSizes);
     if(gen.generate())
     {
         ErrorLogger::getInstance() >> "Stworzono testy pomyslnie\n";
         PerformanceComparer comparer(gen.getTestsPaths());
-        comparer.compareCreatingTree();
+        comparer.compareRandomWalk(1000);
         comparer.printResults();
     }
     else

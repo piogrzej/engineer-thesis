@@ -10,5 +10,6 @@ QuadTreeManager* randomWalkCudaInit(char* path,bool measure);
 bool initCuda(int argc, char **argv);
 void freeQuadTreeManager(QuadTreeManager* qtm);
 floatingPoint getAvgPathLenCUDA(char* path, int ITER_NUM,int RECT_ID,bool measure);
+floatingPoint countAvg(unsigned int output[],int ITER_NUM);
 
 #endif

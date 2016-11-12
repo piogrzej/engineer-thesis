@@ -23,6 +23,7 @@ enum class Device
 enum class Component
 {
     CreateTree,
+    RandomWalk,
     //....
 };
 typedef std::map<int,long long>    ResultsMap;
@@ -33,6 +34,7 @@ public:
     PerformanceComparer(std::vector<std::string> const& testsPaths);
 
     void compareCreatingTree();
+    void compareRandomWalk(int numOfIteratins);
     void printResults();
 
 private:
@@ -48,6 +50,8 @@ private:
 
     void runCreateTreeCpu(int layerId,std::string const& name);
     void runCreateTreeGpu(int layerId,std::string const& name);
+    void runRandomWalkCpu(int layerId,std::string const& name, int RECT_ID, int ITER_NUM);
+	void runRandomWalkGpu(int layerId,std::string const& name, int RECT_ID, int ITER_NUM);
 };
 
 #endif /* PERFORMANCECOMPARER_H_ */
