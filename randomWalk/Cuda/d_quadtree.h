@@ -51,11 +51,13 @@ class d_QuadTree
 {
 public:
     __host__ __device__ d_QuadTree()
-    : id(0), startOff(0), endOff(0),level(0), startOwnOff(0),treeManager(NULL){}
+    : id(0), startOff(0), endOff(0),level(0), startOwnOff(0),treeManager(NULL),splitFlag(false){}
 
     __host__ __device__ d_QuadTree(int idP, int start, int end)
     : id(idP), startOff(start), endOff(end), level(0),startOwnOff(0),treeManager(NULL) {}
 
+    __host__ __device__ void  setNotSplited()  { splitFlag = false;}
+    __host__ __device__ void  setSplited()  { splitFlag = true;}
     __host__ __device__ int   getId() const { return id;}
     __host__ __device__ void  setId(int newId)  { id = newId;}
     __host__ __device__ int   getLevel() const { return level;}
@@ -72,7 +74,7 @@ public:
     __host__ __device__ QuadTreeManager* getTreeManager() const{ return treeManager; };
     __host__ __device__ void setTreeManager(QuadTreeManager* manager) {this->treeManager = manager;};
     __host__ __device__ int   child(const int index) const { return chlildren[index]; }
-    __host__ __device__ bool isSplited() const {return (startOff != startOwnOff); }
+    __host__ __device__ bool isSplited() const {return splitFlag; }
     __host__ __device__ __forceinline__ float2 getCenter()
     {
         float centerX =  bounds.topLeft.x + (bounds.bottomRight.x - bounds.topLeft.x) / 2;
@@ -96,6 +98,7 @@ private:
     int                 startOwnOff; // tu zaczynaja sie recty tego obiektu
     int	                endOff;
     int	                level;
+    bool				splitFlag;
     d_Rect              bounds;
     QuadTreeManager*    treeManager;
 

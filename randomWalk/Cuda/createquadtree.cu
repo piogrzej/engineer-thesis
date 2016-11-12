@@ -117,6 +117,7 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
   {
       params->QTM->nodesCount++;
       node.setTreeManager(params->QTM);
+      node.setNotSplited();
       node.setOwnRectOff(node.startRectOff());
   }
 
@@ -138,8 +139,8 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
                    rects[it] = rects[total + it];
              }
     	}
- //     if(threadIdx.x == 0)
-//           printf("koniec id %d    s  %d o: %d e:  %d\n",node.getId(),node.startRectOff(),node.ownRectOff(),node.endRectOff());
+      //if(threadIdx.x == 0)
+     //      printf("koniec id %d    s  %d o: %d e:  %d split %d\n",node.getId(),node.startRectOff(),node.ownRectOff(),node.endRectOff(),node.isSplited());
       return;
     }
 
@@ -345,8 +346,8 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
       if(laneId == 0)
 	rectsCountNode[4][warpId] += __popc(threadsResult);
     }
-   // if(threadIdx.x == 0)
-	//printf("center %d %d \n",(int)center.x,(int)center.y);
+  //  if(threadIdx.x == 0)
+//	printf("center %d %d \n",(int)center.x,(int)center.y);
 
  /* __syncthreads();
   if(threadIdx.x == 0)
@@ -377,14 +378,14 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
 
   if(threadIdx.x == (params->THREAD_PER_BLOCK - 1)) //ostatni watek, bo w ostatnim warpie mamy finalne dane, jeden blokowy watek ustala dzieci, ich indeksy, itd.
     {
-        int nodesSumAtLevel = params->nodesCountAtLevel(node.getLevel() + 1);
-        int nodesAtLevel = powf(NODES_NUMBER,node.getLevel());
+    int nodesSumAtLevel = params->nodesCountAtLevel(node.getLevel() + 1);
+    int nodesAtLevel = powf(NODES_NUMBER,node.getLevel());
 
 	d_QuadTree* startNodeAtLevel = &nodes[nodesAtLevel]; // wskaznik na pierwszy wezel w tym poziomie
 	int childCount = params->QUAD_TREE_CHILD_NUM;
 	int childIndex = childCount * nodeId;
 	const d_Rect& bounds = node.getBounds();
-
+	node.setSplited();
 	//printf("SET CHLD:id: %d sumAtLvl %d ndsAtlvl %d childId %d\n",node.getId(),nodesSumAtLevel,nodesAtLevel,childIndex);
 
 #pragma unroll
@@ -392,7 +393,6 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
 	  {
 	    startNodeAtLevel[childIndex + i].setId(nodesSumAtLevel + childIndex + i);
 	    startNodeAtLevel[childIndex + i].setLevel(node.getLevel() + 1);
-	    startNodeAtLevel[childIndex + i].setOwnRectOff(rectsCountNode[i][warpId]);
 	    node.setChild(nodesSumAtLevel + childIndex + i,i);
 	  }
 
@@ -451,16 +451,16 @@ bool checkQuadTree(const d_QuadTree *nodes,int idx,d_Rect *rects, int& count)
     const d_QuadTree* node = &nodes[idx];
     int rectCount = node->rectCount();
 
-   // printf("%d \n",node->endRectOff() - node->ownRectOff());
+  //  printf("count  %d  splited:%d\n",node->endRectOff() - node->ownRectOff(),node->isSplited());
 
-  //  printf("node: %d %d %d %d lvl: %d count %d\n", (int)node->getBounds().topLeft.x,(int)node->getBounds().topLeft.y,
-//								  (int)node->getBounds().bottomRight.x,(int)node->getBounds().bottomRight.y,node->getLevel(),rectCount);
+   // printf("node: %d %d %d %d lvl: %d count %d\n", (int)node->getBounds().topLeft.x,(int)node->getBounds().topLeft.y,
+	//							  (int)node->getBounds().bottomRight.x,(int)node->getBounds().bottomRight.y,node->getLevel(),rectCount);
     if (node->isSplited())
     {
 	int rectInNode = 0;
 	for(int i = 0; i < params.QUAD_TREE_CHILD_NUM; i++)
 	  {
-	  //  printf("%d \n",node->child(i));
+	//    printf("%d \n",node->child(i));
 	    rectInNode += nodes[node->child(i)].rectCount();
 	  }
 	rectInNode += node->endRectOff() - node->ownRectOff();
