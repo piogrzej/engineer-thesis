@@ -7,7 +7,11 @@
 \n\t-O\t--object\t\tobject ID from [0-(n-1)]\
 \n\t-I\t--iterations\t\tnumber of iterations\
 \n\t-G\t--GPU\t\t\trun CUDA verison of random walk\
-\n\t\t--help\t\t\tdisplay this information\n"
+\n\t\t--help\t\t\tdisplay this information\
+\n\tYou don't need to specify any options\
+\n\tin that case program will be lunched\
+\n\twith default options, wich are:\
+\n\t-G -I 1000 -O 10 -S ../tests/test\n"
 
 inline bool checkFile(char* name) 
 {
@@ -17,7 +21,7 @@ inline bool checkFile(char* name)
 
 int main(int argc, char *argv[])
 {
-/*    Tree *mainTree;
+    Tree *mainTree;
     char* path=		DEFAULT_PATH;
     bool GPU_FLAG=	DEFAULT_GPU_USAGE;
     int rectNum = 	DEFAULT_RECT;
@@ -109,16 +113,16 @@ int main(int argc, char *argv[])
 	}
 
     runRandomWalk(path, iterNum, rectNum,GPU_FLAG,measure);
-*/
-    std::vector<unsigned int> testsSizes;
+
+/*    std::vector<unsigned int> testsSizes;
 
     for(int i = 5000; i <= 100000; i += 5000)
-    	testsSizes.push_back(i);
+    	testsSizes.push_back(i);*/
  /*   for(int i = 100000; i < 1000000; i += 100000)
       	testsSizes.push_back(i);*/
     //testsSizes.push_back(99000);
 
-    TestGenerator gen(testsSizes);
+/*    TestGenerator gen(testsSizes);
     if(gen.generate())
     {
         ErrorLogger::getInstance() >> "Stworzono testy pomyslnie\n";
@@ -130,7 +134,7 @@ int main(int argc, char *argv[])
     {
         ErrorLogger::getInstance() >> "Błąd przy tworzeniu testów\n";
 
-    }
+    }*/
 
     return 0;
 }
