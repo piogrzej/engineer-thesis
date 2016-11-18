@@ -151,7 +151,7 @@ bool Tree::checkCollisions(RectHost const& r, const RectHost &ignore)
         return true;
 
     Tree* oldNode, *node = this;
-    TreePtr* stack = new TreePtr[nodeCount + 1];
+    TreePtr* stack = new TreePtr[MAX_LEVELS * 3];
     TreePtr* stackPtr = stack;
     bool collisions[NODES_NUMBER];
     *stackPtr++ = nullptr; // koniec petli gdy tu trafimy
