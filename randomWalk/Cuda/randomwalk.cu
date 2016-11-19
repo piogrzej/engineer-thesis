@@ -107,7 +107,8 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,
         }
         square = root->drawBiggestSquareAtPoint(p);
         isCollison = root->checkCollisons(p, rectOutput);
-        ++output[threadIdx.x];
+        if(!(rectOutput==quadTreeMn->rects[RECT_ID]))
+        	output[threadIdx.x]=1;;
     }
     while (false == isCollison);
     //if(threadIdx.x == 827)

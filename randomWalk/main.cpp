@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
     Tree *mainTree;
     char* path=		DEFAULT_PATH;
     bool GPU_FLAG=	DEFAULT_GPU_USAGE;
+    GPU_FLAG = false;
     int rectNum = 	DEFAULT_RECT;
     int iterNum = 	DEFAULT_ITERATION;
     bool measure =	DEFAULT_MEASURE;
