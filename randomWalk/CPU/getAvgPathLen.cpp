@@ -71,7 +71,7 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure)
 #endif
 
     RandGen gen;
-    gen.initDeterm();
+    gen.initDeterm(ITER_NUM);
     gen.initPtrs();
     if(true==measure)
 	{
@@ -82,7 +82,7 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure)
     for (int i = 0; i < ITER_NUM; i++)
     {
         int counter;
-        RectHost founded = RandomWalk(start, mainTree, counter,gen);
+        RectHost founded = RandomWalk(start, mainTree, counter,gen,i);
         if(-1 == founded.topLeft.x &&
            -1 == founded.topLeft.y &&
            -1 == founded.bottomRight.x &&
@@ -97,7 +97,7 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure)
                 errors++;
         }
         sumPointCount += counter;
-        std::cout << founded << std::endl;
+       // std::cout << founded << std::endl;
     }
 
     if(true==measure)

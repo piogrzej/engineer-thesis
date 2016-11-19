@@ -30,7 +30,7 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
 	  printf("rect: %d %d\n",(int)layer[i].topLeft.x,(int)layer[i].topLeft.y);
     }*/
   size_t rectTableSize = sizeof(d_Rect)*layer.size();
-  size_t nodesTableSize= sizeof(d_QuadTree) * params.MAX_NUM_NODES;
+  size_t nodesTableSize= sizeof(d_QuadTree) * params.MAX_NUM_NODES * 4;
   d_QuadTree root(0,0,params.TOTAL_RECT);
   nodes = (d_QuadTree*)malloc(nodesTableSize);
   root.setBounds(spaceSize);
@@ -62,7 +62,7 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
   cudaDeviceSynchronize();
   checkCudaErrors(cudaGetLastError());
   Timer::getInstance().stop("Create Tree CUDA");
-  ErrorLogger::getInstance() >> "Tworzenie drzewa zakończone pomyślnie\n";
+ // ErrorLogger::getInstance() >> "Tworzenie drzewa zakończone pomyślnie\n";
 
   if(doCheck)
   {

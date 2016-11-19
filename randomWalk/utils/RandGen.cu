@@ -65,7 +65,7 @@ __host__ void RandGen::initDeterm(int thC)
     for(int i = 0; i < GEN_COUNT; i++)
        {
            randFile >> index;
-           indecies[i++] = index;
+           indecies[i] = index;
        }
 
 }

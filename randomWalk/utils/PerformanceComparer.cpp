@@ -60,8 +60,8 @@ void PerformanceComparer::compareRandomWalk(int numOfIteratins)
 	std::string gpuName = deviceMap[Device::Gpu] + componentMap[Component::RandomWalk];
 	for(int i=0; i<this->testsPaths.size(); ++i)
 	{
-		runRandomWalkCpu(i,cpuName,10,numOfIteratins);
-		runRandomWalkGpu(i,gpuName,10,numOfIteratins);
+		//runRandomWalkCpu(i,cpuName,parser.getLayerAt(i).size()/2,numOfIteratins);
+		runRandomWalkGpu(i,gpuName,parser.getLayerAt(i).size()/2,numOfIteratins);
 
 	}
 }
@@ -104,7 +104,7 @@ void PerformanceComparer::runCreateTreeGpu(int layerId,std::string const& name)
 void PerformanceComparer::runRandomWalkCpu(int layerId,std::string const& name, int RECT_ID, int ITER_NUM)
 {
     RandGen gen;
-    gen.initDeterm();
+    gen.initDeterm( ITER_NUM);
     gen.initPtrs();
     Layer const& layer = parser.getLayerAt(layerId);
     ErrorLogger::getInstance() >> name >> "  " >> layer.size()>> "\n";
@@ -123,7 +123,7 @@ void PerformanceComparer::runRandomWalkCpu(int layerId,std::string const& name, 
 		for (int i = 0; i < ITER_NUM; i++)
 		{
 			int counter;
-			RectHost founded = RandomWalk(start, root, counter,gen);
+			RectHost founded = RandomWalk(start, root, counter,gen,i);
 			if(-1 == founded.topLeft.x &&
 			   -1 == founded.topLeft.y &&
 			   -1 == founded.bottomRight.x &&
@@ -171,7 +171,6 @@ void PerformanceComparer::runRandomWalkGpu(int layerId,std::string const& name, 
 		  cudaDeviceReset();
 		  countAvg(output,ITER_NUM);
 		  Timer::getInstance().stop(name);
-		  gen.resetIndex();
 	}
     resultsGpu[layer.size()] = Timer::getInstance().getAvgResult(name);
     Timer::getInstance().clear();
