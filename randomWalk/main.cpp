@@ -1,17 +1,10 @@
 #include "randomwalk.h"
+#include "defines.h"
+#include "utils/RandGen.h"
 
 #include <iostream>
 
-#define HELP_TEXT "\t-S\t--source\t\tsource file path\
-\n\t-M\t--measure\t\tturns on measure mode\
-\n\t-O\t--object\t\tobject ID from [0-(n-1)]\
-\n\t-I\t--iterations\t\tnumber of iterations\
-\n\t-G\t--GPU\t\t\trun CUDA verison of random walk\
-\n\t\t--help\t\t\tdisplay this information\
-\n\tYou don't need to specify any options\
-\n\tin that case program will be lunched\
-\n\twith default options, wich are:\
-\n\t-G -I 1000 -O 10 -S ../tests/test\n"
+
 
 inline bool checkFile(char* name) 
 {
@@ -114,12 +107,15 @@ int main(int argc, char *argv[])
 
     runRandomWalk(path, iterNum, rectNum,GPU_FLAG,measure);
 
+    return 0;
+}
+
 /*    std::vector<unsigned int> testsSizes;
 
     for(int i = 5000; i <= 100000; i += 5000)
-    	testsSizes.push_back(i);*/
+        testsSizes.push_back(i);*/
  /*   for(int i = 100000; i < 1000000; i += 100000)
-      	testsSizes.push_back(i);*/
+        testsSizes.push_back(i);*/
     //testsSizes.push_back(99000);
 
 /*    TestGenerator gen(testsSizes);
@@ -135,6 +131,3 @@ int main(int argc, char *argv[])
         ErrorLogger::getInstance() >> "Błąd przy tworzeniu testów\n";
 
     }*/
-
-    return 0;
-}

@@ -10,9 +10,10 @@
 #include "../green/green.h"
 #include "Parser.h"
 #include "../Cuda/mainkernels.h"
+#include "../utils/RandGen.h"
 
 void createTree(Tree * mainTree,Layer const& layer);
-RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,REAL64_t intg[NSAMPLE + 1]);
+RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,RandGen& gen);
 int getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand);
 void runRandomWalk(char* path, int ITER_NUM, int RECT_ID, bool GPU_FLAG,bool measure);
 void printList(std::list<RectHost> input);

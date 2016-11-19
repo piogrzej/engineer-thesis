@@ -20,11 +20,15 @@ public:
 	__host__ __device__ ~d_Rect(){};
 	__device__ __forceinline__ bool contains(point2 p) const
 	{
-	    if ((p.x >= topLeft.x) && (p.y >= topLeft.y) && (p.x <= bottomRight.x) && (p.y <= bottomRight.y))
+	    if ((p.x >= topLeft.x) &&
+	        (p.y >= topLeft.y) &&
+	        (p.x <= bottomRight.x) &&
+	        (p.y <= bottomRight.y))
 	    {
 	        return true;
 	    }
-	    else return false;
+	    else
+	        return false;
 	};
 	__host__ __device__ __forceinline__ bool contains(d_Rect const& rect)
 	{

@@ -63,7 +63,7 @@ __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
         else if(false == current->isSplited() || next == nullptr)
             return false;
         else
-            current=next;
+            current = next;
     }
 }
 
@@ -72,7 +72,7 @@ __device__ bool d_QuadTree::checkCollisionObjs(point2 p, d_Rect &r)
 	d_Rect* rects = treeManager->rects;
     for(int i = startOwnOff; i < endOff; ++i)
     {
-        if(true == rects[i].contains(p))
+        if(rects[i].contains(p))
         {
             r = d_Rect(rects[i].topLeft,
                        rects[i].bottomRight);
@@ -185,11 +185,6 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
             }
 
            oldNode->addNodesToStack(stackPtr, node, collisions);
-          /*  for (int i = 0; i < NODES_NUMBER; ++i)
-            {
-                if (collisions[i] && node != &(nodes[oldNode->getChlidren(i)]))
-                    *stackPtr++ = &(nodes[oldNode->getChlidren(i)]);
-            }*/
         }
     }
     return false;
@@ -209,17 +204,10 @@ __device__ bool d_QuadTree::checkIsAnyCollision(bool collisions[])//FUNKCJA DO P
 __device__ void d_QuadTree::addNodesToStack(dTreePtr* stackPtr,d_QuadTree* except, bool collisions[])//FUNKCJA DO PRZEPISANIA OD NOWA
 {
     d_QuadTree* nodes = treeManager->nodes;
- //   printf("s %d o %d e %d\n",startOff,startOwnOff,endOff);
-//#pragma unroll
     for (int i = 0; i < NODES_NUMBER; ++i)
     {
-    //    printf("ch %d     %d",i,chlildren[i]);
-    //	int child = chlildren[i];
-   // 	child += 1;
         if (collisions[i] && except != &(nodes[chlildren[i]]))
             *stackPtr++ = &(nodes[chlildren[i]]);
-  //      printf("				TTTTTTTTT\n");
-
     }
 }
 
@@ -237,7 +225,6 @@ __device__ d_Rect d_QuadTree::createGaussianSurfFrom(d_Rect const & r, floatingP
 {
     if (factor < 1)
     {
-        //ErrorLogger::getInstance() >> "CreateGaussian: Nieprawidlowy wspolczynnik!\n";
         printf("CreateGaussian: Nieprawidlowy wspolczynnik!\n");
         return r;
     }

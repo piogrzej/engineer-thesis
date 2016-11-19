@@ -3,6 +3,7 @@
 #include "../green/green.h"
 #include "mainFunctions.h"
 #include "../utils/Timer.h"
+#include "../utils/RandGen.h"
 
 #include <math.h>
 
@@ -69,21 +70,9 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure)
     mainTree->printTree("ROOT");
 #endif
 
-    REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
-
-    // EXAMPLE: Timer::getInstance().measure("rand",&rand);
-    if(true==measure)
-	{
-		Timer::getInstance().start("precompute");
-		precompute_unit_square_green(g, dgdx, dgdy, intg, NSAMPLE);
-		Timer::getInstance().stop("precompute");
-	}
-    else
-    {
-    	precompute_unit_square_green(g,dgdx,dgdy,intg,NSAMPLE);
-    }
-
-
+    RandGen gen;
+    gen.initDeterm();
+    gen.initPtrs();
     if(true==measure)
 	{
     	Timer::getInstance().start("_RandomWalk Total");
@@ -93,7 +82,7 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure)
     for (int i = 0; i < ITER_NUM; i++)
     {
         int counter;
-        RectHost founded = RandomWalk(start, mainTree, counter,intg);
+        RectHost founded = RandomWalk(start, mainTree, counter,gen);
         if(-1 == founded.topLeft.x &&
            -1 == founded.topLeft.y &&
            -1 == founded.bottomRight.x &&
@@ -108,6 +97,7 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure)
                 errors++;
         }
         sumPointCount += counter;
+        std::cout << founded << std::endl;
     }
 
     if(true==measure)

@@ -23,6 +23,7 @@ enum class Device
 enum class Component
 {
     CreateTree,
+    RandomWalk
     //....
 };
 typedef std::map<int,long long>    ResultsMap;

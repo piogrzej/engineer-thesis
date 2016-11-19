@@ -51,16 +51,25 @@ bool RectHost::rectsCollision(RectHost const& r2) const
 	return false;
 }
 
-bool RectHost::rectContains(point p) const {
-    if ((p.x >= topLeft.x) && (p.y >= topLeft.y) && (p.x <= bottomRight.x) && (p.y <= bottomRight.y)) 
+bool RectHost::rectContains(point p) const
+{
+    if ((p.x >= topLeft.x) &&
+        (p.y >= topLeft.y) &&
+        (p.x <= bottomRight.x) &&
+        (p.y <= bottomRight.y))
         return true;
-    else return false;
+    else
+        return false;
 }
 
 bool RectHost::rectContains(RectHost r) const {
-    if(r.topLeft.x>this->topLeft.x && r.topLeft.y>this->topLeft.y && r.bottomRight.x<this->bottomRight.x && r.bottomRight.y<this->bottomRight.y)
+    if(r.topLeft.x > topLeft.x &&
+       r.topLeft.y > topLeft.y &&
+       r.bottomRight.x < bottomRight.x &&
+       r.bottomRight.y < bottomRight.y)
         return true;
-    else return false;
+    else
+        return false;
 }
 
 RectHost  RectHost::createGaussianSurfaceX(floatingPoint factorX) const

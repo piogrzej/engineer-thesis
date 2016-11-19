@@ -1,6 +1,7 @@
 #include "mainkernels.h"
 #include "helper_cuda.h"
 #include "../utils/Timer.h"
+#include "../utils/RandGen.h"
 
 floatingPoint countAvg(unsigned int output[],int ITER_NUM)
 {
@@ -16,6 +17,8 @@ floatingPoint countAvg(unsigned int output[],int ITER_NUM)
 
 floatingPoint getAvgPathLenCUDA(char* path, int ITER_NUM,int RECT_ID,bool measure)
 {
+    RandGen gen;
+    gen.initDeterm(ITER_NUM);
     //tworzenie drzewa
     QuadTreeManager* qtm = randomWalkCudaInit(path,measure);
     //alokowanie pamieci na wynik
@@ -28,7 +31,7 @@ floatingPoint getAvgPathLenCUDA(char* path, int ITER_NUM,int RECT_ID,bool measur
 		Timer::getInstance().start("_RandomWalkCuda Total");
 	}
     checkCudaErrors(cudaMalloc((void **)&d_output,outputSize));
-    randomWalkCudaWrapper(1,ITER_NUM,qtm,RECT_ID,d_output,time(NULL));
+    randomWalkCudaWrapper(ITER_NUM,qtm,RECT_ID,d_output,gen,time(NULL));
     checkCudaErrors(cudaMemcpy(output,d_output,outputSize,cudaMemcpyDeviceToHost));
     if(true==measure)
 	{
