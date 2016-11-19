@@ -37,7 +37,7 @@ int getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand){
     }
 }
 
-RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,RandGen& gen)
+RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,RandGen& gen,int iterId)
 {   
     RectHost output;
     point p;
@@ -61,7 +61,7 @@ RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,RandGen& 
     do
     {
         r = myrand() / (floatingPoint)(MY_RAND_MAX); // zostawiamy żeby czas dzialania sie nie zmienil
-        p = square.getPointFromNindex(gen.nextIndex(), NSAMPLE);
+        p = square.getPointFromNindex(gen.nextIndex(iterId), NSAMPLE);
         if(false == mainTree->isInBounds(p))
         {
             broken = true;
