@@ -19,7 +19,7 @@
 
 // TO DO: brzydkie kopiowanie, trzeba poprawić
 // TO DO: wykrywanie ilosci threadow, thread/block, (cudaDeviceProp)
-QuadTreeManager* randomWalkCudaInit(char* path,bool measure)
+QuadTreeManager* randomWalkCudaInit(char* path,bool measure,int RECT_ID)
 {
 	d_Parser parser("<<");
 	if(true==measure)
@@ -41,12 +41,12 @@ QuadTreeManager* randomWalkCudaInit(char* path,bool measure)
     if(true==measure)
 	{
 		Timer::getInstance().start("Create Tree");
-		treeMng = createQuadTree(layer,spaceSize,true);
+		treeMng = createQuadTree(layer,spaceSize,RECT_ID,true);
 		Timer::getInstance().stop("Create Tree");
 	}
     else
     {
-    	treeMng = createQuadTree(layer,spaceSize,true);
+    	treeMng = createQuadTree(layer,spaceSize,RECT_ID,true);
     }
 
     return treeMng;
@@ -61,7 +61,7 @@ __device__ int d_getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand){
     return -1;
 }
 
-__global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,
+__global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,
         unsigned int *output,dTreePtr** stack,
         RandGen* gen,
         unsigned long long randomSeed=time(NULL))
@@ -88,10 +88,10 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,
     bool isCollison;
     output[threadIdx.x]=0;
     root->createStack(threadIdx.x,quadTreeMn->maxlevel * 3 + 1); // tyle wystarczy do trawersowania po drzewie
-    d_Rect start = quadTreeMn->rects[8];
-    if(threadIdx.x == 0)
-         printf("square: %f %f %f %f\n",start.topLeft.x,start.topLeft.y,
-                                        start.bottomRight.x,start.bottomRight.y);
+    d_Rect start = quadTreeMn->start;
+   // if(threadIdx.x == 0)
+    //     printf("square: %f %f %f %f\n",start.topLeft.x,start.topLeft.y,
+              //                          start.bottomRight.x,start.bottomRight.y);
 
     d_Rect square = root->createGaussianSurfFrom(start, 1.5);
 
@@ -119,7 +119,7 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,
         gen->freeStck();
 }
 
-void randomWalkCudaWrapper(int dimThread,QuadTreeManager* quadTree, int RECT_ID,unsigned int *output,RandGen &gen,unsigned long long randomSeed)
+void randomWalkCudaWrapper(int dimThread,QuadTreeManager* quadTree, unsigned int *output,RandGen &gen,unsigned long long randomSeed)
 {
 	dTreePtr** stack;
 	RandGen* dGen;
@@ -127,7 +127,7 @@ void randomWalkCudaWrapper(int dimThread,QuadTreeManager* quadTree, int RECT_ID,
     checkCudaErrors(cudaMalloc((void **)&stack,sizeof(dTreePtr**) * dimThread));
     checkCudaErrors(cudaMemcpy(dGen,&gen,sizeof(RandGen),cudaMemcpyHostToDevice));
 
-    randomWalkCuda<<<1,dimThread>>>(quadTree,RECT_ID,output,stack,dGen,randomSeed);
+    randomWalkCuda<<<1,dimThread>>>(quadTree,output,stack,dGen,randomSeed);
     cudaDeviceSynchronize();
     checkCudaErrors(cudaFree(stack));
 }

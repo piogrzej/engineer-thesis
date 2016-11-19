@@ -60,8 +60,8 @@ void PerformanceComparer::compareRandomWalk(int numOfIteratins)
 	std::string gpuName = deviceMap[Device::Gpu] + componentMap[Component::RandomWalk];
 	for(int i=0; i<this->testsPaths.size(); ++i)
 	{
-		//runRandomWalkCpu(i,cpuName,parser.getLayerAt(i).size()/2,numOfIteratins);
-		runRandomWalkGpu(i,gpuName,parser.getLayerAt(i).size()/2,numOfIteratins);
+		runRandomWalkCpu(i,cpuName,parser.getLayerAt(i).size()/2,numOfIteratins);
+		//runRandomWalkGpu(i,gpuName,parser.getLayerAt(i).size()/2,numOfIteratins);
 
 	}
 }
@@ -92,7 +92,7 @@ void PerformanceComparer::runCreateTreeGpu(int layerId,std::string const& name)
       {
           cudaDeviceSynchronize();
           Timer::getInstance().start(name);
-          qtm = createQuadTree(layer,dParser.getLayerSize(layerId),false);
+          qtm = createQuadTree(layer,dParser.getLayerSize(layerId),0,false);
           Timer::getInstance().stop(name);
           cudaDeviceReset();
           // tu nie iwem o co chodzi ...
@@ -158,13 +158,13 @@ void PerformanceComparer::runRandomWalkGpu(int layerId,std::string const& name, 
     for(int i = 0; i < EXEC_PER_TEST; i++)
 	{
 		  cudaDeviceSynchronize();
-		  qtm = createQuadTree(layer,dParser.getLayerSize(layerId),false);
+		  qtm = createQuadTree(layer,dParser.getLayerSize(layerId),RECT_ID,false);
 		  Timer::getInstance().start(name);
 		  unsigned int output[ITER_NUM];
 		  unsigned int* d_output;
 		  unsigned int outputSize = ITER_NUM * sizeof(unsigned int);
 		  cudaMalloc((void **)&d_output,outputSize);
-		  randomWalkCudaWrapper(ITER_NUM,qtm,RECT_ID,d_output,gen,time(NULL));
+		  randomWalkCudaWrapper(ITER_NUM,qtm,d_output,gen,time(NULL));
 		  cudaMemcpy(output,d_output,outputSize,cudaMemcpyDeviceToHost);
 		  freeQuadTreeManager(qtm);
 		  cudaFree(d_output);

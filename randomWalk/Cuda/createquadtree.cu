@@ -13,7 +13,7 @@
 __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* d_params,int lvlMul);
 bool checkQuadTree(const d_QuadTree *nodes,int idx,d_Rect *rects, int& count);
 
-QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& spaceSize,bool doCheck)
+QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& spaceSize,int RECT_ID,bool doCheck)
 {
   Params params;
   params.WARP_SIZE = 32;
@@ -43,6 +43,7 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
   QuadTreeManager* qm = new QuadTreeManager();
   qm->rectsCount = layer.size();
   qm->maxlevel = params.MAX_LEVEL;
+  qm->start = layer[RECT_ID];
   QuadTreeManager* d_tree;
   cudaMalloc((void**)&d_tree,sizeof(QuadTreeManager));
   cudaMemcpy(d_tree,qm,sizeof(QuadTreeManager),cudaMemcpyHostToDevice);

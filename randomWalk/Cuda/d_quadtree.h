@@ -35,6 +35,7 @@ enum D_FACTOR_TYPE
 
 struct QuadTreeManager
 {
+	d_Rect	start;
     d_Rect* rects;
     d_QuadTree* nodes;
     d_QuadTree* root;
