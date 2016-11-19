@@ -8,7 +8,7 @@
 
 #define GEN_COUNT 10000
 
-typedef float  floatingPoint;
+typedef double  floatingPoint;
 
 class RandGen
 {
