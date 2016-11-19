@@ -51,6 +51,7 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure)
     RectHost start = layer.at(RECT_ID);
     Tree *mainTree = new Tree(0, layer.size(), spaceSize);//start Tree
     int pos, sumPointCount = 0;
+    unsigned long int sumOfOtherRects=0;
     int* foundedRectCount = new int[layer.size()+1];
     std::fill(foundedRectCount, foundedRectCount + layer.size()+1, 0);
 
@@ -106,6 +107,9 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure)
                 foundedRectCount[pos] += 1;
             else
                 errors++;
+            if(start!=founded)
+            	++sumOfOtherRects;
+
         }
         sumPointCount += counter;
     }
@@ -135,5 +139,6 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure)
     }
     delete foundedRectCount;
     ErrorLogger::getInstance() >> "END OF TEST!\n";
-    return (floatingPoint)sumPointCount / (floatingPoint)ITER_NUM;
+    //return (floatingPoint)sumPointCount / (floatingPoint)ITER_NUM;
+    return (floatingPoint)sumOfOtherRects / (floatingPoint)ITER_NUM;
 }

@@ -13,9 +13,9 @@ void runRandomWalk(char* path, int ITER_NUM, int RECT_ID, bool GPU_FLAG,bool mea
 {
 	auto t1 = Clock::now();
 	if(GPU_FLAG)
-		printf("%f\n",getAvgPathLenCUDA(path,ITER_NUM,RECT_ID,measure));
+		printf("[GPU]Ile sciezek trafiło do innego elementu: %f\%\n",getAvgPathLenCUDA(path,ITER_NUM,RECT_ID,measure)*100);
 	else
-		printf("%f\n",getAvgPathLen(path,ITER_NUM,RECT_ID,measure));
+		printf("[CPU]Ile sciezek trafiło do innego elementu: %f\%\n",getAvgPathLen(path,ITER_NUM,RECT_ID,measure)*100);
 	auto t2 = Clock::now();
 	std::cout << "Execution time: "
 	        << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count()

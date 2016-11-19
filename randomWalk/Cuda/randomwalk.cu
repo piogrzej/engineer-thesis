@@ -97,7 +97,8 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,int RECT_ID,unsigned 
        // printf("square: %f %f %f %f\n",square.topLeft.x,square.topLeft.y,square.bottomRight.x,square.bottomRight.y);
         square = root->drawBiggestSquareAtPoint(p);
         isCollison = root->checkCollisons(p, rectOutput);
-        ++output[threadIdx.x];
+        if(!(rectOutput==quadTreeMn->rects[RECT_ID]))
+        	output[threadIdx.x]=1;;
     }
     while (false == isCollison);
     root->freeStack(threadIdx.x);
