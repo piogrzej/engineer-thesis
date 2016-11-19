@@ -109,7 +109,7 @@ __device__ d_Rect d_QuadTree::drawBiggestSquareAtPoint(point2 p)
     {
         if(isCollision)
         {
-            if(dist > 1)
+            if(dist > MIN_DIST)
                 dist /= 2;
             maxReached = true;
             output.topLeft.x += dist;

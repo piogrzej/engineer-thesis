@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-typedef float floatingPoint;
+typedef double floatingPoint;
 
 struct point 
 {
