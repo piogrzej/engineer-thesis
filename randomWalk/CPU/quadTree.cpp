@@ -264,7 +264,7 @@ RectHost Tree::drawBiggestSquareAtPoint(point p)
 {
     bool isCollision = false;
     bool maxReached = false;
-    const floatingPoint MIN_DIST = .1f;
+    const floatingPoint MIN_DIST = .095f;
     floatingPoint dist;
 
     RectHost output(p - 1, p + 1);
@@ -287,18 +287,22 @@ RectHost Tree::drawBiggestSquareAtPoint(point p)
     {
         if(isCollision)
         {
-            if(dist > 1)
+            if(dist > MIN_DIST)
                 dist /= 2;
             maxReached = true;
-            output.topLeft += dist;
-            output.bottomRight -= dist;
+            output.topLeft.x += dist;
+            output.topLeft.y += dist;
+            output.bottomRight.x -= dist;
+            output.bottomRight.y -= dist;
         }
         else
         {
             if(maxReached)  
                 dist /= 2;
-            output.topLeft -= dist;
-            output.bottomRight += dist;
+            output.topLeft.x -= dist;
+            output.topLeft.y -= dist;
+            output.bottomRight.x += dist;
+            output.bottomRight.y += dist;
         }
     }
      if (p.x == output.bottomRight.x)

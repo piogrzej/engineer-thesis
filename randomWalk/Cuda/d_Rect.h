@@ -5,7 +5,7 @@
 #include <cuda_runtime.h>
 
 typedef float2 point2;
-typedef float  floatingPoint;
+typedef double  floatingPoint;
 #define make_point2(a,b) make_float2(a,b);
 
 
