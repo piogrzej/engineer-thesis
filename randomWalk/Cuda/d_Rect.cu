@@ -33,10 +33,10 @@ __device__ floatingPoint d_Rect::getPerimeter() const
 
 __device__ point2 d_Rect::getPointFromNindex(int index, int Nsample)
 {
-	int perimeter = this->getPerimeter();
+	floatingPoint perimeter = this->getPerimeter();
 	floatingPoint vector = (floatingPoint)perimeter / (floatingPoint)Nsample;
-	int heigth = this->getHeigth();
-	int width = this->getWidth();
+	floatingPoint heigth = this->getHeigth();
+	floatingPoint width = this->getWidth();
 	point2 ret;
 	if (index*vector < width)
 	{
@@ -110,10 +110,10 @@ __device__ d_Rect d_Rect::createGaussianSurface(floatingPoint factorX, floatingP
     vectorX *= factorX;
     vectorY *= factorY;
 
-    gaussSurface.topLeft.x = int(round(middleX + vectorX));
-    gaussSurface.topLeft.y = int(round(middleY + vectorY));
-    gaussSurface.bottomRight.x = int(round(middleX - vectorX));
-    gaussSurface.bottomRight.y = int(round(middleY - vectorY));
+    gaussSurface.topLeft.x = middleX + vectorX;
+    gaussSurface.topLeft.y = middleY + vectorY;
+    gaussSurface.bottomRight.x = middleX - vectorX;
+    gaussSurface.bottomRight.y = middleY - vectorY;
 
     return gaussSurface;
 }

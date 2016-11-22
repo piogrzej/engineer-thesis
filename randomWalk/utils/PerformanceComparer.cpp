@@ -60,8 +60,8 @@ void PerformanceComparer::compareRandomWalk(int numOfIteratins)
 	std::string gpuName = deviceMap[Device::Gpu] + componentMap[Component::RandomWalk];
 	for(int i=0; i<this->testsPaths.size(); ++i)
 	{
-		runRandomWalkCpu(i,cpuName,parser.getLayerAt(i).size()/2,numOfIteratins);
-		//runRandomWalkGpu(i,gpuName,parser.getLayerAt(i).size()/2,numOfIteratins);
+		//runRandomWalkCpu(i,cpuName,parser.getLayerAt(i).size()/2,numOfIteratins);
+		runRandomWalkGpu(i,gpuName,787,numOfIteratins);
 
 	}
 }
@@ -158,7 +158,7 @@ void PerformanceComparer::runRandomWalkGpu(int layerId,std::string const& name, 
     for(int i = 0; i < EXEC_PER_TEST; i++)
 	{
 		  cudaDeviceSynchronize();
-		  qtm = createQuadTree(layer,dParser.getLayerSize(layerId),RECT_ID,false);
+		  qtm = createQuadTree(layer,dParser.getLayerSize(layerId),RECT_ID,true);
 		  Timer::getInstance().start(name);
 		  unsigned int output[ITER_NUM];
 		  unsigned int* d_output;

@@ -77,11 +77,11 @@ public:
     __host__ __device__ void setTreeManager(QuadTreeManager* manager) {this->treeManager = manager;};
     __host__ __device__ int   child(const int index) const { return chlildren[index]; }
     __host__ __device__ bool isSplited() const {return splitFlag; }
-    __host__ __device__ __forceinline__ float2 getCenter()
+    __host__ __device__ __forceinline__ point2 getCenter()
     {
-        float centerX =  bounds.topLeft.x + (bounds.bottomRight.x - bounds.topLeft.x) / 2;
-        float centerY =  bounds.topLeft.y + (bounds.bottomRight.y - bounds.topLeft.y) / 2;
-        return make_float2(centerX,centerY);
+        floatingPoint centerX =  bounds.topLeft.x + (bounds.bottomRight.x - bounds.topLeft.x) / 2.;
+        floatingPoint centerY =  bounds.topLeft.y + (bounds.bottomRight.y - bounds.topLeft.y) / 2.;
+        return make_point2(centerX,centerY);
     }
     __device__ void createStack(int id,int size) { stack[id] = new dTreePtr[size]; } // lazy fetch
     __device__ void freeStack(int id) { delete stack[id]; }
@@ -93,7 +93,7 @@ public:
     __device__ d_Rect drawBiggestSquareAtPoint(point2 p);
     __device__ d_Rect createGaussianSurfFrom(d_Rect const & r, floatingPoint const factor);
     __device__ floatingPoint getAdjustedGaussianFactor(d_Rect const& r, floatingPoint const factor, D_FACTOR_TYPE type);
-    __device__ int getChlidren(ushort i) {return chlildren[i];};
+    __device__ int getChlidren(ushort i) { return chlildren[i]; }
 
 private:
     int                 id; // indeks to globalnej tablicy węzłów

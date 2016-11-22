@@ -4,9 +4,9 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 
-typedef float2 point2;
+typedef double2 point2;
 typedef double  floatingPoint;
-#define make_point2(a,b) make_float2(a,b);
+#define make_point2(a,b) make_double2(a,b);
 
 
 class d_Rect
@@ -48,5 +48,4 @@ public:
 	__device__ bool operator==(const d_Rect& r2) const;
 	__device__ bool operator!=(const d_Rect& r2) const { return !(*this == r2); }
 };
-
 #endif

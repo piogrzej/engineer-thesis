@@ -145,7 +145,7 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
       return;
     }
 
-  float2 center = node.getCenter();
+  point2 center = node.getCenter();
 
   // Kazdy warp (32thready) bedzie wykonywany jednoczesnie, rozdzielamy na nasze warpy
   // robote po rowno

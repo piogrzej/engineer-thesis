@@ -89,26 +89,25 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,
     output[threadIdx.x]=0;
     root->createStack(threadIdx.x,quadTreeMn->maxlevel * 3 + 1); // tyle wystarczy do trawersowania po drzewie
     d_Rect start = quadTreeMn->start;
-   // if(threadIdx.x == 0)
-    //     printf("square: %f %f %f %f\n",start.topLeft.x,start.topLeft.y,
-              //                          start.bottomRight.x,start.bottomRight.y);
+    if(threadIdx.x == 0)
+         printf("square: %f %f %f %f\n",start.topLeft.x,start.topLeft.y,
+                                        start.bottomRight.x,start.bottomRight.y);
 
     d_Rect square = root->createGaussianSurfFrom(start, 1.5);
 
     do
     {
         r = curand_uniform(&state);
-        p = square.getPointFromNindex(d_getIndex(quadTreeMn->d_intg,r), NSAMPLE);
-        //printf("%d %d\n",(int)p.x,(int)p.y);
+        p = square.getPointFromNindex(gen->nextIndex(threadIdx.x), NSAMPLE);
         if(false == root->isInBounds(p))
         {
             //broken = true;
             break;
         }
         square = root->drawBiggestSquareAtPoint(p);
-        isCollison = root->checkCollisons(p, rectOutput);
-        if(!(rectOutput==quadTreeMn->rects[RECT_ID]))
-        	output[threadIdx.x]=1;;
+         isCollison = root->checkCollisons(p, rectOutput);
+        if(!(rectOutput==quadTreeMn->start))
+        	output[threadIdx.x]=1;
     }
     while (false == isCollison);
     //if(threadIdx.x == 827)

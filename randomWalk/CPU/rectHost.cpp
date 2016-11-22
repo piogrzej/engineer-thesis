@@ -74,12 +74,12 @@ bool RectHost::rectContains(RectHost r) const {
 
 RectHost  RectHost::createGaussianSurfaceX(floatingPoint factorX) const
 {
-    return createGaussianSurface(factorX, 1);
+    return createGaussianSurface(factorX, 1.);
 }
 
 RectHost  RectHost::createGaussianSurfaceY(floatingPoint factorY) const
 {
-    return createGaussianSurface(1, factorY);
+    return createGaussianSurface(1., factorY);
 }
 RectHost RectHost::createGaussianSurface(floatingPoint factorX, floatingPoint factorY) const 
 {
@@ -91,10 +91,10 @@ RectHost RectHost::createGaussianSurface(floatingPoint factorX, floatingPoint fa
     vectorX *= factorX;
     vectorY *= factorY;
 
-    gaussSurface.topLeft.x = int(round(middleX + vectorX));
-    gaussSurface.topLeft.y = int(round(middleY + vectorY));
-    gaussSurface.bottomRight.x = int(round(middleX - vectorX));
-    gaussSurface.bottomRight.y = int(round(middleY - vectorY));
+    gaussSurface.topLeft.x = middleX + vectorX;
+    gaussSurface.topLeft.y = middleY + vectorY;
+    gaussSurface.bottomRight.x = middleX - vectorX;
+    gaussSurface.bottomRight.y = middleY - vectorY;
 
     return gaussSurface;
 }
@@ -105,10 +105,10 @@ int RectHost::getPerimeter() const
 }
 
 point RectHost::getPointFromNindex(int index, int Nsample) {//MAM NADZIEJE ZE NIGDZIE SIE NIE WALNALEM BO TO SKOMPLIKOWANA GEOMETRIA
-    int perimeter = this->getPerimeter();
+	floatingPoint perimeter = this->getPerimeter();
     floatingPoint vector = (floatingPoint)perimeter / (floatingPoint)Nsample;
-    int heigth = this->getHeigth();
-    int width = this->getWidth();
+    floatingPoint heigth = this->getHeigth();
+    floatingPoint width = this->getWidth();
     point ret;
     if (index*vector < width){
         ret.x = (int)((index-1)*vector +vector / 2 + this->topLeft.x);

@@ -49,12 +49,26 @@ __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
         {
             for(int i=0; i < NODES_NUMBER; ++i)
             {
-                d_QuadTree* node = &nodes[current->getChlidren(i)];
+            	int id = current->getChlidren(i);
+                d_QuadTree* node = &nodes[id];
                 if (node->bounds.contains(p))
                 {
                     next = node;
                     break;
                 }
+            }
+            if(next == current)
+            {
+            	printf("b: lvl: %d %flf %lf %lf %lf\n",current->getLevel(),current->bounds.topLeft.x,current->bounds.topLeft.y,
+            								   current->bounds.bottomRight.x,current->bounds.bottomRight.y);
+            	  for(int i=0; i < NODES_NUMBER; ++i)
+					{
+							  int id = current->getChlidren(i);
+							  d_QuadTree* node = &nodes[id];
+							printf("ch: lvl: %d %flf %lf %lf %lf\n",node->getLevel(),node->bounds.topLeft.x,node->bounds.topLeft.y,
+									node->bounds.bottomRight.x,node->bounds.bottomRight.y);
+					}
+            	  return false;
             }
         }
         //tutaj dla kazdego sprawdzenie bisectory lines
@@ -201,7 +215,7 @@ __device__ bool d_QuadTree::checkIsAnyCollision(bool collisions[])//FUNKCJA DO P
     return false;
 }
 
-__device__ void d_QuadTree::addNodesToStack(dTreePtr* stackPtr,d_QuadTree* except, bool collisions[])//FUNKCJA DO PRZEPISANIA OD NOWA
+__device__ void d_QuadTree::addNodesToStack(dTreePtr* stackPtr,d_QuadTree* except, bool collisions[])
 {
     d_QuadTree* nodes = treeManager->nodes;
     for (int i = 0; i < NODES_NUMBER; ++i)
