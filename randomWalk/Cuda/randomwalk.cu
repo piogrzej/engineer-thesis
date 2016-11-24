@@ -18,7 +18,7 @@
 
 // TO DO: brzydkie kopiowanie, trzeba poprawić
 // TO DO: wykrywanie ilosci threadow, thread/block, (cudaDeviceProp)
-QuadTreeManager* randomWalkCudaInit(char* path,bool measure)
+QuadTreeManager* randomWalkCudaInit(char* path,bool measure,int layer_id)
 {
 	d_Parser parser("<<");
 	if(true==measure)
@@ -33,8 +33,8 @@ QuadTreeManager* randomWalkCudaInit(char* path,bool measure)
 	{
 		parser.parse(path);
 	}
-    const std::vector<d_Rect>& layer = parser.getLayerAt(0); // na razie 0 warstwa hardcode
-    d_Rect const& spaceSize = parser.getLayerSize(0);
+    const std::vector<d_Rect>& layer = parser.getLayerAt(layer_id); // na razie 0 warstwa hardcode
+    d_Rect const& spaceSize = parser.getLayerSize(layer_id);
 
     QuadTreeManager* treeMng;
     if(true==measure)

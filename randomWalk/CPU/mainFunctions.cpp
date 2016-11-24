@@ -9,13 +9,13 @@
 #include <chrono>
 typedef std::chrono::high_resolution_clock Clock;
 
-void runRandomWalk(char* path, int ITER_NUM, int RECT_ID, bool GPU_FLAG,bool measure)
+void runRandomWalk(char* path, int ITER_NUM, int RECT_ID, bool GPU_FLAG,bool measure,int layer_id)
 {
 	auto t1 = Clock::now();
 	if(GPU_FLAG)
-		printf("[GPU]Ile sciezek trafiło do innego elementu: %f\%\n",getAvgPathLenCUDA(path,ITER_NUM,RECT_ID,measure)*100);
+		printf("[GPU]Ile sciezek trafiło do innego elementu: %f\%\n",getAvgPathLenCUDA(path,ITER_NUM,RECT_ID,measure,layer_id)*100);
 	else
-		printf("[CPU]Ile sciezek trafiło do innego elementu: %f\%\n",getAvgPathLen(path,ITER_NUM,RECT_ID,measure)*100);
+		printf("[CPU]Ile sciezek trafiło do innego elementu: %f\%\n",getAvgPathLen(path,ITER_NUM,RECT_ID,measure,layer_id)*100);
 	auto t2 = Clock::now();
 	std::cout << "Execution time: "
 	        << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count()

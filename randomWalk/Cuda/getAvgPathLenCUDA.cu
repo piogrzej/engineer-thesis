@@ -14,10 +14,10 @@ floatingPoint countAvg(unsigned int output[],int ITER_NUM)
     return out/ITER_NUM;
 }
 
-floatingPoint getAvgPathLenCUDA(char* path, int ITER_NUM,int RECT_ID,bool measure)
+floatingPoint getAvgPathLenCUDA(char* path, int ITER_NUM,int RECT_ID,bool measure,int layer_id)
 {
     //tworzenie drzewa
-    QuadTreeManager* qtm = randomWalkCudaInit(path,measure);
+    QuadTreeManager* qtm = randomWalkCudaInit(path,measure,layer_id);
     //alokowanie pamieci na wynik
     unsigned int output[ITER_NUM];
     unsigned int* d_output;

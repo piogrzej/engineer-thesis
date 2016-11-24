@@ -4,14 +4,15 @@
 
 #define HELP_TEXT "\t-S\t--source\t\tsource file path\
 \n\t-M\t--measure\t\tturns on measure mode\
-\n\t-O\t--object\t\tobject ID from [0-(n-1)]\
+\n\t-O\t--object\t\tobject ID\
 \n\t-I\t--iterations\t\tnumber of iterations\
 \n\t-G\t--GPU\t\t\trun CUDA verison of random walk\
+\n\t-L\t--layer\t\t\tlayer numeber\
 \n\t\t--help\t\t\tdisplay this information\
 \n\tYou don't need to specify any options\
 \n\tin that case program will be lunched\
 \n\twith default options, wich are:\
-\n\t-G -I 1000 -O 10 -S ../tests/test\n"
+\n\t-G -I 1000 -O 10 -S ../tests/test -L 0\n"
 
 inline bool checkFile(char* name) 
 {
@@ -24,10 +25,11 @@ int main(int argc, char *argv[])
     Tree *mainTree;
     char* path=		DEFAULT_PATH;
     bool GPU_FLAG=	DEFAULT_GPU_USAGE;
-    GPU_FLAG = false;
+    //GPU_FLAG = false;
     int rectNum = 	DEFAULT_RECT;
     int iterNum = 	DEFAULT_ITERATION;
     bool measure =	DEFAULT_MEASURE;
+    int layer = 	DEFAULT_LAYER;
 
     if(argc>0)
     {
@@ -87,7 +89,7 @@ int main(int argc, char *argv[])
 					catch (const std::invalid_argument& ia)
 					{
 						ErrorLogger::getInstance() >> "Invalid argument: " >> ia.what() >> '\n';
-						return 0;
+						return -1;
 					}
 				}
 				else
@@ -100,6 +102,31 @@ int main(int argc, char *argv[])
     		{
     			measure = true;
     		}
+    		else if(option == "-L" || option == "--layer")
+			{
+    			if(i+1 < argc)
+				{
+					try
+					{
+						layer = std::stoi(std::string(argv[++i]));
+						if(layer<0)
+						{
+							ErrorLogger::getInstance() >> "Invalid argument: layer, can't be lower then 0!\n'";
+							return -1;
+						}
+					}
+					catch (const std::invalid_argument& ia)
+					{
+						ErrorLogger::getInstance() >> "Invalid argument: " >> ia.what() >> '\n';
+						return -1;
+					}
+				}
+				else
+				{
+					printf("--object option requires one argument.");
+					return -1;
+				}
+			}
     	}
     }
 
@@ -113,7 +140,7 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
-    runRandomWalk(path, iterNum, rectNum,GPU_FLAG,measure);
+    runRandomWalk(path, iterNum, rectNum,GPU_FLAG,measure,layer);
 
 /*    std::vector<unsigned int> testsSizes;
 

@@ -21,7 +21,7 @@ int getRectIt(Layer const& layer, RectHost const& rect)
     return -1;
 }
 
-floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure)
+floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure,int layer_id)
 {
 	Parser parser("<<");
 	if(true==measure)
@@ -38,9 +38,9 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure)
 	}
     ErrorLogger::getInstance() >> "RandomWalk \nTest: " >> path >> "\n";
 
-    const Layer layer = parser.getLayerAt(0);
+    const Layer layer = parser.getLayerAt(layer_id);
 
-    RectHost const& spaceSize = parser.getLayerSize(0);
+    RectHost const& spaceSize = parser.getLayerSize(layer_id);
 
     if (layer.size() <= RECT_ID || RECT_ID < 0 || ITER_NUM <= 0)
     {
