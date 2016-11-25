@@ -10,7 +10,7 @@
 #include "../green/green.h"
 
 
-__global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* d_params,int lvlMul);
+__global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* d_params,int lvlMul,int lvlSum,int totalSum);
 bool checkQuadTree(const d_QuadTree *nodes,int idx,d_Rect *rects, int& count);
 
 QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& spaceSize,int RECT_ID,bool doCheck)
@@ -32,7 +32,6 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
   size_t rectTableSize = sizeof(d_Rect)*layer.size();
   size_t nodesTableSize= sizeof(d_QuadTree) * params.MAX_NUM_NODES * 4;
   d_QuadTree root(0,0,params.TOTAL_RECT);
-  nodes = (d_QuadTree*)malloc(nodesTableSize);
   root.setBounds(spaceSize);
   checkCudaErrors(cudaMalloc((void**)&d_rects,rectTableSize * 2)); // potrzebujemy bufora dlatego 2
   checkCudaErrors(cudaMalloc((void**)&d_nodes,nodesTableSize));
@@ -55,19 +54,18 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
 
   checkCudaErrors(cudaMemcpy(d_params,&params,sizeof(Params), cudaMemcpyHostToDevice));
 
-
   Timer::getInstance().stop("Kopiowanie zasobów do CUDA");
 
   Timer::getInstance().start("Create Tree CUDA");
-  createQuadTreeKernel<<<1,params.THREAD_PER_BLOCK,params.SHARED_MEM_SIZE>>>(d_nodes,d_rects,d_params,0);
+  createQuadTreeKernel<<<1,params.THREAD_PER_BLOCK,params.SHARED_MEM_SIZE>>>(d_nodes,d_rects,d_params,0,1,1);
   cudaDeviceSynchronize();
   checkCudaErrors(cudaGetLastError());
   Timer::getInstance().stop("Create Tree CUDA");
  // ErrorLogger::getInstance() >> "Tworzenie drzewa zakończone pomyślnie\n";
-
   if(doCheck)
   {
       ErrorLogger::getInstance() >> "Sprawdzanie drzewa. \n";// Max nodes: " >> params.MAX_NUM_NODES >> "\n";
+      nodes = (d_QuadTree*)malloc(nodesTableSize);
 
       d_Rect* rects = (d_Rect*)malloc(sizeof(d_Rect)*params.TOTAL_RECT);
       checkCudaErrors(cudaMemcpy(nodes,d_nodes,nodesTableSize, cudaMemcpyDeviceToHost));
@@ -100,7 +98,7 @@ QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& s
  * 5. Tworzymy wezly dzieci, wyznaczamy ich przedzialy w tablicy rectow
  * 6. Wywolujemy funkcje rekurencyjna dla nowo powstalych wezlow
 */
-__global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* params,int lvlMul)
+__global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* params,int lvlMul,int lvlSum,int totalSum)
 {
   extern __shared__ int sharedMemory[]; // trzymamy tu ilość rectów w danym węźle w każdym warpie
   const int warpId = threadIdx.x / warpSize; // Id warpa w bloku
@@ -155,6 +153,7 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
 
   // przekonwertuj 1-d tablice do 2-d - latwiejsze operacje
   volatile int *rectsCountNode[NODES_NUMBER + 1]; // volatile bo adresy do shared memory, ktore inne thready beda zmieniac
+#pragma unroll
   for(int i = 0; i < params->QUAD_TREE_CHILD_NUM + 1; ++i)
     {
       rectsCountNode[i] = (volatile int*) &sharedMemory[i * params->WARPS_PER_BLOCK];
@@ -379,38 +378,39 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
 
   if(threadIdx.x == (params->THREAD_PER_BLOCK - 1)) //ostatni watek, bo w ostatnim warpie mamy finalne dane, jeden blokowy watek ustala dzieci, ich indeksy, itd.
     {
-    int nodesSumAtLevel = params->nodesCountAtLevel(node.getLevel() + 1);
-    int nodesAtLevel = powf(NODES_NUMBER,node.getLevel());
-
-	d_QuadTree* startNodeAtLevel = &nodes[nodesAtLevel]; // wskaznik na pierwszy wezel w tym poziomie
+    //printf("%d      %d\n",nodesAtLevel,nodesSumAtLevel);
+	d_QuadTree* startNodeAtLevel = &nodes[lvlSum]; // wskaznik na pierwszy wezel w tym poziomie
 	int childCount = params->QUAD_TREE_CHILD_NUM;
 	int childIndex = childCount * nodeId;
 	const d_Rect& bounds = node.getBounds();
 	node.setSplited();
-	//printf("SET CHLD:id: %d sumAtLvl %d ndsAtlvl %d childId %d\n",node.getId(),nodesSumAtLevel,nodesAtLevel,childIndex);
+   // printf("%d block: %d\n",childIndex,blockIdx.x);
 
-#pragma unroll
+	//printf("SET CHLD:id: %d sumAtLvl %d ndsAtlvl %d childId %d\n",node.getId(),nodesSumAtLevel,nodesAtLevel,childIndex);
+	 d_QuadTree* test;
 	for(int i = 0; i < params->QUAD_TREE_CHILD_NUM; i++)
 	  {
-	    startNodeAtLevel[childIndex + i].setId(nodesSumAtLevel + childIndex + i);
-	    startNodeAtLevel[childIndex + i].setLevel(node.getLevel() + 1);
-	    node.setChild(nodesSumAtLevel + childIndex + i,i);
+		int id = totalSum + childIndex + i;
+		startNodeAtLevel[childIndex + i].setId(id);
+		startNodeAtLevel[childIndex + i].setLevel(node.getLevel() + 1);
+		node.setChild(id,i);
 	  }
 
-	startNodeAtLevel[childIndex + NODE_ID::UP_LEFT].setBounds(d_Rect(bounds.topLeft,center));
-	startNodeAtLevel[childIndex + NODE_ID::DOWN_RIGHT].setBounds(d_Rect(center,bounds.bottomRight));
-	startNodeAtLevel[childIndex + NODE_ID::UP_RIGHT].setBounds(d_Rect(center.x,bounds.topLeft.y,
+	startNodeAtLevel[childIndex].setBounds(d_Rect(bounds.topLeft,center));
+	startNodeAtLevel[childIndex + 3].setBounds(d_Rect(center,bounds.bottomRight));
+	startNodeAtLevel[childIndex + 1].setBounds(d_Rect(center.x,bounds.topLeft.y,
 	                                                                bounds.bottomRight.x,center.y));
-	startNodeAtLevel[childIndex + NODE_ID::DOWN_LEFT].setBounds(d_Rect(bounds.topLeft.x,center.y,
+	startNodeAtLevel[childIndex + 2].setBounds(d_Rect(bounds.topLeft.x,center.y,
 	                                                                   center.x,bounds.bottomRight.y));
 
-	startNodeAtLevel[childIndex + NODE_ID::UP_LEFT].setOff(node.startRectOff(),rectsCountNode[0][warpId]);
-	startNodeAtLevel[childIndex + NODE_ID::UP_RIGHT].setOff(rectsCountNode[0][warpId],rectsCountNode[1][warpId]);
-	startNodeAtLevel[childIndex + NODE_ID::DOWN_LEFT].setOff(rectsCountNode[1][warpId],rectsCountNode[2][warpId]);
-	startNodeAtLevel[childIndex + NODE_ID::DOWN_RIGHT].setOff(rectsCountNode[2][warpId],rectsCountNode[3][warpId]);
+	startNodeAtLevel[childIndex].setOff(node.startRectOff(),rectsCountNode[0][warpId]);
+	startNodeAtLevel[childIndex + 1].setOff(rectsCountNode[0][warpId],rectsCountNode[1][warpId]);
+	startNodeAtLevel[childIndex + 2].setOff(rectsCountNode[1][warpId],rectsCountNode[2][warpId]);
+	startNodeAtLevel[childIndex + 3].setOff(rectsCountNode[2][warpId],rectsCountNode[3][warpId]);
 	node.setOwnRectOff(rectsCountNode[3][warpId]);
 
-/*	 printf("at %d node: %d %d %d %d lvl: %d count %d\n", nodesAtLevel ,(int)node.getBounds().topLeft.x,(int)node.getBounds().topLeft.y,
+/*
+	 printf("at %d node: %d %d %d %d lvl: %d count %d\n", nodesAtLevel ,(int)node.getBounds().topLeft.x,(int)node.getBounds().topLeft.y,
 							(int)node.getBounds().bottomRight.x,(int)node.getBounds().bottomRight.y,node.getLevel(),rectCount);
 	     printf("ch lvl %d i: 0 id %d  start %d end %d\n",startNodeAtLevel[childIndex + 0].getLevel(),startNodeAtLevel[childIndex + 0].getId(),node.startRectOff(), rectsCountNode[0][warpId]);
 	     printf("ch lvl %d i: 1 id %d  start %d end %d\n",startNodeAtLevel[childIndex + 1].getLevel(),startNodeAtLevel[childIndex + 1].getId(),rectsCountNode[0][warpId], rectsCountNode[1][warpId]);
@@ -418,20 +418,24 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
 	     printf("ch lvl %d i: 3 id %d  start %d end %d\n",startNodeAtLevel[childIndex + 3].getLevel(),startNodeAtLevel[childIndex + 3].getId(),rectsCountNode[2][warpId], rectsCountNode[3][warpId]);
 	     printf("own  start %d end %d\n",rectsCountNode[3][warpId],node.endRectOff());
 */
-	   /*  for(int i = 0; i < 4 ; i++)
+	     /*for(int i = 0; i < 4 ; i++)
 	       {
 		     printf("ch lvl %d i: %d id %d  x %d y %d\n",startNodeAtLevel[childIndex + i].getLevel(),i,startNodeAtLevel[childIndex + i].getId(),(int)startNodeAtLevel[childIndex + i].getBounds().topLeft.x,(int)startNodeAtLevel[childIndex + i].getBounds().topLeft.y);
 	       }*/
-/*
-       for(int i = 0; i < params->TOTAL_RECT; i++)
+
+  /*     for(int i = 0; i < params->TOTAL_RECT; i++)
 	{
 	  printf("   rect: %d %d\n",(int)sortedRects[i].topLeft.x,(int)sortedRects[i].topLeft.y);
 	}*/
 //	printf("wywolanie %d %d nodeid %d\n",node.ownRectOff(),node.endRectOff(),nodeId);
-	createQuadTreeKernel<<<childCount,params->THREAD_PER_BLOCK ,
-	(childCount + 1) * params->THREAD_PER_BLOCK * sizeof(int)>>>(startNodeAtLevel,rects,params,nodeId);
+
+	int nodesAtLevel = lvlSum * params->QUAD_TREE_CHILD_NUM;
+    int nodesSumAtLevel = totalSum + nodesAtLevel;
+
+	createQuadTreeKernel<<<4,128 ,
+	5 * 128 * sizeof(int)>>>(startNodeAtLevel,rects,params,nodeId,nodesAtLevel,nodesSumAtLevel);
     }
-  __syncthreads();
+ // __syncthreads();
 
   if((node.getLevel() % 2) == 0) // musimy skopiowac do wlasciwej tablicy wyniki rectow ktore pozostaly w tym nodzie na koniec
   {
@@ -439,10 +443,12 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
      int total = params->TOTAL_RECT;
      int threadsNum = params->THREAD_PER_BLOCK;
      for (it += threadIdx.x ; it < end ; it += threadsNum)
-       {
-	 if (it < end)
-	   rects[it] = rects[total + it];
-       }
+     {
+	   if (it < end && node.getId() == 5475)
+	   {
+	     rects[it] = rects[total + it];
+	   }
+     }
   }
 }
 
@@ -454,14 +460,16 @@ bool checkQuadTree(const d_QuadTree *nodes,int idx,d_Rect *rects, int& count)
 
   //  printf("count  %d  splited:%d\n",node->endRectOff() - node->ownRectOff(),node->isSplited());
 
-   // printf("node: %d %d %d %d lvl: %d count %d\n", (int)node->getBounds().topLeft.x,(int)node->getBounds().topLeft.y,
+   //printf("node: %d %d %d %d lvl: %d count %d\n", (int)node->getBounds().topLeft.x,(int)node->getBounds().topLeft.y,
 	//							  (int)node->getBounds().bottomRight.x,(int)node->getBounds().bottomRight.y,node->getLevel(),rectCount);
     if (node->isSplited())
     {
 	int rectInNode = 0;
 	for(int i = 0; i < params.QUAD_TREE_CHILD_NUM; i++)
 	  {
-	//    printf("%d \n",node->child(i));
+	 //   printf("%d \n",node->child(i));
+	//    printf("children: %d %d %d %d  \n",(int)nodes[node->child(i)].getBounds().topLeft.x,(int)nodes[node->child(i)].getBounds().topLeft.y,
+     //               (int)nodes[node->child(i)].getBounds().bottomRight.x,(int)nodes[node->child(i)].getBounds().bottomRight.y);
 	    rectInNode += nodes[node->child(i)].rectCount();
 	  }
 	rectInNode += node->endRectOff() - node->ownRectOff();
@@ -469,7 +477,7 @@ bool checkQuadTree(const d_QuadTree *nodes,int idx,d_Rect *rects, int& count)
 	if(rectInNode != rectCount)
 	  {
             char error[100];
-            sprintf(error,"node: %d %d %d %d : ilosc dzieci nie zgadza sie %d %d \n",(int)node->getBounds().topLeft.x,(int)node->getBounds().topLeft.y,
+            sprintf(error,"node %d: %d %d %d %d : ilosc dzieci nie zgadza sie %d %d \n",node->getId(),(int)node->getBounds().topLeft.x,(int)node->getBounds().topLeft.y,
                     (int)node->getBounds().bottomRight.x,(int)node->getBounds().bottomRight.y,rectInNode,rectCount);
             ErrorLogger::getInstance() >> "CreateTree: blad w">> error >> "\n";
 	    return false;
