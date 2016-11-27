@@ -64,7 +64,7 @@ public:
     __host__ __device__ void  setId(int newId)  { id = newId;}
     __host__ __device__ int   getLevel() const { return level;}
     __host__ __device__ void  setLevel(int lvl)  { level = lvl;}
-    __host__ __device__ void  setChild(int child, int index)  { chlildren[index] = child; }
+    __host__ __device__ void  setChild(int child, int index)  { children[index] = child; }
     __host__ __device__ void  setBounds(d_Rect const& rect)  { bounds = rect;}
     __host__ __device__ void  setOwnRectOff(int ownOff)  {  startOwnOff = ownOff; }
     __host__ __device__ d_Rect getBounds() const { return bounds; }
@@ -75,7 +75,7 @@ public:
     __host__ __device__ int   endRectOff() const{  return endOff;}
     __host__ __device__ QuadTreeManager* getTreeManager() const{ return treeManager; };
     __host__ __device__ void setTreeManager(QuadTreeManager* manager) {this->treeManager = manager;};
-    __host__ __device__ int   child(const int index) const { return chlildren[index]; }
+    __host__ __device__ int   child(const int index) const { return children[index]; }
     __host__ __device__ bool isSplited() const {return splitFlag; }
     __host__ __device__ __forceinline__ point2 getCenter()
     {
@@ -93,11 +93,11 @@ public:
     __device__ d_Rect drawBiggestSquareAtPoint(point2 p);
     __device__ d_Rect createGaussianSurfFrom(d_Rect const & r, floatingPoint const factor);
     __device__ floatingPoint getAdjustedGaussianFactor(d_Rect const& r, floatingPoint const factor, D_FACTOR_TYPE type);
-    __device__ int getChlidren(ushort i) { return chlildren[i]; }
+    __device__ int getChildren(ushort i) { return children[i]; }
 
 private:
     int                 id; // indeks to globalnej tablicy węzłów
-    int                 chlildren[NODES_NUMBER];//w tej tablicy znajduja sie numery indeksow dzieci w treeManager->nodes[]
+    int                 children[NODES_NUMBER];//w tej tablicy znajduja sie numery indeksow dzieci w treeManager->nodes[]
     int                 startOff; // indesky do tablicy gdzie rozpoczynaja sie obiekty znajdujace sie w tym dzieciach tego wezla
     int                 startOwnOff; // tu zaczynaja sie recty tego obiektu
     int	                endOff;
@@ -107,7 +107,6 @@ private:
     QuadTreeManager*    treeManager;
     dTreePtr**			stack;
     __device__ bool checkCollisionObjs(point2 p, d_Rect &r);
-    __device__ void addNodesToStack(dTreePtr* stackPtr,d_QuadTree* except, bool collisions[]);
     __device__ bool checkIsAnyCollision(bool collisions[]);
 
 };

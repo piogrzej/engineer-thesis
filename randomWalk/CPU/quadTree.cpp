@@ -151,13 +151,19 @@ bool Tree::checkCollisions(RectHost const& r, const RectHost &ignore)
         return true;
 
     Tree* oldNode, *node = this;
-    TreePtr* stack = new TreePtr[MAX_LEVELS * 3];
+    TreePtr* stack = new TreePtr[MAX_LEVELS * 3+1];
     TreePtr* stackPtr = stack;
     bool collisions[NODES_NUMBER];
     *stackPtr++ = nullptr; // koniec petli gdy tu trafimy
 
     while (node != nullptr)
     {
+        if (node->checkCollisionsWithObjs(r, ignore))
+        {
+            delete stack;
+            return true;
+        }
+
         if (node->isSplited)
         {
             for (int i = 0; i < NODES_NUMBER; i++)
@@ -169,11 +175,6 @@ bool Tree::checkCollisions(RectHost const& r, const RectHost &ignore)
 
         if (false == checkIsAnyCollision(collisions))
         {
-            if (node->checkCollisionsWithObjs(r, ignore))
-            {
-                delete stack;
-                return true;
-            }
             node = *--stackPtr;
         }
         else

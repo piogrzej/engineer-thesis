@@ -43,7 +43,7 @@ private:
    
 public:
             Tree(int pLevel, int nodeSCount, RectHost const& bounds);
-
+    RectHost getBounds() {return bounds;}
     bool    isInBounds(point const& p);
     bool    isInBounds(RectHost const& r);
     void    clear();

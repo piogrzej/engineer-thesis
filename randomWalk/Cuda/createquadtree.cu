@@ -444,7 +444,7 @@ __global__ void createQuadTreeKernel(d_QuadTree* nodes, d_Rect* rects, Params* p
      int threadsNum = params->THREAD_PER_BLOCK;
      for (it += threadIdx.x ; it < end ; it += threadsNum)
      {
-	   if (it < end && node.getId() == 5475)
+	   if (it < end)
 	   {
 	     rects[it] = rects[total + it];
 	   }

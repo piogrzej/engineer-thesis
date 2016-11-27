@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     int rectNum = 	DEFAULT_RECT;
     int iterNum = 	DEFAULT_ITERATION;
     bool measure =	DEFAULT_MEASURE;
-/*
+
     if(argc>0)
     {
     	for(int i=0; i < argc; ++i)
@@ -107,14 +107,15 @@ int main(int argc, char *argv[])
 	}
 
     runRandomWalk(path, iterNum, rectNum,GPU_FLAG,measure);
-*/
+
+	/*	initCuda(argc,argv);
 
         std::vector<unsigned int> testsSizes;
 
-      /*  for(int i = 5000; i <= 100000; i += 5000)
-            testsSizes.push_back(i);*/
+        for(int i = 5000; i <= 100000; i += 5000)
+            testsSizes.push_back(i);
 
-        for(int i = 100000; i <= 500000; i += 50000)
+        for(int i = 1000; i <= 10000000; i *= 10)
             testsSizes.push_back(i);
         //testsSizes.push_back(99000);
 
@@ -123,15 +124,15 @@ int main(int argc, char *argv[])
         {
             ErrorLogger::getInstance() >> "Stworzono testy pomyslnie\n";
             PerformanceComparer comparer(gen.getTestsPaths());
-            comparer.compareRandomWalk(1);
+            comparer.compareRandomWalk(256);
+          //  comparer.compareCreatingTree();
             comparer.printResults();
         }
         else
         {
             ErrorLogger::getInstance() >> "Błąd przy tworzeniu testów\n";
-
         }
-
+*/
 
     return 0;
 }
