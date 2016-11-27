@@ -114,27 +114,14 @@ void PerformanceComparer::runRandomWalkCpu(int layerId,std::string const& name, 
         REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
         precompute_unit_square_green(g,dgdx,dgdy,intg,NSAMPLE);// niech lidzy zeby bylo wiarygodnie
         int pos, sumPointCount = 0;
-        int* foundedRectCount = new int[layer.size()+1];
-		std::fill(foundedRectCount, foundedRectCount + layer.size()+1, 0);
+        std::map<RectHost,int> foundedMap;
         Timer::getInstance().start(name);
         int errors = 0;
 		for (int i = 0; i < ITER_NUM; i++)
 		{
 			int counter;
 			RectHost founded = RandomWalk(start, root, counter,gen,i);
-			if(-1 == founded.topLeft.x &&
-			   -1 == founded.topLeft.y &&
-			   -1 == founded.bottomRight.x &&
-			   -1 == founded.bottomRight.y)
-				++foundedRectCount[layer.size()];
-			else
-			{
-				pos = getRectIt(layer,founded);
-				if (pos != -1)
-					foundedRectCount[pos] += 1;
-				else
-					errors++;
-			}
+			foundedMap[founded]++;
 			sumPointCount += counter;
 		}
         Timer::getInstance().stop(name);
@@ -161,11 +148,17 @@ void PerformanceComparer::runRandomWalkGpu(int layerId,std::string const& name, 
 		  unsigned int output[ITER_NUM];
 		  unsigned int* d_output;
 		  unsigned int outputSize = ITER_NUM * sizeof(unsigned int);
+		  unsigned int rectOutputSize = ITER_NUM * sizeof(d_Rect);
+		  d_Rect rectOutput[ITER_NUM];
+		  d_Rect* d_rectOutput;
 		  cudaMalloc((void **)&d_output,outputSize);
-		  randomWalkCudaWrapper(ITER_NUM,qtm,d_output,gen,time(NULL));
+		  cudaMalloc((void **)&d_rectOutput,rectOutputSize);
+		  randomWalkCudaWrapper(ITER_NUM,qtm,d_output,d_rectOutput,gen,time(NULL));
 		  cudaMemcpy(output,d_output,outputSize,cudaMemcpyDeviceToHost);
+		  cudaMemcpy(rectOutput,d_rectOutput,rectOutputSize,cudaMemcpyDeviceToHost);
 		  freeQuadTreeManager(qtm);
 		  cudaFree(d_output);
+		  cudaFree(d_rectOutput);
 		  cudaDeviceReset();
 		  countAvg(output,ITER_NUM);
 		  Timer::getInstance().stop(name);

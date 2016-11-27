@@ -169,6 +169,18 @@ bool RectHost::operator==(const RectHost & r2) const
     else
         return false;
 }
+
+bool RectHost::operator<(const RectHost & r2) const
+{
+    if (r2.topLeft.x < topLeft.x &&
+        r2.topLeft.y < topLeft.y &&
+        r2.bottomRight.x < bottomRight.x &&
+        r2.bottomRight.y < bottomRight.y)
+        return true;
+    else
+        return false;
+}
+
 std::ostream& operator<< (std::ostream &wyjscie, RectHost const& ex)
 {
     wyjscie << "Rect TL: x:" << ex.topLeft.x<<", y:" << ex.topLeft.y << "  BR: x:" << ex.bottomRight.x << ", y:" << ex.bottomRight.y;

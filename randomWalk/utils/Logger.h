@@ -29,7 +29,6 @@ inline AbstractLogger & AbstractLogger::operator<<(const T & itemToLog)
 template<typename T>
 inline AbstractLogger & AbstractLogger::operator>>(const T & itemToConsole)
 {
-    std::cout << itemToConsole;
     logFile << itemToConsole;
     return *this;
 }

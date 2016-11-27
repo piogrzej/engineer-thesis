@@ -118,12 +118,23 @@ __device__ d_Rect d_Rect::createGaussianSurface(floatingPoint factorX, floatingP
     return gaussSurface;
 }
 
-__device__ bool d_Rect::operator==(const d_Rect & r2) const
+__host__ __device__ bool d_Rect::operator==(const d_Rect & r2) const
 {
     if (r2.topLeft.x == topLeft.x &&
         r2.topLeft.y == topLeft.y &&
         r2.bottomRight.x == bottomRight.x &&
         r2.bottomRight.y == bottomRight.y)
+        return true;
+    else
+        return false;
+}
+
+__host__ __device__ bool d_Rect::operator<(const d_Rect & r2) const
+{
+    if (r2.topLeft.x < topLeft.x &&
+        r2.topLeft.y < topLeft.y &&
+        r2.bottomRight.x < bottomRight.x &&
+        r2.bottomRight.y < bottomRight.y)
         return true;
     else
         return false;

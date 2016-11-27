@@ -21,10 +21,11 @@ int main(int argc, char *argv[])
     int rectNum = 	DEFAULT_RECT;
     int iterNum = 	DEFAULT_ITERATION;
     bool measure =	DEFAULT_MEASURE;
+    int layer =		DEFAULT_LAYER;
 
-    if(argc>0)
+    if(argc>1)
     {
-    	for(int i=0; i < argc; ++i)
+    	for(int i=1; i < argc; ++i)
     	{
     		std::string option(argv[i]);
     		if(option == "--help")
@@ -45,7 +46,7 @@ int main(int argc, char *argv[])
     			}
     			else
     			{
-    				printf("--source option requires one argument.");
+    				printf("--source wymaga jednego argumentu.");
     				return -1;
     			}
     		}
@@ -59,13 +60,14 @@ int main(int argc, char *argv[])
 					}
 					catch (const std::invalid_argument& ia)
 					{
+						printf("Niepoprawy argument, to nie jest liczba! \n");
 						ErrorLogger::getInstance() >> "Invalid argument: " >> ia.what() >> '\n';
 						return 0;
 					}
 				}
 				else
 				{
-					printf("--iterations option requires one argument.");
+					printf("--iterations wymaga jednego argumentu.");
 					return -1;
 				}
 			}
@@ -79,19 +81,47 @@ int main(int argc, char *argv[])
 					}
 					catch (const std::invalid_argument& ia)
 					{
+						printf("Niepoprawy argument, to nie jest liczba! \n");
 						ErrorLogger::getInstance() >> "Invalid argument: " >> ia.what() >> '\n';
 						return 0;
 					}
 				}
 				else
 				{
-					printf("--object option requires one argument.");
+					printf("--object wymaga jednego argumentu.");
 					return -1;
 				}
 			}
     		else if(option == "-M" || option == "--measure")
     		{
     			measure = true;
+    		}
+    		else if(option == "-L" || option == "--layer")
+    		{
+    			if(i+1 < argc)
+				{
+					try
+					{
+						layer = std::stoi(std::string(argv[++i]));
+					}
+					catch (const std::invalid_argument& ia)
+					{
+						printf("Niepoprawy argument, to nie jest liczba! \n");
+						ErrorLogger::getInstance() >> "Invalid argument: " >> ia.what() >> '\n';
+						return 0;
+					}
+				}
+				else
+				{
+					printf("--layer wymaga jednego argumentu.");
+					return -1;
+				}
+    		}
+    		else
+    		{
+    			printf("%s",HELP_TEXT);
+    			printf("Niepoprawny argument: %s\n",option.c_str());
+    			return -1;
     		}
     	}
     }
@@ -106,20 +136,19 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
-    runRandomWalk(path, iterNum, rectNum,GPU_FLAG,measure);
+    runRandomWalk(path, iterNum, rectNum,GPU_FLAG,measure,layer);
 
-	/*	initCuda(argc,argv);
 
-        std::vector<unsigned int> testsSizes;
+//        std::vector<unsigned int> testsSizes;
 
-        for(int i = 5000; i <= 100000; i += 5000)
-            testsSizes.push_back(i);
+      /*  for(int i = 5000; i <= 100000; i += 5000)
+            testsSizes.push_back(i);*/
 
-        for(int i = 1000; i <= 10000000; i *= 10)
-            testsSizes.push_back(i);
+//        for(int i = 100000; i <= 500000; i += 50000)
+//            testsSizes.push_back(i);
         //testsSizes.push_back(99000);
 
-        TestGenerator gen(testsSizes);
+/*        TestGenerator gen(testsSizes);
         if(gen.generate())
         {
             ErrorLogger::getInstance() >> "Stworzono testy pomyslnie\n";
@@ -131,8 +160,9 @@ int main(int argc, char *argv[])
         else
         {
             ErrorLogger::getInstance() >> "Błąd przy tworzeniu testów\n";
-        }
-*/
+
+        }*/
+
 
     return 0;
 }

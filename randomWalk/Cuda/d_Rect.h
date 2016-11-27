@@ -45,7 +45,8 @@ public:
 	__device__ d_Rect createGaussianSurfaceY(floatingPoint factorY) const {return createGaussianSurface(1, factorY);}
 	__device__ d_Rect createGaussianSurface(floatingPoint factorX, floatingPoint factorY) const;
 	__device__ bool rectsCollision(d_Rect const& r2) const;
-	__device__ bool operator==(const d_Rect& r2) const;
+	__host__ __device__ bool operator==(const d_Rect& r2) const;
+	__host__ __device__ bool operator<(const d_Rect& r2) const;
 	__device__ bool operator!=(const d_Rect& r2) const { return !(*this == r2); }
 };
 #endif
