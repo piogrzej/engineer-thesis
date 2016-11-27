@@ -23,9 +23,9 @@ int main(int argc, char *argv[])
     bool measure =	DEFAULT_MEASURE;
     int layer =		DEFAULT_LAYER;
 
-    if(argc>0)
+    if(argc>1)
     {
-    	for(int i=0; i < argc; ++i)
+    	for(int i=1; i < argc; ++i)
     	{
     		std::string option(argv[i]);
     		if(option == "--help")
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     			}
     			else
     			{
-    				printf("--source option requires one argument.");
+    				printf("--source wymaga jednego argumentu.");
     				return -1;
     			}
     		}
@@ -60,14 +60,14 @@ int main(int argc, char *argv[])
 					}
 					catch (const std::invalid_argument& ia)
 					{
-						printf("Invalid argument, this isn't a valid number \n");
+						printf("Niepoprawy argument, to nie jest liczba! \n");
 						ErrorLogger::getInstance() >> "Invalid argument: " >> ia.what() >> '\n';
 						return 0;
 					}
 				}
 				else
 				{
-					printf("--iterations option requires one argument.");
+					printf("--iterations wymaga jednego argumentu.");
 					return -1;
 				}
 			}
@@ -81,14 +81,14 @@ int main(int argc, char *argv[])
 					}
 					catch (const std::invalid_argument& ia)
 					{
-						printf("Invalid argument, this isn't a valid number \n");
+						printf("Niepoprawy argument, to nie jest liczba! \n");
 						ErrorLogger::getInstance() >> "Invalid argument: " >> ia.what() >> '\n';
 						return 0;
 					}
 				}
 				else
 				{
-					printf("--object option requires one argument.");
+					printf("--object wymaga jednego argumentu.");
 					return -1;
 				}
 			}
@@ -106,20 +106,22 @@ int main(int argc, char *argv[])
 					}
 					catch (const std::invalid_argument& ia)
 					{
-						printf("Invalid argument, this isn't a valid number \n");
+						printf("Niepoprawy argument, to nie jest liczba! \n");
 						ErrorLogger::getInstance() >> "Invalid argument: " >> ia.what() >> '\n';
 						return 0;
 					}
 				}
 				else
 				{
-					printf("--layer option requires one argument.");
+					printf("--layer wymaga jednego argumentu.");
 					return -1;
 				}
     		}
     		else
     		{
-    			printf("Invalid argument %s\n",option.c_str());
+    			printf("%s",HELP_TEXT);
+    			printf("Niepoprawny argument: %s\n",option.c_str());
+    			return -1;
     		}
     	}
     }

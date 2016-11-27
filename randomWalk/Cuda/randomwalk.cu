@@ -91,9 +91,9 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,
     output[threadIdx.x]=0;
     root->createStack(threadIdx.x,quadTreeMn->maxlevel * 3 + 1); // tyle wystarczy do trawersowania po drzewie
     d_Rect start = quadTreeMn->start;
-    if(threadIdx.x == 0)
-        printf("square: %f %f %f %f\n",start.topLeft.x,start.topLeft.y,
-                                        start.bottomRight.x,start.bottomRight.y);
+    //if(threadIdx.x == 0)
+        //printf("square: %f %f %f %f\n",start.topLeft.x,start.topLeft.y,
+                                        //start.bottomRight.x,start.bottomRight.y);
 
     d_Rect square = root->createGaussianSurfFrom(start, 1.5);
 
@@ -102,7 +102,7 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,
         r = curand_uniform(&state);
         r = gen->nextIndex(threadIdx.x);
         p = square.getPointFromNindex(r, NSAMPLE);
-        printf("%f %f %f\n",r,p.x,p.y);
+        //printf("%f %f %f\n",r,p.x,p.y);
         if(false == root->isInBounds(p))
         {
             broken = true;

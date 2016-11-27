@@ -17,7 +17,7 @@ void runRandomWalk(char* path, int ITER_NUM, int RECT_ID, bool GPU_FLAG,bool mea
 	else
 		printf("[CPU]Ile sciezek trafiło do innego elementu: %f\%\n",getAvgPathLen(path,ITER_NUM,RECT_ID,measure,layer)*100);
 	auto t2 = Clock::now();
-	std::cout << "Execution time: "
+	std::cout << "Czas wykonania: "
 	        << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count()
 	        << " ms" << std::endl;
 }
@@ -63,7 +63,7 @@ RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,RandGen& 
         r = myrand() / (floatingPoint)(MY_RAND_MAX); // zostawiamy żeby czas dzialania sie nie zmienil
         r =gen.nextIndex(iterId);
         p = square.getPointFromNindex(r, NSAMPLE);
-        printf("%f %f %f\n",r,p.x,p.y);
+        //printf("%f %f %f\n",r,p.x,p.y);
         if(false == mainTree->isInBounds(p))
         {
             broken = true;
