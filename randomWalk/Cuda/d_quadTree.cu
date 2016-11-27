@@ -100,7 +100,7 @@ __device__ d_Rect d_QuadTree::drawBiggestSquareAtPoint(point2 p)
 {
     bool isCollision = false;
     bool maxReached = false;
-    const floatingPoint MIN_DIST = .1f;
+    const floatingPoint MIN_DIST = .095f;
     floatingPoint dist;
 
     d_Rect output(p.x -1,p.y -1, p.x +1,p.y +1);

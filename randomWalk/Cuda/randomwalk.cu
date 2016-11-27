@@ -19,7 +19,7 @@
 
 // TO DO: brzydkie kopiowanie, trzeba poprawić
 // TO DO: wykrywanie ilosci threadow, thread/block, (cudaDeviceProp)
-QuadTreeManager* randomWalkCudaInit(char* path,bool measure,int RECT_ID)
+QuadTreeManager* randomWalkCudaInit(char* path,bool measure,int RECT_ID,int layerID)
 {
 	d_Parser parser("<<");
 	if(true==measure)
@@ -34,8 +34,8 @@ QuadTreeManager* randomWalkCudaInit(char* path,bool measure,int RECT_ID)
 	{
 		parser.parse(path);
 	}
-    const std::vector<d_Rect>& layer = parser.getLayerAt(0); // na razie 0 warstwa hardcode
-    d_Rect const& spaceSize = parser.getLayerSize(0);
+    const std::vector<d_Rect>& layer = parser.getLayerAt(layerID);
+    d_Rect const& spaceSize = parser.getLayerSize(layerID);
 
     QuadTreeManager* treeMng;
     if(true==measure)
@@ -62,7 +62,9 @@ __device__ int d_getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand){
 }
 
 __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,
-        unsigned int *output,dTreePtr** stack,
+        unsigned int *output,
+        d_Rect* d_rectOutput,
+        dTreePtr** stack,
         RandGen* gen,
         unsigned long long randomSeed=time(NULL))
 {
@@ -85,31 +87,41 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,
     d_Rect rectOutput;
     point2 p;
     floatingPoint r;
-    bool isCollison;
+    bool isCollison,broken=false;
     output[threadIdx.x]=0;
     root->createStack(threadIdx.x,quadTreeMn->maxlevel * 3 + 1); // tyle wystarczy do trawersowania po drzewie
     d_Rect start = quadTreeMn->start;
-   // if(threadIdx.x == 0)
-     //   printf("square: %f %f %f %f\n",start.topLeft.x,start.topLeft.y,
-      //                                  start.bottomRight.x,start.bottomRight.y);
+    if(threadIdx.x == 0)
+        printf("square: %f %f %f %f\n",start.topLeft.x,start.topLeft.y,
+                                        start.bottomRight.x,start.bottomRight.y);
 
     d_Rect square = root->createGaussianSurfFrom(start, 1.5);
 
     do
     {
         r = curand_uniform(&state);
-        p = square.getPointFromNindex(gen->nextIndex(threadIdx.x), NSAMPLE);
+        r = gen->nextIndex(threadIdx.x);
+        p = square.getPointFromNindex(r, NSAMPLE);
+        printf("%f %f %f\n",r,p.x,p.y);
         if(false == root->isInBounds(p))
         {
-            //broken = true;
+            broken = true;
             break;
         }
         square = root->drawBiggestSquareAtPoint(p);
-         isCollison = root->checkCollisons(p, rectOutput);
-        if(!(rectOutput==quadTreeMn->start))
-        	output[threadIdx.x]=1;
+        isCollison = root->checkCollisons(p, rectOutput);
     }
     while (false == isCollison);
+    if(!(rectOutput==quadTreeMn->start)) output[threadIdx.x]=1;
+    if(false == broken) d_rectOutput[threadIdx.x] = rectOutput;
+    else
+    {
+    	d_Rect tmp;
+    	tmp.topLeft.x=-1;
+    	tmp.topLeft.y=-1;
+    	tmp.bottomRight = tmp.topLeft;
+    	d_rectOutput[threadIdx.x] = tmp;
+    }
    // if(threadIdx.x == 0)
   //  	printf("%d square: %f %f %f %f\n",threadIdx.x,rectOutput.topLeft.x,rectOutput.topLeft.y,
    //                                    rectOutput.bottomRight.x,rectOutput.bottomRight.y);
@@ -120,7 +132,7 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,
         gen->freeStck();
 }
 
-void randomWalkCudaWrapper(int dimThread,QuadTreeManager* quadTree, unsigned int *output,RandGen &gen,unsigned long long randomSeed)
+void randomWalkCudaWrapper(int dimThread,QuadTreeManager* quadTree, unsigned int *output,d_Rect* d_rectOutput,RandGen &gen,unsigned long long randomSeed)
 {
 	dTreePtr** stack;
 	RandGen* dGen;
@@ -128,7 +140,7 @@ void randomWalkCudaWrapper(int dimThread,QuadTreeManager* quadTree, unsigned int
     checkCudaErrors(cudaMalloc((void **)&stack,sizeof(dTreePtr**) * dimThread));
     checkCudaErrors(cudaMemcpy(dGen,&gen,sizeof(RandGen),cudaMemcpyHostToDevice));
 
-    randomWalkCuda<<<1,dimThread>>>(quadTree,output,stack,dGen,randomSeed);
+    randomWalkCuda<<<1,dimThread>>>(quadTree,output,d_rectOutput,stack,dGen,randomSeed);
     cudaDeviceSynchronize();
     checkCudaErrors(cudaFree(stack));
 }

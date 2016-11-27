@@ -21,7 +21,8 @@ int main(int argc, char *argv[])
     int rectNum = 	DEFAULT_RECT;
     int iterNum = 	DEFAULT_ITERATION;
     bool measure =	DEFAULT_MEASURE;
-/*
+    int layer =		DEFAULT_LAYER;
+
     if(argc>0)
     {
     	for(int i=0; i < argc; ++i)
@@ -59,6 +60,7 @@ int main(int argc, char *argv[])
 					}
 					catch (const std::invalid_argument& ia)
 					{
+						printf("Invalid argument, this isn't a valid number \n");
 						ErrorLogger::getInstance() >> "Invalid argument: " >> ia.what() >> '\n';
 						return 0;
 					}
@@ -79,6 +81,7 @@ int main(int argc, char *argv[])
 					}
 					catch (const std::invalid_argument& ia)
 					{
+						printf("Invalid argument, this isn't a valid number \n");
 						ErrorLogger::getInstance() >> "Invalid argument: " >> ia.what() >> '\n';
 						return 0;
 					}
@@ -93,6 +96,31 @@ int main(int argc, char *argv[])
     		{
     			measure = true;
     		}
+    		else if(option == "-L" || option == "--layer")
+    		{
+    			if(i+1 < argc)
+				{
+					try
+					{
+						layer = std::stoi(std::string(argv[++i]));
+					}
+					catch (const std::invalid_argument& ia)
+					{
+						printf("Invalid argument, this isn't a valid number \n");
+						ErrorLogger::getInstance() >> "Invalid argument: " >> ia.what() >> '\n';
+						return 0;
+					}
+				}
+				else
+				{
+					printf("--layer option requires one argument.");
+					return -1;
+				}
+    		}
+    		else
+    		{
+    			printf("Invalid argument %s\n",option.c_str());
+    		}
     	}
     }
 
@@ -106,19 +134,19 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
-    runRandomWalk(path, iterNum, rectNum,GPU_FLAG,measure);
-*/
+    runRandomWalk(path, iterNum, rectNum,GPU_FLAG,measure,layer);
 
-        std::vector<unsigned int> testsSizes;
+
+//        std::vector<unsigned int> testsSizes;
 
       /*  for(int i = 5000; i <= 100000; i += 5000)
             testsSizes.push_back(i);*/
 
-        for(int i = 100000; i <= 500000; i += 50000)
-            testsSizes.push_back(i);
+//        for(int i = 100000; i <= 500000; i += 50000)
+//            testsSizes.push_back(i);
         //testsSizes.push_back(99000);
 
-        TestGenerator gen(testsSizes);
+/*        TestGenerator gen(testsSizes);
         if(gen.generate())
         {
             ErrorLogger::getInstance() >> "Stworzono testy pomyslnie\n";
@@ -130,7 +158,7 @@ int main(int argc, char *argv[])
         {
             ErrorLogger::getInstance() >> "Błąd przy tworzeniu testów\n";
 
-        }
+        }*/
 
 
     return 0;

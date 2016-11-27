@@ -42,6 +42,7 @@ public:
     point   getPointFromNindex(int index, int Nsample);
     friend  std::ostream& operator<< (std::ostream&, RectHost const&);
     bool    operator==(const RectHost& r2) const;
+    bool    operator<(const RectHost& r2) const;
     bool    operator!=(const RectHost& r2) const { return !(*this == r2); }
 };
 

@@ -2,9 +2,9 @@
 #define DEFINES_H
 
 //main.cpp defines
-#define DEFAULT_PATH "../../tests/test"		//DOMYSLNA SCIEZKA DO PLIKU
+#define DEFAULT_PATH "../tests/test"		//DOMYSLNA SCIEZKA DO PLIKU
 #define DEFAULT_RECT 10						//DOMYSLNY ID OBIEKTU
-#define DEFAULT_ITERATION 1000				//DOMYSLNA ILOSC ITERACJI
+#define DEFAULT_ITERATION 1				//DOMYSLNA ILOSC ITERACJI
 //loger.h defines
 #define LOG_FILE_NAME "errorLog.txt"
 #define TIME_LOG_NAME "timeLog.txt"
@@ -25,16 +25,18 @@
 #define NSAMPLE 200							//NA ILE CZESCI JEST DZIELONY OBWOD ELEMENTU
 #define DEFAULT_GPU_USAGE 0					//CZY DOMYSLNIE UZYWAMY GPU
 #define DEFAULT_MEASURE 0					//CZY DOMYSLNIE UZYWAMY MAUSRE MODE
+#define DEFAULT_LAYER 0						//NUMER DOMYSLNEJ WARSTWY
 
 #define HELP_TEXT "\t-S\t--source\t\tsource file path\
 \n\t-M\t--measure\t\tturns on measure mode\
-\n\t-O\t--object\t\tobject ID from [0-(n-1)]\
+\n\t-O\t--object\t\tobject ID\
 \n\t-I\t--iterations\t\tnumber of iterations\
 \n\t-G\t--GPU\t\t\trun CUDA verison of random walk\
+\n\t-L\t--layer\t\t\tlayer numeber\
 \n\t\t--help\t\t\tdisplay this information\
 \n\tYou don't need to specify any options\
 \n\tin that case program will be lunched\
 \n\twith default options, wich are:\
-\n\t-G -I 1000 -O 10 -S ../tests/test\n"
+\n\t-G -I 1000 -O 10 -S ../tests/test -L 0\n"
 
 #endif //DEFINES_H
