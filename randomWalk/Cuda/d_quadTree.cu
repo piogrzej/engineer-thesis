@@ -153,7 +153,7 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
 
     d_QuadTree*	nodes = treeManager->nodes;
     d_QuadTree* oldNode, *node = this;
-    dTreePtr* stackPtr = stack[threadIdx.x];
+    dTreePtr* stackPtr = stack[(blockIdx.x * treeManager->threadInBlock) + threadIdx.x];
     bool collisions[NODES_NUMBER];
     *stackPtr++ = nullptr; // koniec petli gdy tu trafimy
     //printf("Col: %f %f %f %f\n",r.topLeft.x,r.topLeft.y,r.bottomRight.x,r.bottomRight.y);

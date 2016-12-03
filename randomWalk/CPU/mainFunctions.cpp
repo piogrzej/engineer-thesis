@@ -12,14 +12,22 @@ typedef std::chrono::high_resolution_clock Clock;
 void runRandomWalk(char* path, int ITER_NUM, int RECT_ID, bool GPU_FLAG,bool measure,int layer)
 {
 	auto t1 = Clock::now();
+	floatingPoint result;
+	std::string name;
 	if(GPU_FLAG)
-		printf("[GPU]Ile sciezek trafiło do innego elementu: %f\%\n",getAvgPathLenCUDA(path,ITER_NUM,RECT_ID,measure,layer)*100);
+	{
+		name = "[GPU]";
+		result  = getAvgPathLenCUDA(path,ITER_NUM,RECT_ID,measure,layer);
+	}
 	else
-		printf("[CPU]Ile sciezek trafiło do innego elementu: %f\%\n",getAvgPathLen(path,ITER_NUM,RECT_ID,measure,layer)*100);
+	{
+		name = "[CPU]";
+		result = getAvgPathLen(path,ITER_NUM,RECT_ID,measure,layer);
+	}
 	auto t2 = Clock::now();
-	std::cout << "Czas wykonania: "
-	        << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count()
-	        << " ms" << std::endl;
+	printf("%s Ile sciezek trafiło do innego elementu: %f\%\n",name.c_str(), result * 100.);
+	auto timeResult = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+	std::cout << "Czas wykonania: " <<  timeResult  << " ms" << std::endl;
 }
 
 void createTree(Tree * mainTree, Layer const& layer){

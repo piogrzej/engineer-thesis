@@ -43,6 +43,7 @@ struct QuadTreeManager
 
     int rectsCount;
     int maxlevel;
+    int threadInBlock;
 };
 
 //czyli od rect[startOff] do rect[endOff] sa rect dla danego noda
@@ -83,7 +84,7 @@ public:
         floatingPoint centerY =  bounds.topLeft.y + (bounds.bottomRight.y - bounds.topLeft.y) / 2.;
         return make_point2(centerX,centerY);
     }
-    __device__ void createStack(int id,int size) { stack[id] = new dTreePtr[size]; } // lazy fetch
+    __device__ void createStack(int id,int size) { stack[id] = new dTreePtr[size]; }
     __device__ void freeStack(int id) { delete stack[id]; }
     __device__ bool isInBounds(point2 const& p);
     __device__ bool isInBounds(d_Rect const& r);
