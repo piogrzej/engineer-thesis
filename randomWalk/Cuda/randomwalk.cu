@@ -75,14 +75,12 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,
 	root->setStack(stack);
 	quadTreeMn->threadInBlock = threadInBlock;
 
-	//printf("\t%d \n",threadIdx.x);
-    /*inicjalizacja silnika random*/
+
     curandState_t state;
     curand_init(randomSeed*(threadIdx.x+1), /* the seed controls the sequence of random values that are produced */
             blockIdx.x, /* the sequence number is only important with multiple cores */
             0, /* the offset is how much extra we advance in the sequence for each call, can be 0 */
             &state);
-    //przyklad uzycia: printf("%f\n",curand_uniform (&state));, genruje float w zakresie od 0-1
     d_Rect rectOutput;
     point2 p;
     floatingPoint r;
@@ -90,15 +88,13 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,
     output[id] = 0;
     root->createStack(id,quadTreeMn->maxlevel * 3 + 1); // tyle wystarczy do trawersowania po drzewie
     d_Rect start = quadTreeMn->start;
-
     d_Rect square = root->createGaussianSurfFrom(start, 1.5);
 
     do
     {
-    	int ind = gen->nextIndex(threadIdx.x);
         r = curand_uniform(&state);
+    	int ind = gen->nextIndexRand(r);
         p = square.getPointFromNindex(ind, NSAMPLE);
-       // printf("%f    %f   %d\n",p.x,p.y,ind);
         if(false == root->isInBounds(p))
         {
             broken = true;

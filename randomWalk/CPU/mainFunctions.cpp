@@ -37,13 +37,6 @@ void createTree(Tree * mainTree, Layer const& layer){
     }
 }
 
-int getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand){
-    for (int i = 0; i <= NSAMPLE; ++i)
-    {
-        if (intg[i] <= rand && intg[i + 1] > rand) 
-            return i;
-    }
-}
 
 RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,RandGen& gen,int iterId)
 {   
@@ -61,16 +54,15 @@ RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,RandGen& 
     rng_init(1);//inicjalizacja genaeratora
 #endif
 
-    //ErrorLogger::getInstance() << "Starting: " << R << "\n";
     RectHost square = mainTree->creatGaussianSurfFrom(R, 1.5);
 
     bool broken = false;
 
     do
     {
-        r = myrand() / (floatingPoint)(MY_RAND_MAX); // zostawiamy żeby czas dzialania sie nie zmienil
-        r =gen.nextIndex(iterId);
-        p = square.getPointFromNindex(r, NSAMPLE);
+        r = myrand() / (floatingPoint)(MY_RAND_MAX);
+        index = gen.nextIndexRand(r);
+        p = square.getPointFromNindex(index, NSAMPLE);
         //printf("%f %f %f\n",r,p.x,p.y);
         if(false == mainTree->isInBounds(p))
         {
@@ -88,13 +80,13 @@ RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,RandGen& 
     }
     while (false == isCollison);
 
-   // ErrorLogger::getInstance() << "Number of path's points: " << pointCount << "\n";
+    ErrorLogger::getInstance() << "Number of path's points: " << pointCount << "\n";
 
-   // if (false == broken)
-   //     ErrorLogger::getInstance() << "Ending: " << output << "\n";
+    if (false == broken)
+        ErrorLogger::getInstance() << "Ending: " << output << "\n";
 
-   // else
-   //     ErrorLogger::getInstance() << "Random walk is out of the bounds!\n";
+    else
+        ErrorLogger::getInstance() << "Random walk is out of the bounds!\n";
     
     return output;
 }

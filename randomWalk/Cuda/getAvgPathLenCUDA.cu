@@ -50,7 +50,7 @@ void saveOutput(d_Rect rectOutput[],int ITER_NUM)
 floatingPoint getAvgPathLenCUDA(char* path, int ITER_NUM,int RECT_ID,bool measure,int layerID)
 {
     RandGen gen;
-    gen.initDeterm(ITER_NUM);
+    gen.initRand();
     //tworzenie drzewa
     QuadTreeManager* qtm = randomWalkCudaInit(path,measure,RECT_ID,layerID);
     //alokowanie pamieci na wynik

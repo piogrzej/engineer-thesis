@@ -83,8 +83,7 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure,
 #endif
 
     RandGen gen;
-    gen.initDeterm(ITER_NUM);
-    gen.initPtrs();
+    gen.initRand();
     if(true==measure)
 	{
     	Timer::getInstance().start("_RandomWalk Total");
@@ -98,7 +97,6 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure,
         foundedMap[founded]++;
         if(!(founded == start)) sumOfOtherRects++;
         sumPointCount += counter;
-       // std::cout << founded << std::endl;
     }
 
     if(true==measure)
@@ -114,6 +112,5 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure,
     	Timer::getInstance().printResults();
     }
     ErrorLogger::getInstance() >> "END OF TEST!\n";
-    //return (floatingPoint)sumPointCount / (floatingPoint)ITER_NUM;
     return (floatingPoint)sumOfOtherRects / (floatingPoint)ITER_NUM;
 }
