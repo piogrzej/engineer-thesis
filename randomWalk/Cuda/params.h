@@ -25,16 +25,16 @@ struct Params
  // RANDOM WALK params
  QuadTreeManager* QTM;
     	const int QUAD_TREE_CHILD_NUM = 4;
-    	const int MAX_LEVEL = 10;
-    	const int MIN_RECT_IN_NODE = 16;
+    	const int MAX_LEVEL = 11;
+    	const int MIN_RECT_IN_NODE = 4;
     	const int MAX_NUM_NODES = (1 - pow(QUAD_TREE_CHILD_NUM,MAX_LEVEL)) /
 			          (1 - QUAD_TREE_CHILD_NUM);
     	      int TOTAL_RECT;
 
     	  __device__ __host__ int nodesCountAtLevel(int level)
     	  {
-    	    return int((1 - powf(4,level)) /
-    	  	 (1 - 4));
+    	    return int((pow(4,level) - 1) /
+    	  	 (3));
     	  }
 /*
  * MIN_RECT_IN_NODE - inicjalnie root ma wszystkie recty rozdysponowuje je do osiagniecia tej liczby

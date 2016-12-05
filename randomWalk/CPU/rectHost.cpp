@@ -51,26 +51,35 @@ bool RectHost::rectsCollision(RectHost const& r2) const
 	return false;
 }
 
-bool RectHost::rectContains(point p) const {
-    if ((p.x >= topLeft.x) && (p.y >= topLeft.y) && (p.x <= bottomRight.x) && (p.y <= bottomRight.y)) 
+bool RectHost::rectContains(point p) const
+{
+    if ((p.x >= topLeft.x) &&
+        (p.y >= topLeft.y) &&
+        (p.x <= bottomRight.x) &&
+        (p.y <= bottomRight.y))
         return true;
-    else return false;
+    else
+        return false;
 }
 
 bool RectHost::rectContains(RectHost r) const {
-    if(r.topLeft.x>this->topLeft.x && r.topLeft.y>this->topLeft.y && r.bottomRight.x<this->bottomRight.x && r.bottomRight.y<this->bottomRight.y)
+    if(r.topLeft.x > topLeft.x &&
+       r.topLeft.y > topLeft.y &&
+       r.bottomRight.x < bottomRight.x &&
+       r.bottomRight.y < bottomRight.y)
         return true;
-    else return false;
+    else
+        return false;
 }
 
 RectHost  RectHost::createGaussianSurfaceX(floatingPoint factorX) const
 {
-    return createGaussianSurface(factorX, 1);
+    return createGaussianSurface(factorX, 1.);
 }
 
 RectHost  RectHost::createGaussianSurfaceY(floatingPoint factorY) const
 {
-    return createGaussianSurface(1, factorY);
+    return createGaussianSurface(1., factorY);
 }
 RectHost RectHost::createGaussianSurface(floatingPoint factorX, floatingPoint factorY) const 
 {
@@ -82,10 +91,10 @@ RectHost RectHost::createGaussianSurface(floatingPoint factorX, floatingPoint fa
     vectorX *= factorX;
     vectorY *= factorY;
 
-    gaussSurface.topLeft.x = int(round(middleX + vectorX));
-    gaussSurface.topLeft.y = int(round(middleY + vectorY));
-    gaussSurface.bottomRight.x = int(round(middleX - vectorX));
-    gaussSurface.bottomRight.y = int(round(middleY - vectorY));
+    gaussSurface.topLeft.x = middleX + vectorX;
+    gaussSurface.topLeft.y = middleY + vectorY;
+    gaussSurface.bottomRight.x = middleX - vectorX;
+    gaussSurface.bottomRight.y = middleY - vectorY;
 
     return gaussSurface;
 }
@@ -96,10 +105,10 @@ int RectHost::getPerimeter() const
 }
 
 point RectHost::getPointFromNindex(int index, int Nsample) {//MAM NADZIEJE ZE NIGDZIE SIE NIE WALNALEM BO TO SKOMPLIKOWANA GEOMETRIA
-    int perimeter = this->getPerimeter();
+	floatingPoint perimeter = this->getPerimeter();
     floatingPoint vector = (floatingPoint)perimeter / (floatingPoint)Nsample;
-    int heigth = this->getHeigth();
-    int width = this->getWidth();
+    floatingPoint heigth = this->getHeigth();
+    floatingPoint width = this->getWidth();
     point ret;
     if (index*vector < width){
         ret.x = (int)((index-1)*vector +vector / 2 + this->topLeft.x);
@@ -160,6 +169,18 @@ bool RectHost::operator==(const RectHost & r2) const
     else
         return false;
 }
+
+bool RectHost::operator<(const RectHost & r2) const
+{
+    if (r2.topLeft.x < topLeft.x &&
+        r2.topLeft.y < topLeft.y &&
+        r2.bottomRight.x < bottomRight.x &&
+        r2.bottomRight.y < bottomRight.y)
+        return true;
+    else
+        return false;
+}
+
 std::ostream& operator<< (std::ostream &wyjscie, RectHost const& ex)
 {
     wyjscie << "Rect TL: x:" << ex.topLeft.x<<", y:" << ex.topLeft.y << "  BR: x:" << ex.bottomRight.x << ", y:" << ex.bottomRight.y;

@@ -49,12 +49,26 @@ __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
         {
             for(int i=0; i < NODES_NUMBER; ++i)
             {
-                d_QuadTree* node = &nodes[current->getChlidren(i)];
+            	int id = current->getChildren(i);
+                d_QuadTree* node = &nodes[id];
                 if (node->bounds.contains(p))
                 {
                     next = node;
                     break;
                 }
+            }
+            if(next == current)
+            {
+            	printf("b: lvl: %d %flf %lf %lf %lf\n",current->getLevel(),current->bounds.topLeft.x,current->bounds.topLeft.y,
+            								   current->bounds.bottomRight.x,current->bounds.bottomRight.y);
+            	  for(int i=0; i < NODES_NUMBER; ++i)
+					{
+							  int id = current->getChildren(i);
+							  d_QuadTree* node = &nodes[id];
+							printf("ch: lvl: %d %flf %lf %lf %lf\n",node->getLevel(),node->bounds.topLeft.x,node->bounds.topLeft.y,
+									node->bounds.bottomRight.x,node->bounds.bottomRight.y);
+					}
+            	  return false;
             }
         }
         //tutaj dla kazdego sprawdzenie bisectory lines
@@ -63,7 +77,7 @@ __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
         else if(false == current->isSplited() || next == nullptr)
             return false;
         else
-            current=next;
+            current = next;
     }
 }
 
@@ -72,7 +86,7 @@ __device__ bool d_QuadTree::checkCollisionObjs(point2 p, d_Rect &r)
 	d_Rect* rects = treeManager->rects;
     for(int i = startOwnOff; i < endOff; ++i)
     {
-        if(true == rects[i].contains(p))
+        if(rects[i].contains(p))
         {
             r = d_Rect(rects[i].topLeft,
                        rects[i].bottomRight);
@@ -86,7 +100,7 @@ __device__ d_Rect d_QuadTree::drawBiggestSquareAtPoint(point2 p)
 {
     bool isCollision = false;
     bool maxReached = false;
-    const floatingPoint MIN_DIST = .1f;
+    const floatingPoint MIN_DIST = .095f;
     floatingPoint dist;
 
     d_Rect output(p.x -1,p.y -1, p.x +1,p.y +1);
@@ -132,20 +146,22 @@ __device__ d_Rect d_QuadTree::drawBiggestSquareAtPoint(point2 p)
     return output;
 }
 
-__device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignore)//FUNKCJA DO PRZEPISANIA OD NOWA
+__device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignore)
 {
     if (false == isInBounds(r))
         return true;
 
     d_QuadTree*	nodes = treeManager->nodes;
     d_QuadTree* oldNode, *node = this;
-    dTreePtr* stackPtr = stack[threadIdx.x];
+    dTreePtr* stackPtr = stack[(blockIdx.x * treeManager->threadInBlock) + threadIdx.x];
     bool collisions[NODES_NUMBER];
     *stackPtr++ = nullptr; // koniec petli gdy tu trafimy
     //printf("Col: %f %f %f %f\n",r.topLeft.x,r.topLeft.y,r.bottomRight.x,r.bottomRight.y);
 
     while (node != nullptr)
     {
+        if (node->checkCollisionsWithObjs(r, ignore))
+            return true;
 
         if (node->isSplited())
         {
@@ -153,7 +169,7 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
 #pragma unroll
             for (int i = 0; i < NODES_NUMBER; ++i)
             {
-                collisions[i] = nodes[node->getChlidren(i)].getBounds().rectsCollision(r);//czy istnieje nodes[node->getChlidren(i)]?
+                collisions[i] = nodes[node->getChildren(i)].getBounds().rectsCollision(r);//czy istnieje nodes[node->getChlidren(i)]?
             }
         }
         else
@@ -165,11 +181,6 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
 
         if (false == checkIsAnyCollision(collisions))
         {
-            if (node->checkCollisionsWithObjs(r, ignore))
-            {
-                //printf("jest kolizja\n");
-                return true;
-            }
             node = *--stackPtr;
         }
         else
@@ -179,17 +190,18 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
             {
                 if (collisions[i])
                 {
-                    node = &(nodes[node->getChlidren(i)]);
+                    node = &(nodes[node->getChildren(i)]);
                     break;
                 }
             }
-
-           oldNode->addNodesToStack(stackPtr, node, collisions);
-          /*  for (int i = 0; i < NODES_NUMBER; ++i)
+            d_QuadTree* nodes = treeManager->nodes;
+        #pragma unroll
+            for (int i = 0; i < NODES_NUMBER; ++i)
             {
-                if (collisions[i] && node != &(nodes[oldNode->getChlidren(i)]))
-                    *stackPtr++ = &(nodes[oldNode->getChlidren(i)]);
-            }*/
+                if (collisions[i] && node != &(nodes[oldNode->children[i]]))
+                    *stackPtr++ = &(nodes[oldNode->children[i]]);
+            }
+        //   oldNode->addNodesToStack(stackPtr, node, collisions);
         }
     }
     return false;
@@ -206,23 +218,6 @@ __device__ bool d_QuadTree::checkIsAnyCollision(bool collisions[])//FUNKCJA DO P
     return false;
 }
 
-__device__ void d_QuadTree::addNodesToStack(dTreePtr* stackPtr,d_QuadTree* except, bool collisions[])//FUNKCJA DO PRZEPISANIA OD NOWA
-{
-    d_QuadTree* nodes = treeManager->nodes;
- //   printf("s %d o %d e %d\n",startOff,startOwnOff,endOff);
-//#pragma unroll
-    for (int i = 0; i < NODES_NUMBER; ++i)
-    {
-    //    printf("ch %d     %d",i,chlildren[i]);
-    //	int child = chlildren[i];
-   // 	child += 1;
-        if (collisions[i] && except != &(nodes[chlildren[i]]))
-            *stackPtr++ = &(nodes[chlildren[i]]);
-  //      printf("				TTTTTTTTT\n");
-
-    }
-}
-
 __device__ bool d_QuadTree::checkCollisionsWithObjs(d_Rect const& r, const d_Rect &ignore)
 {
     d_Rect* rects = treeManager->rects;
@@ -237,7 +232,6 @@ __device__ d_Rect d_QuadTree::createGaussianSurfFrom(d_Rect const & r, floatingP
 {
     if (factor < 1)
     {
-        //ErrorLogger::getInstance() >> "CreateGaussian: Nieprawidlowy wspolczynnik!\n";
         printf("CreateGaussian: Nieprawidlowy wspolczynnik!\n");
         return r;
     }

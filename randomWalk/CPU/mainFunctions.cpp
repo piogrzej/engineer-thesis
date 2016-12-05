@@ -9,17 +9,25 @@
 #include <chrono>
 typedef std::chrono::high_resolution_clock Clock;
 
-void runRandomWalk(char* path, int ITER_NUM, int RECT_ID, bool GPU_FLAG,bool measure,int layer_id)
+void runRandomWalk(char* path, int ITER_NUM, int RECT_ID, bool GPU_FLAG,bool measure,int layer)
 {
 	auto t1 = Clock::now();
+	floatingPoint result;
+	std::string name;
 	if(GPU_FLAG)
-		printf("[GPU]Ile sciezek trafiło do innego elementu: %f\%\n",getAvgPathLenCUDA(path,ITER_NUM,RECT_ID,measure,layer_id)*100);
+	{
+		name = "[GPU]";
+		result  = getAvgPathLenCUDA(path,ITER_NUM,RECT_ID,measure,layer);
+	}
 	else
-		printf("[CPU]Ile sciezek trafiło do innego elementu: %f\%\n",getAvgPathLen(path,ITER_NUM,RECT_ID,measure,layer_id)*100);
+	{
+		name = "[CPU]";
+		result = getAvgPathLen(path,ITER_NUM,RECT_ID,measure,layer);
+	}
 	auto t2 = Clock::now();
-	std::cout << "Execution time: "
-	        << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count()
-	        << " ms" << std::endl;
+	printf("%s Ile sciezek trafiło do innego elementu: %f\%\n",name.c_str(), result * 100.);
+	auto timeResult = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+	std::cout << "Czas wykonania: " <<  timeResult  << " ms" << std::endl;
 }
 
 void createTree(Tree * mainTree, Layer const& layer){
@@ -37,7 +45,7 @@ int getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand){
     }
 }
 
-RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,REAL64_t intg[NSAMPLE + 1])
+RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,RandGen& gen,int iterId)
 {   
     RectHost output;
     point p;
@@ -53,15 +61,17 @@ RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,REAL64_t 
     rng_init(1);//inicjalizacja genaeratora
 #endif
 
-    ErrorLogger::getInstance() << "Starting: " << R << "\n";
+    //ErrorLogger::getInstance() << "Starting: " << R << "\n";
     RectHost square = mainTree->creatGaussianSurfFrom(R, 1.5);
 
     bool broken = false;
 
     do
     {
-        r = myrand() / (floatingPoint)(MY_RAND_MAX);
-        p = square.getPointFromNindex(getIndex(intg, r), NSAMPLE);
+        r = myrand() / (floatingPoint)(MY_RAND_MAX); // zostawiamy żeby czas dzialania sie nie zmienil
+        r =gen.nextIndex(iterId);
+        p = square.getPointFromNindex(r, NSAMPLE);
+        //printf("%f %f %f\n",r,p.x,p.y);
         if(false == mainTree->isInBounds(p))
         {
             broken = true;
@@ -78,13 +88,13 @@ RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,REAL64_t 
     }
     while (false == isCollison);
 
-    ErrorLogger::getInstance() << "Number of path's points: " << pointCount << "\n";
+   // ErrorLogger::getInstance() << "Number of path's points: " << pointCount << "\n";
 
-    if (false == broken)
-        ErrorLogger::getInstance() << "Ending: " << output << "\n";
+   // if (false == broken)
+   //     ErrorLogger::getInstance() << "Ending: " << output << "\n";
 
-    else
-        ErrorLogger::getInstance() << "Random walk is out of the bounds!\n";
+   // else
+   //     ErrorLogger::getInstance() << "Random walk is out of the bounds!\n";
     
     return output;
 }

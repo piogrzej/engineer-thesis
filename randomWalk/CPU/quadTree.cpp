@@ -72,8 +72,8 @@ void Tree::clear()
 
 void Tree::split()
 {
-    floatingPoint subWidth = this->bounds.topLeft.x + (bounds.getWidth() / 2);
-    floatingPoint subHeigth = this->bounds.topLeft.y + (bounds.getHeigth() / 2);
+    floatingPoint subWidth = bounds.topLeft.x + (bounds.getWidth() / 2);
+    floatingPoint subHeigth = bounds.topLeft.y + (bounds.getHeigth() / 2);
     RectHost ULbound, URbound, LRbound, LLbound;
     //UL
     ULbound.topLeft = this->bounds.topLeft;
@@ -151,13 +151,19 @@ bool Tree::checkCollisions(RectHost const& r, const RectHost &ignore)
         return true;
 
     Tree* oldNode, *node = this;
-    TreePtr* stack = new TreePtr[MAX_LEVELS * 3];
+    TreePtr* stack = new TreePtr[MAX_LEVELS * 3+1];
     TreePtr* stackPtr = stack;
     bool collisions[NODES_NUMBER];
     *stackPtr++ = nullptr; // koniec petli gdy tu trafimy
 
     while (node != nullptr)
     {
+        if (node->checkCollisionsWithObjs(r, ignore))
+        {
+            delete stack;
+            return true;
+        }
+
         if (node->isSplited)
         {
             for (int i = 0; i < NODES_NUMBER; i++)
@@ -169,11 +175,6 @@ bool Tree::checkCollisions(RectHost const& r, const RectHost &ignore)
 
         if (false == checkIsAnyCollision(collisions))
         {
-            if (node->checkCollisionsWithObjs(r, ignore))
-            {
-                delete stack;
-                return true;
-            }
             node = *--stackPtr;
         }
         else
@@ -238,24 +239,24 @@ bool Tree::checkCollisionObjs(point p, RectHost& r)
 
 bool Tree::checkCollisons(point p, RectHost& r)
 {
-    Tree* current=this,*next=NULL;
-    while(true){
-        if (true==current->isSplited)
+    Tree* current = this,*next = nullptr;
+    while(true)
+    {
+        if (current->isSplited)
         {
             for(ushort i=0; i<NODES_NUMBER; ++i)
-                if (true==current->nodes[i]->bounds.rectContains(p))
+                if (current->nodes[i]->bounds.rectContains(p))
                 {
                     next = current->nodes[i];
                     break;
                 }
         }
-        //tutaj dla kazdego sprawdzenie bisectory lines
-        if (true==current->checkCollisionObjs(p, r))//KOLIZJA
+        if (current->checkCollisionObjs(p, r))//KOLIZJA
             return true;
-        else if(false==current->isSplited || NULL==next)
+        else if(false == current->isSplited || nullptr == next)
             return false;
         else
-            current=next;
+            current = next;
             
     }
 }
@@ -332,7 +333,7 @@ floatingPoint Tree::getAdjustedGaussianFactor(RectHost const& r, floatingPoint c
         if (isFirstIt && !isCollision)
             break;
         if ((isCollision && !isDividing) ||
-            !isCollision &&  isDividing)
+            (!isCollision &&  isDividing))
         {
             isDividing = !isDividing;
         }

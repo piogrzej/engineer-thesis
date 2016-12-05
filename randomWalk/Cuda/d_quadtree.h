@@ -35,6 +35,7 @@ enum D_FACTOR_TYPE
 
 struct QuadTreeManager
 {
+	d_Rect	start;
     d_Rect* rects;
     d_QuadTree* nodes;
     d_QuadTree* root;
@@ -42,6 +43,7 @@ struct QuadTreeManager
 
     int rectsCount;
     int maxlevel;
+    int threadInBlock;
 };
 
 //czyli od rect[startOff] do rect[endOff] sa rect dla danego noda
@@ -63,7 +65,7 @@ public:
     __host__ __device__ void  setId(int newId)  { id = newId;}
     __host__ __device__ int   getLevel() const { return level;}
     __host__ __device__ void  setLevel(int lvl)  { level = lvl;}
-    __host__ __device__ void  setChild(int child, int index)  { chlildren[index] = child; }
+    __host__ __device__ void  setChild(int child, int index)  { children[index] = child; }
     __host__ __device__ void  setBounds(d_Rect const& rect)  { bounds = rect;}
     __host__ __device__ void  setOwnRectOff(int ownOff)  {  startOwnOff = ownOff; }
     __host__ __device__ d_Rect getBounds() const { return bounds; }
@@ -74,15 +76,15 @@ public:
     __host__ __device__ int   endRectOff() const{  return endOff;}
     __host__ __device__ QuadTreeManager* getTreeManager() const{ return treeManager; };
     __host__ __device__ void setTreeManager(QuadTreeManager* manager) {this->treeManager = manager;};
-    __host__ __device__ int   child(const int index) const { return chlildren[index]; }
+    __host__ __device__ int   child(const int index) const { return children[index]; }
     __host__ __device__ bool isSplited() const {return splitFlag; }
-    __host__ __device__ __forceinline__ float2 getCenter()
+    __host__ __device__ __forceinline__ point2 getCenter()
     {
-        float centerX =  bounds.topLeft.x + (bounds.bottomRight.x - bounds.topLeft.x) / 2;
-        float centerY =  bounds.topLeft.y + (bounds.bottomRight.y - bounds.topLeft.y) / 2;
-        return make_float2(centerX,centerY);
+        floatingPoint centerX =  bounds.topLeft.x + (bounds.bottomRight.x - bounds.topLeft.x) / 2.;
+        floatingPoint centerY =  bounds.topLeft.y + (bounds.bottomRight.y - bounds.topLeft.y) / 2.;
+        return make_point2(centerX,centerY);
     }
-    __device__ void createStack(int id,int size) { stack[id] = new dTreePtr[size]; } // lazy fetch
+    __device__ void createStack(int id,int size) { stack[id] = new dTreePtr[size]; }
     __device__ void freeStack(int id) { delete stack[id]; }
     __device__ bool isInBounds(point2 const& p);
     __device__ bool isInBounds(d_Rect const& r);
@@ -92,11 +94,11 @@ public:
     __device__ d_Rect drawBiggestSquareAtPoint(point2 p);
     __device__ d_Rect createGaussianSurfFrom(d_Rect const & r, floatingPoint const factor);
     __device__ floatingPoint getAdjustedGaussianFactor(d_Rect const& r, floatingPoint const factor, D_FACTOR_TYPE type);
-    __device__ int getChlidren(ushort i) {return chlildren[i];};
+    __device__ int getChildren(ushort i) { return children[i]; }
 
 private:
     int                 id; // indeks to globalnej tablicy węzłów
-    int                 chlildren[NODES_NUMBER];//w tej tablicy znajduja sie numery indeksow dzieci w treeManager->nodes[]
+    int                 children[NODES_NUMBER];//w tej tablicy znajduja sie numery indeksow dzieci w treeManager->nodes[]
     int                 startOff; // indesky do tablicy gdzie rozpoczynaja sie obiekty znajdujace sie w tym dzieciach tego wezla
     int                 startOwnOff; // tu zaczynaja sie recty tego obiektu
     int	                endOff;
@@ -106,7 +108,6 @@ private:
     QuadTreeManager*    treeManager;
     dTreePtr**			stack;
     __device__ bool checkCollisionObjs(point2 p, d_Rect &r);
-    __device__ void addNodesToStack(dTreePtr* stackPtr,d_QuadTree* except, bool collisions[]);
     __device__ bool checkIsAnyCollision(bool collisions[]);
 
 };

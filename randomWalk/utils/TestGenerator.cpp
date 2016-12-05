@@ -29,6 +29,13 @@ bool TestGenerator::generate(std::string path)
     {
         std::string fullPath = path + fileName + std::to_string(count) + extension;
         ErrorLogger::getInstance() >> fullPath >> "\n";
+        std::ifstream f(fullPath.c_str());
+        if(f.good())
+        {
+            genFilesPaths.push_back(fullPath);
+        	continue;
+        }
+
         if(!generateTestFile(fullPath,count))
             return false;
 
