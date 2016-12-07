@@ -82,9 +82,8 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure,
     mainTree->printTree("ROOT");
 #endif
 
-    RandGen gen;
-    gen.initDeterm(ITER_NUM);
-    gen.initPtrs();
+    REAL64_t g[NSAMPLE], dgdx[NSAMPLE], dgdy[NSAMPLE], intg[NSAMPLE + 1];
+	precompute_unit_square_green(g,dgdx,dgdy,intg,NSAMPLE);// niech lidzy zeby bylo wiarygodnie
     if(true==measure)
 	{
     	Timer::getInstance().start("_RandomWalk Total");
@@ -94,7 +93,7 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure,
     for (int i = 0; i < ITER_NUM; i++)
     {
         int counter;
-        RectHost founded = RandomWalk(start, mainTree, counter,gen,i);
+        RectHost founded = RandomWalk(start, mainTree, counter,intg,i);
         foundedMap[founded]++;
         if(!(founded == start)) sumOfOtherRects++;
         sumPointCount += counter;

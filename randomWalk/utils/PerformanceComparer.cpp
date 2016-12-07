@@ -101,9 +101,6 @@ void PerformanceComparer::runCreateTreeGpu(int layerId,std::string const& name)
 
 void PerformanceComparer::runRandomWalkCpu(int layerId,std::string const& name, int RECT_ID, int ITER_NUM)
 {
-    RandGen gen;
-    gen.initDeterm( ITER_NUM);
-    gen.initPtrs();
     Layer const& layer = parser.getLayerAt(layerId);
     ErrorLogger::getInstance() >> name >> "  " >> layer.size()>> "\n";
     for(int i = 0; i < EXEC_PER_TEST; i++)
@@ -120,14 +117,13 @@ void PerformanceComparer::runRandomWalkCpu(int layerId,std::string const& name, 
 		for (int i = 0; i < ITER_NUM; i++)
 		{
 			int counter;
-			RectHost founded = RandomWalk(start, root, counter,gen,i);
+			RectHost founded = RandomWalk(start, root, counter,intg,i);
 			foundedMap[founded]++;
 			sumPointCount += counter;
 		}
         Timer::getInstance().stop(name);
         root->clear();
         delete root;
-        gen.resetIndex();// resetujemy zeby sciezka byla ta sama
     }
     resultsCpu[layer.size()] = Timer::getInstance().getAvgResult(name);
     Timer::getInstance().clear();
@@ -138,8 +134,6 @@ void PerformanceComparer::runRandomWalkGpu(int layerId,std::string const& name, 
     d_Layer const& layer = dParser.getLayerAt(layerId);
     ErrorLogger::getInstance() >> name >> "  " >> layer.size() >> "\n";
     QuadTreeManager* qtm;
-    RandGen gen;
-    gen.initDeterm(ITER_NUM);
     for(int i = 0; i < EXEC_PER_TEST; i++)
 	{
 		  cudaDeviceSynchronize();
@@ -153,7 +147,7 @@ void PerformanceComparer::runRandomWalkGpu(int layerId,std::string const& name, 
 		  d_Rect* d_rectOutput;
 		  cudaMalloc((void **)&d_output,outputSize);
 		  cudaMalloc((void **)&d_rectOutput,rectOutputSize);
-		  randomWalkCudaWrapper(ITER_NUM,qtm,d_output,d_rectOutput,gen,time(NULL));
+		  randomWalkCudaWrapper(ITER_NUM,qtm,d_output,d_rectOutput,time(NULL));
 		  cudaMemcpy(output,d_output,outputSize,cudaMemcpyDeviceToHost);
 		  cudaMemcpy(rectOutput,d_rectOutput,rectOutputSize,cudaMemcpyDeviceToHost);
 		  freeQuadTreeManager(qtm);

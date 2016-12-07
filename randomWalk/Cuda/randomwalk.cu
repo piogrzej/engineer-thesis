@@ -65,13 +65,11 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,
         unsigned int *output,
         d_Rect* d_rectOutput,
         dTreePtr** stack,
-        RandGen* gen,
         int threadInBlock,
         unsigned long long randomSeed=time(NULL))
 {
 	int id = (blockIdx.x * threadInBlock) + threadIdx.x;
     d_QuadTree* root = quadTreeMn->root;
-    gen->initCudaPointers(id);
 	root->setStack(stack);
 	quadTreeMn->threadInBlock = threadInBlock;
 
@@ -95,9 +93,8 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,
 
     do
     {
-    	int ind = gen->nextIndex(threadIdx.x);
         r = curand_uniform(&state);
-        p = square.getPointFromNindex(ind, NSAMPLE);
+        p = square.getPointFromNindex(d_getIndex(quadTreeMn->d_intg,r), NSAMPLE);
        // printf("%f    %f   %d\n",p.x,p.y,ind);
         if(false == root->isInBounds(p))
         {
@@ -125,20 +122,15 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,
     root->freeStack(id);
 }
 
-void randomWalkCudaWrapper(int threads,QuadTreeManager* quadTree, unsigned int *output,d_Rect* d_rectOutput,RandGen &gen,unsigned long long randomSeed)
+void randomWalkCudaWrapper(int threads,QuadTreeManager* quadTree, unsigned int *output,d_Rect* d_rectOutput,unsigned long long randomSeed)
 {
 	dTreePtr** stack;
-	RandGen* dGen;
-    checkCudaErrors(cudaMalloc((void **)&(gen.indexPtrs),sizeof(int)* threads));
-    checkCudaErrors(cudaMalloc((void **)&dGen,sizeof(RandGen)));
     checkCudaErrors(cudaMalloc((void **)&stack,sizeof(dTreePtr**) * threads + 1));
-    checkCudaErrors(cudaMemcpy(dGen,&gen,sizeof(RandGen),cudaMemcpyHostToDevice));
-
 
     int blockCount     = (int)ceil(threads / double(MAX_THREADS_BLOCK));
     int threadsInBlock =  threads/ blockCount;
 
-    randomWalkCuda<<<blockCount,threadsInBlock>>>(quadTree,output,d_rectOutput,stack,dGen,threadsInBlock,randomSeed);
+    randomWalkCuda<<<blockCount,threadsInBlock>>>(quadTree,output,d_rectOutput,stack,threadsInBlock,randomSeed);
     cudaDeviceSynchronize();
     checkCudaErrors(cudaFree(stack));
 }

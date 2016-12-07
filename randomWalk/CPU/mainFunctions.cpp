@@ -45,7 +45,7 @@ int getIndex(REAL64_t intg[NSAMPLE + 1], floatingPoint rand){
     }
 }
 
-RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,RandGen& gen,int iterId)
+RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,REAL64_t intg[NSAMPLE + 1],int iterId)
 {   
     RectHost output;
     point p;
@@ -69,9 +69,7 @@ RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,RandGen& 
     do
     {
         r = myrand() / (floatingPoint)(MY_RAND_MAX); // zostawiamy żeby czas dzialania sie nie zmienil
-        r =gen.nextIndex(iterId);
-        p = square.getPointFromNindex(r, NSAMPLE);
-        //printf("%f %f %f\n",r,p.x,p.y);
+        p = square.getPointFromNindex(getIndex(intg,r), NSAMPLE);
         if(false == mainTree->isInBounds(p))
         {
             broken = true;
@@ -97,13 +95,4 @@ RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,RandGen& 
         ErrorLogger::getInstance() << "Random walk is out of the bounds!\n";
     
     return output;
-}
-
-void printList(std::list<RectHost> input)
-{
-    int i=0;
-    for(std::list<RectHost>::iterator iter = input.begin(); iter != input.end(); ++iter){
-        ++i;
-        std::cout<<i<<" "<< iter->topLeft.x<<" "<<iter->topLeft.y<<" "<<iter->bottomRight.x<<" "<<iter->bottomRight.y<<std::endl;
-    }
 }

@@ -6,7 +6,7 @@
 
 class RandGen;
 
-void randomWalkCudaWrapper(int dimThread,QuadTreeManager* quadTree,unsigned int *output,d_Rect* d_rectOutput,RandGen& gen,unsigned long long randomSeed);
+void randomWalkCudaWrapper(int dimThread,QuadTreeManager* quadTree,unsigned int *output,d_Rect* d_rectOutput,unsigned long long randomSeed);
 QuadTreeManager* createQuadTree(const std::vector<d_Rect>& layer,d_Rect const& spaceSize,int RECT_ID,bool doCheck);
 QuadTreeManager* randomWalkCudaInit(char* path,bool measure,int RECT_ID,int layerID);
 bool initCuda(int argc, char **argv);

@@ -49,8 +49,6 @@ void saveOutput(d_Rect rectOutput[],int ITER_NUM)
 
 floatingPoint getAvgPathLenCUDA(char* path, int ITER_NUM,int RECT_ID,bool measure,int layerID)
 {
-    RandGen gen;
-    gen.initDeterm(ITER_NUM);
     //tworzenie drzewa
     QuadTreeManager* qtm = randomWalkCudaInit(path,measure,RECT_ID,layerID);
     //alokowanie pamieci na wynik
@@ -66,7 +64,7 @@ floatingPoint getAvgPathLenCUDA(char* path, int ITER_NUM,int RECT_ID,bool measur
 	}
     checkCudaErrors(cudaMalloc((void **)&d_output,outputSize));
     checkCudaErrors(cudaMalloc((void **)&d_rectOutput,rectOutputSize));
-    randomWalkCudaWrapper(ITER_NUM,qtm,d_output,d_rectOutput,gen,time(NULL));
+    randomWalkCudaWrapper(ITER_NUM,qtm,d_output,d_rectOutput,time(NULL));
     checkCudaErrors(cudaMemcpy(output,d_output,outputSize,cudaMemcpyDeviceToHost));
     checkCudaErrors(cudaMemcpy(rectOutput,d_rectOutput,rectOutputSize,cudaMemcpyDeviceToHost));
     if(true==measure)
