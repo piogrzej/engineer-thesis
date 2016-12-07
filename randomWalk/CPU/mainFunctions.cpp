@@ -85,14 +85,6 @@ RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,REAL64_t 
         pointCount++;
     }
     while (false == isCollison);
-
-   // ErrorLogger::getInstance() << "Number of path's points: " << pointCount << "\n";
-
-   // if (false == broken)
-   //     ErrorLogger::getInstance() << "Ending: " << output << "\n";
-
-   // else
-   //     ErrorLogger::getInstance() << "Random walk is out of the bounds!\n";
     
     return output;
 }

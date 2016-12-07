@@ -10,8 +10,6 @@
 #include <iostream>
 #include <string>
 
-//#define MEASURE_MODE
-
 void saveOutput(std::map<RectHost,int> m,int ITER_NUM)
 {
 	std::string timestamp = std::to_string((unsigned long)time(NULL));
@@ -97,7 +95,6 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure,
         foundedMap[founded]++;
         if(!(founded == start)) sumOfOtherRects++;
         sumPointCount += counter;
-       // std::cout << founded << std::endl;
     }
 
     if(true==measure)
@@ -113,6 +110,5 @@ floatingPoint getAvgPathLen(char* path, int ITER_NUM, int RECT_ID, bool measure,
     	Timer::getInstance().printResults();
     }
     ErrorLogger::getInstance() >> "END OF TEST!\n";
-    //return (floatingPoint)sumPointCount / (floatingPoint)ITER_NUM;
     return (floatingPoint)sumOfOtherRects / (floatingPoint)ITER_NUM;
 }

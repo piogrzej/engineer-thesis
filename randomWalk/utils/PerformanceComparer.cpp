@@ -180,9 +180,4 @@ void PerformanceComparer::printResults()
                                         pair.second << " " <<
                                         resultsGpu[pair.first] << "\n";
     }
-    for(auto const& file : testsPaths)
-    {
-        //if(0 == remove(file.c_str()))
-          //  ErrorLogger::getInstance() >> "Usunieto " >> file >> "\n";
-    }
 }

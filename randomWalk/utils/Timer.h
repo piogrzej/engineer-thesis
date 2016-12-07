@@ -6,7 +6,6 @@
 
 #define timeNow() std::chrono::high_resolution_clock::now()
 #define duration(a) std::chrono::duration_cast<std::chrono::milliseconds>(a).count()
-//#define MEASURE_MODE 1
 
 struct ResultsData;
 typedef std::chrono::high_resolution_clock::time_point TimePoint;

@@ -46,9 +46,6 @@ struct QuadTreeManager
     int threadInBlock;
 };
 
-//czyli od rect[startOff] do rect[endOff] sa rect dla danego noda
-//a w tablicy nodow to node[chldPtrs[TOP_LEFT]] to top_left dziecko danego noda
-
 class d_QuadTree
 {
 public:

@@ -17,7 +17,6 @@ int main(int argc, char *argv[])
     Tree *mainTree;
     char* path=		DEFAULT_PATH;
     bool GPU_FLAG=	DEFAULT_GPU_USAGE;
-    //GPU_FLAG = true;
     int rectNum = 	DEFAULT_RECT;
     int iterNum = 	DEFAULT_ITERATION;
     bool measure =	DEFAULT_MEASURE;
@@ -136,5 +135,6 @@ int main(int argc, char *argv[])
 		return 0;
 	}
     runRandomWalk(path, iterNum, rectNum,GPU_FLAG,measure,layer);
+
     return 0;
 }

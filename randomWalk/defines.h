@@ -4,7 +4,7 @@
 //main.cpp defines
 #define DEFAULT_PATH "../tests/test"		//DOMYSLNA SCIEZKA DO PLIKU
 #define DEFAULT_RECT 10						//DOMYSLNY ID OBIEKTU
-#define DEFAULT_ITERATION 372				//DOMYSLNA ILOSC ITERACJI
+#define DEFAULT_ITERATION 1000				//DOMYSLNA ILOSC ITERACJI
 //loger.h defines
 #define LOG_FILE_NAME "errorLog.txt"
 #define TIME_LOG_NAME "timeLog.txt"

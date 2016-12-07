@@ -104,7 +104,7 @@ int RectHost::getPerimeter() const
     return (2 * (this->bottomRight.x - this->topLeft.x) + 2 * (this->bottomRight.y - this->topLeft.y));
 }
 
-point RectHost::getPointFromNindex(int index, int Nsample) {//MAM NADZIEJE ZE NIGDZIE SIE NIE WALNALEM BO TO SKOMPLIKOWANA GEOMETRIA
+point RectHost::getPointFromNindex(int index, int Nsample) {
 	floatingPoint perimeter = this->getPerimeter();
     floatingPoint vector = (floatingPoint)perimeter / (floatingPoint)Nsample;
     floatingPoint heigth = this->getHeigth();

@@ -73,7 +73,6 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,
 	root->setStack(stack);
 	quadTreeMn->threadInBlock = threadInBlock;
 
-	//printf("\t%d \n",threadIdx.x);
     /*inicjalizacja silnika random*/
     curandState_t state;
     curand_init(randomSeed*(threadIdx.x+1), /* the seed controls the sequence of random values that are produced */
@@ -95,7 +94,6 @@ __global__ void randomWalkCuda(QuadTreeManager* quadTreeMn,
     {
         r = curand_uniform(&state);
         p = square.getPointFromNindex(d_getIndex(quadTreeMn->d_intg,r), NSAMPLE);
-       // printf("%f    %f   %d\n",p.x,p.y,ind);
         if(false == root->isInBounds(p))
         {
             broken = true;

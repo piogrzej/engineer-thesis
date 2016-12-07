@@ -25,19 +25,6 @@ __device__ bool d_QuadTree::isInBounds(d_Rect const&  r)
         return false;
 }
 
-/// create tree,.... d_QuadTree root; d_QuadTree* d_nodes; RectCuda* d_rects;
-//for(int i = root.startRectOff(); i < root.endRectOff(); ++i)
-//  {
-//d_rects[i].topLeft.x;
-//// .........
-//  }
-//for(int i  = 0;i < params.QUAD_TREE_CHILD_NUM; ++i)
-//  {
-// int childIdx = root[i];
-// d_nodes[childIdx].startRectOff();
-// // more ...
-//  }
-
 __device__ bool d_QuadTree::checkCollisons(point2 p, d_Rect& r)
 {
 	d_QuadTree* nodes = treeManager->nodes;
@@ -165,11 +152,10 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
 
         if (node->isSplited())
         {
-          //  printf("Nod: %d      ch %d %d %d %d\n",node->getId(),node->chlildren[0],node->chlildren[1],node->chlildren[2],node->chlildren[3]);
 #pragma unroll
             for (int i = 0; i < NODES_NUMBER; ++i)
             {
-                collisions[i] = nodes[node->getChildren(i)].getBounds().rectsCollision(r);//czy istnieje nodes[node->getChlidren(i)]?
+                collisions[i] = nodes[node->getChildren(i)].getBounds().rectsCollision(r);
             }
         }
         else
@@ -201,13 +187,12 @@ __device__ bool d_QuadTree::checkCollisions(d_Rect const& r, const d_Rect &ignor
                 if (collisions[i] && node != &(nodes[oldNode->children[i]]))
                     *stackPtr++ = &(nodes[oldNode->children[i]]);
             }
-        //   oldNode->addNodesToStack(stackPtr, node, collisions);
         }
     }
     return false;
 }
 
-__device__ bool d_QuadTree::checkIsAnyCollision(bool collisions[])//FUNKCJA DO PRZEPISANIA OD NOWA
+__device__ bool d_QuadTree::checkIsAnyCollision(bool collisions[])
 {
 #pragma unroll
     for (int i = 0; i < NODES_NUMBER; ++i)
