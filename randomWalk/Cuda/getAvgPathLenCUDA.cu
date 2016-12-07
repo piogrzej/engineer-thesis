@@ -41,7 +41,7 @@ void saveOutput(d_Rect rectOutput[],int ITER_NUM)
 		{
 			out << entry.first.topLeft.x <<" "<< entry.first.topLeft.y <<" "<<
 					entry.first.bottomRight.x<<" "<<entry.first.bottomRight.y <<": "<<
-					((float)entry.second/(float)ITER_NUM)*100<<"% (" << entry.second <<")\n";
+					((float)entry.second/(float)ITER_NUM)*100<<"%\n";
 		}
 	}
 	printf("Wynik zapisany do %s\n",filename.c_str());
