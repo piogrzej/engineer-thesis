@@ -61,7 +61,7 @@ RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,REAL64_t 
     rng_init(1);//inicjalizacja genaeratora
 #endif
 
-    ErrorLogger::getInstance() << "Starting: " << R << "\n";
+    //ErrorLogger::getInstance() << "Starting: " << R << "\n";
     RectHost square = mainTree->creatGaussianSurfFrom(R, 1.5);
 
     bool broken = false;
@@ -86,13 +86,13 @@ RectHost RandomWalk(RectHost const& R, Tree* mainTree, int& pointCount,REAL64_t 
     }
     while (false == isCollison);
 
-    ErrorLogger::getInstance() << "Number of path's points: " << pointCount << "\n";
+   // ErrorLogger::getInstance() << "Number of path's points: " << pointCount << "\n";
 
-    if (false == broken)
-        ErrorLogger::getInstance() << "Ending: " << output << "\n";
+   // if (false == broken)
+   //     ErrorLogger::getInstance() << "Ending: " << output << "\n";
 
-    else
-        ErrorLogger::getInstance() << "Random walk is out of the bounds!\n";
+   // else
+   //     ErrorLogger::getInstance() << "Random walk is out of the bounds!\n";
     
     return output;
 }

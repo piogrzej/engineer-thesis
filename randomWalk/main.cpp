@@ -135,9 +135,6 @@ int main(int argc, char *argv[])
 		ErrorLogger::getInstance() >> "No such file!";
 		return 0;
 	}
-
     runRandomWalk(path, iterNum, rectNum,GPU_FLAG,measure,layer);
-
-
     return 0;
 }
