@@ -5,7 +5,7 @@
     </code-assistance-data>
     <data xmlns="http://www.netbeans.org/ns/make-project-private/1">
         <activeConfTypeElem>1</activeConfTypeElem>
-        <activeConfIndexElem>1</activeConfIndexElem>
+        <activeConfIndexElem>0</activeConfIndexElem>
     </data>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
@@ -14,15 +14,12 @@
             <file>file:/home/piotr/inzynierka/randomWalk/mainFunctions.cpp</file>
             <file>file:/home/piotr/inzynierka/randomWalk/mainFunctions.h</file>
             <file>file:/home/piotr/inzynierka/randomWalk/Rect.h</file>
-            <file>file:/home/piotr/inzynierka/randomWalk/Timer.h</file>
+            <file>file:/home/piotr/inzynierka/randomWalk/randgen.h</file>
             <file>file:/home/piotr/inzynierka/randomWalk/Rect.cpp</file>
             <file>file:/home/piotr/inzynierka/randomWalk/quadTree.h</file>
-            <file>file:/home/piotr/inzynierka/randomWalk/tests.cpp</file>
-            <file>file:/home/piotr/inzynierka/randomWalk/tests.h</file>
-            <file>file:/home/piotr/inzynierka/randomWalk/Parser.cpp</file>
             <file>file:/home/piotr/inzynierka/randomWalk/quadTree.cpp</file>
-            <file>file:/home/piotr/inzynierka/randomWalk/Parser.h</file>
-            <file>file:/home/piotr/inzynierka/randomWalk/Timer.cpp</file>
+            <file>file:/home/piotr/inzynierka/randomWalk/randgen.cpp</file>
+            <file>file:/home/piotr/inzynierka/randomWalk/tests.cpp</file>
         </group>
     </open-files>
 </project-private>

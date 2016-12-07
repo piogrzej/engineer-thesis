@@ -1,0 +1,6 @@
+/.ptp-sync/
+/Debug/
+/Release/
+*.txt
+.project
+.ptp-sync-folder

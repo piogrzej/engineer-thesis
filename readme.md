@@ -8,14 +8,24 @@
 	Folder randomWalk zawiera także projekt c++ Visual Studio 2013 (Toolset v12)
 	Wystarczy otworzyć plik .sln oraz skompilować.
 	
-	Program może zostać wywołany z użyciem parametrów:
-		parametry:
+##Uruchomienie	
+
+	Program może zostać wywołany w wierszu polecań z użyciem parametrów:
+
 		1: ścieżka do testu
 		2: ilość wywołań
 		3: startowy Rect
 		
 	W przeciwnym razie zostaną wywołane domyślne opcje, zdefiniowane w pliku main.cpp
 	
+##Macra
+
+	MEASURE_MODE - po zdefiniowaniu tego macra mierzony jest czas wszystkich kluczowych funkcji algorytmu
+	DEBUG_MODE - po zdefiniowaniu tego macra wypisywane są wszystkie punkty ścieżek algorytmu
+	IGNORE_OUT_OF_BOUNDS_CASE - po zdefiniowaniu tego macra, algorytm nie zakończy działania po znalezieniu konca przestrzeni roboczej, tylko 	ponownie wylosuje następny punkt ścieżki
+	
+Tip: najlepiej definiować globalnie w ustawieniach preprocesora, aby były wszędzie widoczne.
+ 
 ## Fragmenty kodu które mamy zamiar zrównoleglać
 
 	Cześć kodu jaką chlelibyśmy zrównoleglać to metody:
